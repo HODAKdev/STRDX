@@ -10,8 +10,8 @@ cbuffer ConstantBuffer : register( b0 )
 
     // matrix
     matrix World;
-	matrix View;
-	matrix Projection;
+    matrix View;
+    matrix Projection;
 }
 
 static float2 scrollDir;
