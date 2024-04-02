@@ -1,6 +1,6 @@
 # STRDX
-![](/image/strdx.png)
-Simple DirectX 11. Add new context implementation without modify code base.
+![](strdx.png)
+Simple DirectX 11. Add new context implementation without modify main code base.
 ## C++ API
 ```cpp
 void Start()
