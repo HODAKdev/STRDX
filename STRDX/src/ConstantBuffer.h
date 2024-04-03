@@ -81,8 +81,8 @@ public:
         DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
         iView = DirectX::XMMatrixLookAtLH(Eye, At, Up);
         iProjection = DirectX::XMMatrixPerspectiveFovLH(_Fov, _Width / _Height, _NearZ, _FarZ);
-        iProjection = DirectX::XMMatrixTranspose(iProjection);
-        iView = DirectX::XMMatrixTranspose(iView);
         iWorld = DirectX::XMMatrixTranspose(iWorld);
+        iView = DirectX::XMMatrixTranspose(iView);
+        iProjection = DirectX::XMMatrixTranspose(iProjection);
     }
 };
