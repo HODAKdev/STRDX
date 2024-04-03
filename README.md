@@ -22,7 +22,7 @@ void Start()
     shader->CreateVertex();
     shader->CreatePixel();
 
-    shader->AddLayout("POSITION", 0, 3, 0, 0);
+    shader->AddLayout("POSITION", 0, 3);
     //shader->AddLayout("COLOR", 0, 4, 0, 12);
     shader->CreateLayout();
 
