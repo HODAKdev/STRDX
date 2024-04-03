@@ -22,8 +22,8 @@ void Start()
     shader->CreateVertex();
     shader->CreatePixel();
 
-    shader->AddLayout("POSITION", 0, 3, 0, 0); // format
-    //shader->AddLayout("COLOR", 0, 4, 0, 12); // format, offset
+    shader->AddLayout("POSITION", 0, 3, 0, 0);
+    //shader->AddLayout("COLOR", 0, 4, 0, 12);
     shader->CreateLayout();
 
     // x, y, z coords
@@ -31,6 +31,7 @@ void Start()
     vertices.push_back(Vertex(-1.0f, 1.0f, 0.0f));
     vertices.push_back(Vertex(1.0f, 1.0f, 0.0f));
     vertices.push_back(Vertex(1.0f, -1.0f, 0.0f));
+    //vertices.push_back(Vertex(1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f)); xyz, rgba
 
     shader->AddIndex(0);
     shader->AddIndex(1);
