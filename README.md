@@ -22,7 +22,8 @@ void Start()
     shader->CreateVertex();
     shader->CreatePixel();
 
-    shader->AddLayout("POSITION", 0, 3);
+    shader->AddLayout("POSITION", 0, 3, 0, 0); // format
+    //shader->AddLayout("COLOR", 0, 4, 0, 12); // format, offset
     shader->CreateLayout();
 
     // x, y, z coords
