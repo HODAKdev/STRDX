@@ -31,7 +31,7 @@ void Start()
     vertices.push_back(Vertex(-1.0f, 1.0f, 0.0f));
     vertices.push_back(Vertex(1.0f, 1.0f, 0.0f));
     vertices.push_back(Vertex(1.0f, -1.0f, 0.0f));
-    //vertices.push_back(Vertex(1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f)); xyz, rgba
+    //vertices.push_back(Vertex(1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
 
     shader->AddIndex(0);
     shader->AddIndex(1);
