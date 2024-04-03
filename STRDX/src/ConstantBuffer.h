@@ -64,14 +64,14 @@ public:
     void Set(const float _Time,
              const float _Width,
              const float _Height,
-             const float _Fov = 0.0f,
-             const float _NearZ = 0.0f,
-             const float _FarZ = 0.0f,
-             const DirectX::XMFLOAT3& _Eye = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-             const DirectX::XMFLOAT3& _At = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-             const DirectX::XMFLOAT3& _Pos = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-             const DirectX::XMFLOAT3& _Rot = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-             const DirectX::XMFLOAT3& _Scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f))
+             const float _Fov,
+             const float _NearZ,
+             const float _FarZ,
+             const DirectX::XMFLOAT3& _Eye,
+             const DirectX::XMFLOAT3& _At,
+             const DirectX::XMFLOAT3& _Pos,
+             const DirectX::XMFLOAT3& _Rot,
+             const DirectX::XMFLOAT3& _Scale)
     {
         iTime = _Time;
         iResolution = DirectX::XMFLOAT2(_Width, _Height);

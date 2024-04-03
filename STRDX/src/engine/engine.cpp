@@ -109,8 +109,9 @@ void Engine::Render()
     if (shader)
     {
         shader->Set<Vertex>();
-        cb.iTime = GetTime();
-        cb.iResolution = DirectX::XMFLOAT2((float)window->GetClientWidth(), (float)window->GetClientHeight());
+        cb.SetTime(GetTime());
+        cb.SetResolution(DirectX::XMFLOAT2A((float)window->GetClientWidth(),
+                                            (float)window->GetClientHeight()));
         shader->UpdateConstantBuffer<ConstantBuffer>(cb);
         shader->Draw(4, 6);
     }
