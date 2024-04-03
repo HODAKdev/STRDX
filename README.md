@@ -50,6 +50,8 @@ void Render()
     if (shader)
     {
         shader->Set<Vertex>();
+        cb.SetTime(GetTime());
+        cb.SetResolution(GetWidth(), GetHeight());
         shader->UpdateConstantBuffer<ConstantBuffer>(cb);
         shader->Draw(4, 6);
     }
