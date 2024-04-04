@@ -340,7 +340,7 @@ bool D3D11_Shader::Read(const char* filename, ID3DBlob** blob)
     data.clear();
     return true;
 }
-bool D3D11_Shader::Draw(UINT vertex_size, UINT index_size)
+bool D3D11_Shader::Draw(UINT vertex_size, UINT index_size, UINT slot_index)
 {
     if (!vertex_shader)
         return false;
@@ -350,10 +350,10 @@ bool D3D11_Shader::Draw(UINT vertex_size, UINT index_size)
 
     d3d11->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
     if (constant_buffer)
-        d3d11->GetDeviceContext()->VSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
+        d3d11->GetDeviceContext()->VSSetConstantBuffers(slot_index, 1, constant_buffer.GetAddressOf());
     d3d11->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
     if (constant_buffer)
-        d3d11->GetDeviceContext()->PSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
+        d3d11->GetDeviceContext()->PSSetConstantBuffers(slot_index, 1, constant_buffer.GetAddressOf());
     if (index_buffer)
         d3d11->GetDeviceContext()->DrawIndexed(index_size, 0, 0); // fix
     else

@@ -104,7 +104,7 @@ public:
 
 		return true;
 	}
-	bool Draw(UINT vertex_size, UINT index_size = 0);
+	bool Draw(UINT vertex_size, UINT index_size = 0, UINT slot_index = 0);
 
 private:
 	std::vector<unsigned char> vertex_data;

@@ -14,8 +14,6 @@ public:
 private:
     float iTime;
     DirectX::XMFLOAT2 iResolution;
-
-    // matrix
     DirectX::XMMATRIX iWorld;
     DirectX::XMMATRIX iView;
     DirectX::XMMATRIX iProjection;

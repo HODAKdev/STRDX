@@ -131,3 +131,12 @@ bool Shader::CreateIndexBuffer()
 
 	return true;
 }
+bool Shader::Draw(UINT vertex_size, UINT index_size, UINT slot_index)
+{
+	if (renderer == R_DX11)
+		if (d3d11_shader)
+			if (!d3d11_shader->Draw(vertex_size, index_size, slot_index))
+				return false;
+
+	return true;
+}

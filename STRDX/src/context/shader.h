@@ -43,15 +43,7 @@ public:
 
 		return true;
 	}
-	bool Draw(UINT vertex_size, UINT index_size = 0)
-	{
-		if (renderer == R_DX11)
-			if (d3d11_shader)
-				if (!d3d11_shader->Draw(vertex_size, index_size))
-					return false;
-
-		return true;
-	}
+	bool Draw(UINT vertex_size, UINT index_size = 0, UINT slot_index = 0);
 	template <typename T>
 	bool CreateConstantBuffer()
 	{
