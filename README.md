@@ -54,6 +54,7 @@ void Render()
         cb.SetResolution(GetWidth(), GetHeight());
         shader->UpdateConstantBuffer<ConstantBuffer>(cb);
         shader->Draw(4, 6);
+        //shader->Draw(4, 6, 1);
     }
 }
 
