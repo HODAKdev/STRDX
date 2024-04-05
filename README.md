@@ -66,6 +66,7 @@ void Release()
 ## Build
 - Visual Studio 2022
 - Platform Toolset: v143
+- C++ Language Standard: C++ 2014
 - Configuration: Debug or Release
 - Platform: x64
 ## Credits
