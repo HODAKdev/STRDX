@@ -49,7 +49,7 @@ bool D3D11_Shader::CompilePixel()
 {
     if (pixel_data.empty())
     {
-        printf("vertex data is empty\n");
+        printf("pixel data is empty\n");
         return false;
     }
 
