@@ -12,28 +12,13 @@ Engine* Engine::GetSingleton()
 }
 void Engine::Start()
 {
-    // create window
-    window->Create(L"STRDX", // name
-        1280, 720, // width, height
-        0, 0, 0, // rgb
-        false); // enable resize
-
-    // enable darkmode window
+    window->Create(L"STRDX", 1280, 720, 0, 0, 0, false);
     window->EnableDarkMode();
-
-    // center window
     window->Center();
-
-    // focus window
     window->Focus();
 
-    // create context
     context->Create(R_DX11, window->GetClientWidth(), window->GetClientHeight());
-
-    // set viewport
     context->SetViewport(window->GetClientWidth(), window->GetClientHeight());
-
-    // set primitive topology
     context->SetPrimitiveTopology(PT_TRIANGLELIST);
 
     shader = Shader::Create(R_DX11);
@@ -66,11 +51,10 @@ void Engine::Start()
     shader->AddIndex(3);
 
     shader->CreateVertexBuffer<Vertex>(vertices);
-    vertices.clear(); // free memory
+    vertices.clear();
     shader->CreateIndexBuffer();
     shader->CreateConstantBuffer<ConstantBuffer>();
 
-    // show window
     window->Show();
 }
 void Engine::Update()

@@ -150,4 +150,7 @@ void D3D11::SetPrimitiveTopology(PrimitiveTopology primitiveTopology)
 {
     if (primitiveTopology == PT_TRIANGLELIST)
         deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    else if (primitiveTopology == PT_LINELIST)
+        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+    else printf("primitive topology is wrong\n");
 }

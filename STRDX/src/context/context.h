@@ -11,6 +11,7 @@ enum PrimitiveTopology
 {
 	PT_NONE,
 	PT_TRIANGLELIST,
+	PT_LINELIST,
 };
 
 class Context

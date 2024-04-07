@@ -23,11 +23,11 @@ public:
 	bool AddLayout(LPCSTR name, UINT index, UINT format, UINT slot = 0, UINT offset = 0);
 	void AddIndex(UINT index);
 	template <typename T>
-	bool CreateVertexBuffer(std::vector<T>& vertices)
+	bool CreateVertexBuffer(std::vector<T>& vertices, bool cpu_access = 0)
 	{
 		if (renderer == R_DX11)
 			if (d3d11_shader)
-				if (!d3d11_shader->CreateVertexBuffer<T>(vertices))
+				if (!d3d11_shader->CreateVertexBuffer<T>(vertices, cpu_access))
 					return false;
 
 		return true;
@@ -65,6 +65,16 @@ public:
 		return true;
 	}
 	void SetRenderer(Renderer renderer);
+	template <typename T>
+	bool UpdateVertexBuffer(std::vector<T>& vertices)
+	{
+		if (renderer == R_DX11)
+			if (d3d11_shader)
+				if (!d3d11_shader->UpdateVertexBuffer<T>(vertices))
+					return false;
+
+		return true;
+	}
 
 private:
 	Renderer renderer;

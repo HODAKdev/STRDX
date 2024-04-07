@@ -25,20 +25,20 @@ public:
 	bool CreatePixel();
 	void ReleaseCache();
 	bool CreateLayout();
-	bool AddLayout(LPCSTR name, UINT index, UINT format, UINT slot = 0, UINT offset = 0);
+	bool AddLayout(LPCSTR name, UINT index, UINT format, UINT slot, UINT offset);
 	void Release();
 	void AddIndex(UINT index);
 	template <typename T>
-	bool CreateVertexBuffer(std::vector<T>& vertices)
+	bool CreateVertexBuffer(std::vector<T>& vertices, bool cpu_access)
 	{
 		D3D11* d3d11 = D3D11::GetSingleton();
 
 		D3D11_BUFFER_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
-		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.ByteWidth = sizeof(T) * (UINT)vertices.size(); // fix
+		desc.Usage = cpu_access ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
+		desc.ByteWidth = (sizeof(T) * (UINT)vertices.size()); // fix
 		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		desc.CPUAccessFlags = 0;
+		desc.CPUAccessFlags = cpu_access ? D3D11_CPU_ACCESS_WRITE : 0;
 		D3D11_SUBRESOURCE_DATA data;
 		ZeroMemory(&data, sizeof(data));
 		data.pSysMem = vertices.data();
@@ -104,7 +104,27 @@ public:
 
 		return true;
 	}
-	bool Draw(UINT vertex_size, UINT index_size = 0, UINT slot_index = 0);
+	bool Draw(UINT vertex_size, UINT index_size, UINT slot_index);
+	template <typename T>
+	bool UpdateVertexBuffer(std::vector<T>& vertices)
+	{
+		D3D11* d3d11 = D3D11::GetSingleton();
+
+		if (!vertex_buffer)
+		{
+			printf("vertex buffer is null\n");
+			return false;
+		}
+
+		D3D11_MAPPED_SUBRESOURCE resource;
+		if (FAILED(d3d11->GetDeviceContext()->Map(vertex_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource)))
+			return false;
+
+		memcpy(resource.pData, vertices.data(), (sizeof(T) * vertices.size()));
+		d3d11->GetDeviceContext()->Unmap(vertex_buffer.Get(), 0);
+
+		return true;
+	}
 
 private:
 	std::vector<unsigned char> vertex_data;
