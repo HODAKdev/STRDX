@@ -41,6 +41,7 @@ void Start()
     shader->AddIndex(3);
 
     shader->CreateVertexBuffer<Vertex>(vertices);
+    //shader->CreateVertexBuffer<Vertex>(vertices, true);
     shader->CreateIndexBuffer();
     shader->CreateConstantBuffer<ConstantBuffer>();
 }
@@ -53,6 +54,11 @@ void Render()
         cb.SetTime(GetTime());
         cb.SetResolution(GetWidth(), GetHeight());
         shader->UpdateConstantBuffer<ConstantBuffer>(cb);
+        //vertices.push_back(Vertex(-1.0f, -1.0f, 0.0f));
+        //vertices.push_back(Vertex(-1.0f, 1.0f, 0.0f));
+        //vertices.push_back(Vertex(1.0f, 1.0f, 0.0f));
+        //vertices.push_back(Vertex(1.0f, -1.0f, 0.0f));
+        //shader->UpdateVertexBuffer<Vertex>(vertices);
         shader->Draw(4, 6);
         //shader->Draw(4, 6, 1);
     }
