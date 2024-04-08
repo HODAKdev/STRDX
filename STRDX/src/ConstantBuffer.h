@@ -27,7 +27,7 @@ public:
     {
         return iTime;
     }
-    void SetResolution(const float _Width, const float _Height)
+    void SetResolution(float _Width, float _Height)
     {
         iResolution = DirectX::XMFLOAT2(_Width, _Height);
     }
@@ -59,11 +59,11 @@ public:
     {
         return iProjection;
     }
-    void SetMatrix(const float _Width,
-                   const float _Height,
-                   const float _Fov,
-                   const float _NearZ,
-                   const float _FarZ,
+    void SetMatrix(float _Width,
+                   float _Height,
+                   float _Fov,
+                   float _NearZ,
+                   float _FarZ,
                    const DirectX::XMFLOAT3& _Eye,
                    const DirectX::XMFLOAT3& _At,
                    const DirectX::XMFLOAT3& _Pos,
