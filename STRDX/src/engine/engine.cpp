@@ -22,11 +22,11 @@ void Engine::Start()
     context->SetPrimitiveTopology(PT_TRIANGLELIST);
 
     shader = Shader::Create(R_DX11);
-    shader->LoadVertex("data\\shaders\\vertex.bin", false);
-    shader->LoadPixel("data\\shaders\\pixel.bin", false);
+    shader->LoadVertex("data\\shaders\\vertex.hlsl", true);
+    shader->LoadPixel("data\\shaders\\pixel.hlsl", true);
 
-    //shader->CompileVertex();
-    //shader->CompilePixel();
+    shader->CompileVertex();
+    shader->CompilePixel();
 
     //shader->SaveVertex("data\\shaders\\vertex.bin");
     //shader->SavePixel("data\\shaders\\pixel.bin");

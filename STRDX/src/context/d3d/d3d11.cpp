@@ -10,39 +10,42 @@ D3D11* D3D11::GetSingleton()
 }
 bool D3D11::Create(UINT _Width, UINT _Height)
 {
-    DXGI_SWAP_CHAIN_DESC sd;
-    ZeroMemory(&sd, sizeof(sd));
-    sd.BufferCount = 2;
-    sd.BufferDesc.Width = _Width;
-    sd.BufferDesc.Height = _Height;
-    sd.BufferDesc.Format = format;
-    sd.BufferDesc.RefreshRate.Numerator = 60;
-    sd.BufferDesc.RefreshRate.Denominator = 1;
-    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    sd.OutputWindow = window->GetHandle();
-    sd.SampleDesc.Count = 1;
-    sd.SampleDesc.Quality = 0;
-    sd.Windowed = TRUE;
-    sd.SwapEffect = swapEffect;
+    DXGI_SWAP_CHAIN_DESC desc;
+    ZeroMemory(&desc, sizeof(desc));
+    desc.BufferCount = 2;
+    desc.BufferDesc.Width = _Width;
+    desc.BufferDesc.Height = _Height;
+    desc.BufferDesc.Format = format;
+    desc.BufferDesc.RefreshRate.Numerator = 60;
+    desc.BufferDesc.RefreshRate.Denominator = 1;
+    desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    desc.OutputWindow = window->GetHandle();
+    desc.SampleDesc.Count = 1;
+    desc.SampleDesc.Quality = 0;
+    desc.Windowed = TRUE;
+    desc.SwapEffect = swapEffect;
 
     UINT flags = 0;
 #if defined(_DEBUG)
     flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-    if (FAILED(D3D11CreateDeviceAndSwapChain(NULL, 
-                                             driverType, 
-                                             NULL, 
-                                             flags,
-                                             NULL, 
+    if (FAILED(D3D11CreateDeviceAndSwapChain(NULL,
+                                             driverType,
                                              NULL,
-                                             D3D11_SDK_VERSION, 
-                                             &sd,
+                                             flags,
+                                             NULL,
+                                             NULL,
+                                             D3D11_SDK_VERSION,
+                                             &desc,
                                              swapChain.GetAddressOf(),
                                              device.GetAddressOf(),
                                              &featureLevel,
                                              deviceContext.GetAddressOf())))
+    {
+        printf("create swapchain failed\n");
         return false;
+    }
 
     if (!CreateRenderTargetView())
         return false;
@@ -56,10 +59,16 @@ bool D3D11::CreateRenderTargetView()
 {
     ID3D11Texture2D* texture = NULL;
     if (FAILED(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&texture)))
+    {
+        printf("get buffer failed\n");
         return false;
+    }
 
     if (FAILED(device->CreateRenderTargetView(texture, NULL, renderTargetView.GetAddressOf())))
+    {
+        printf("create render target view failed\n");
         return false;
+    }
 
     texture->Release();
     return true;
@@ -82,7 +91,10 @@ bool D3D11::CreateDepthStencilView(UINT _Width, UINT _Height)
 
     ID3D11Texture2D* texture = NULL;
     if (FAILED(device->CreateTexture2D(&descDepth, NULL, &texture)))
+    {
+        printf("create texture 2D failed\n");
         return false;
+    }
 
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
     ZeroMemory(&descDSV, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
@@ -91,7 +103,10 @@ bool D3D11::CreateDepthStencilView(UINT _Width, UINT _Height)
     descDSV.Texture2D.MipSlice = 0;
 
     if (FAILED(device->CreateDepthStencilView(texture, &descDSV, depthStencilView.GetAddressOf())))
+    {
+        printf("create depth stencil view failed\n");
         return false;
+    }
 
     texture->Release();
     return true;
@@ -113,7 +128,10 @@ bool D3D11::ResizeBuffer(UINT _Width, UINT _Height)
     if (depthStencilView) depthStencilView->Release();
 
     if (FAILED(swapChain->ResizeBuffers(0, _Width, _Height, DXGI_FORMAT_UNKNOWN, 0)))
+    {
+        printf("resize buffers failed\n");
         return false;
+    }
 
     if (!CreateRenderTargetView())
         return false;
