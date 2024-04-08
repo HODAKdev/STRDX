@@ -89,7 +89,7 @@ void Engine::Render()
     {
         shader->Set<Vertex>();
         constantBuffer.SetTime(GetTime());
-        constantBuffer.SetResolution(DirectX::XMFLOAT2A((float)window->GetClientWidth(), (float)window->GetClientHeight()));
+        constantBuffer.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
         shader->UpdateConstantBuffer<ConstantBuffer>(constantBuffer);
         shader->Draw();
     }

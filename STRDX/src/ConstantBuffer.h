@@ -27,9 +27,9 @@ public:
     {
         return iTime;
     }
-    void SetResolution(const DirectX::XMFLOAT2& _Resolution)
+    void SetResolution(const float _Width, const float _Height)
     {
-        iResolution = _Resolution;
+        iResolution = DirectX::XMFLOAT2(_Width, _Height);
     }
     DirectX::XMFLOAT2 GetResolution()
     {
