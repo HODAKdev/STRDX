@@ -16,9 +16,20 @@ void Start()
 
     // create shader
     shader = Shader::Create(R_DX11);
+
+    // load shaders
     shader->LoadVertex("vertex.bin", false);
     shader->LoadPixel("pixel.bin", false);
 
+    // compile shaders
+    //shader->CompileVertex();
+    //shader->CompilePixel();
+
+    // save shaders
+    //shader->SaveVertex("vertex.bin");
+    //shader->SavePixel("pixel.bin");
+
+    // create shaders
     shader->CreateVertex();
     shader->CreatePixel();
 
