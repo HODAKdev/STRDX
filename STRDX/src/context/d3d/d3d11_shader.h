@@ -11,7 +11,12 @@ using STRDXWRL = Microsoft::WRL::ComPtr<T>;
 class D3D11_Shader
 {
 public:
-	D3D11_Shader() : vs_blob(nullptr), ps_blob(nullptr), vertices_size(0), indices_size(0) {}
+	D3D11_Shader() : vs_blob(NULL),
+		             ps_blob(NULL),
+		             vertices_size(0),
+		             indices_size(0),
+		             vs_blob_used(false),
+		             ps_blob_used(false) {}
 
 public:
 	static D3D11_Shader* Create();
@@ -30,7 +35,7 @@ public:
 
 		if (_Vertices.empty())
 		{
-			printf("vertices data is null\n");
+			printf("vertices data is empty\n");
 			return false;
 		}
 
@@ -57,9 +62,9 @@ public:
 	{
 		D3D11* d3d11 = D3D11::GetSingleton();
 
-		if (_Vertices.data())
+		if (_Vertices.empty())
 		{
-			printf("vertices data is null\n");
+			printf("vertices data is empty\n");
 			return false;
 		}
 
@@ -92,7 +97,7 @@ public:
 		desc.ByteWidth = sizeof(T);
 		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		desc.CPUAccessFlags = 0;
-		if (FAILED(d3d11->GetDevice()->CreateBuffer(&desc, nullptr, constant_buffer.GetAddressOf())))
+		if (FAILED(d3d11->GetDevice()->CreateBuffer(&desc, NULL, constant_buffer.GetAddressOf())))
 		{
 			printf("create constant buffer failed\n");
 			return false;
@@ -106,9 +111,12 @@ public:
 		D3D11* d3d11 = D3D11::GetSingleton();
 
 		if (!constant_buffer)
+		{
+			printf("constant buffer is null\n");
 			return false;
+		}
 
-		d3d11->GetDeviceContext()->UpdateSubresource(constant_buffer.Get(), 0, nullptr, &_ConstantBuffer, 0, 0);
+		d3d11->GetDeviceContext()->UpdateSubresource(constant_buffer.Get(), 0, NULL, &_ConstantBuffer, 0, 0);
 
 		return true;
 	}
@@ -120,10 +128,16 @@ public:
 		D3D11* d3d11 = D3D11::GetSingleton();
 
 		if (!vertex_layout)
+		{
+			printf("vertex layout is null\n");
 			return false;
+		}
 
 		if (!vertex_buffer)
+		{
+			printf("vertex buffer is null\n");
 			return false;
+		}
 
 		d3d11->GetDeviceContext()->IASetInputLayout(vertex_layout.Get());
 
@@ -145,8 +159,8 @@ public:
 	void Release();
 
 private:
-	bool vs_blob_used = false;
-	bool ps_blob_used = false;
+	bool vs_blob_used;
+	bool ps_blob_used;
 	ID3DBlob* vs_blob;
 	ID3DBlob* ps_blob;
 

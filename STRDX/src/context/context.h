@@ -10,8 +10,11 @@ enum Renderer
 enum PrimitiveTopology
 {
 	PT_NONE,
-	PT_TRIANGLELIST,
+	PT_POINTLIST,
 	PT_LINELIST,
+	PT_LINESTRIP,
+	PT_TRIANGLELIST,
+	PT_TRIANGLESTRIP,
 };
 
 class Context
@@ -23,14 +26,14 @@ public:
 	static Context* GetSingleton();
 
 public:
-	bool Create(Renderer renderer, UINT width, UINT height);
-	void Release();
-	void ClearRenderTarget(float r, float g, float b, float a);
+	bool Create(Renderer _Renderer, UINT _Width, UINT _Height);
+	void SetViewport(UINT _Width, UINT _Height);
+	void SetPrimitiveTopology(PrimitiveTopology _PrimitiveTopology);
 	void SetRenderTarget();
-	bool ResizeBuffer(UINT width, UINT height);
-	void SetViewport(UINT width, UINT height);
-	void Present(bool vsync);
-	void SetPrimitiveTopology(PrimitiveTopology primitiveTopology);
+	void ClearRenderTarget(float _R, float _G, float _B, float _A);
+	bool ResizeBuffer(UINT _Width, UINT _Height);
+	void Present(bool _Vsync);
+	void Release();
 
 private:
 	Renderer renderer;

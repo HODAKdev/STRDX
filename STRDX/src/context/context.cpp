@@ -8,50 +8,50 @@ Context* Context::GetSingleton()
 	static Context context;
 	return &context;
 }
-bool Context::Create(Renderer renderer, UINT width, UINT height)
+bool Context::Create(Renderer _Renderer, UINT _Width, UINT _Height)
 {
-	this->renderer = renderer;
+	renderer = _Renderer;
 
 	if (renderer == R_DX11)
-		if (!d3d11->Create(width, height))
+		if (!d3d11->Create(_Width, _Height))
 			return false;
 
 	return true;
 }
-void Context::Release()
+void Context::SetViewport(UINT _Width, UINT _Height)
 {
 	if (renderer == R_DX11)
-		d3d11->Release();
+		d3d11->SetViewport(_Width, _Height);
 }
-void Context::ClearRenderTarget(float r, float g, float b, float a)
+void Context::SetPrimitiveTopology(PrimitiveTopology _PrimitiveTopology)
 {
 	if (renderer == R_DX11)
-		d3d11->ClearRenderTarget(r, g, b, a);
+		d3d11->SetPrimitiveTopology(_PrimitiveTopology);
 }
 void Context::SetRenderTarget()
 {
 	if (renderer == R_DX11)
 		d3d11->SetRenderTarget();
 }
-bool Context::ResizeBuffer(UINT width, UINT height)
+void Context::ClearRenderTarget(float _R, float _G, float _B, float _A)
 {
 	if (renderer == R_DX11)
-		return d3d11->ResizeBuffer(width, height);
+		d3d11->ClearRenderTarget(_R, _G, _B, _A);
+}
+bool Context::ResizeBuffer(UINT _Width, UINT _Height)
+{
+	if (renderer == R_DX11)
+		return d3d11->ResizeBuffer(_Width, _Height);
 
 	return false;
 }
-void Context::SetViewport(UINT width, UINT height)
+void Context::Present(bool _Vsync)
 {
 	if (renderer == R_DX11)
-		d3d11->SetViewport(width, height);
+		d3d11->Present(_Vsync);
 }
-void Context::Present(bool vsync)
+void Context::Release()
 {
 	if (renderer == R_DX11)
-		d3d11->Present(vsync);
-}
-void Context::SetPrimitiveTopology(PrimitiveTopology primitiveTopology)
-{
-	if (renderer == R_DX11)
-		d3d11->SetPrimitiveTopology(primitiveTopology);
+		d3d11->Release();
 }

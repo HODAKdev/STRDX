@@ -83,9 +83,9 @@ bool D3D11_Shader::CreateVertex()
     }
 
     if (FAILED(d3d11->GetDevice()->CreateVertexShader(vs_blob->GetBufferPointer(),
-        vs_blob->GetBufferSize(),
-        NULL,
-        vertex_shader.GetAddressOf())))
+                                                      vs_blob->GetBufferSize(),
+                                                      NULL,
+                                                      vertex_shader.GetAddressOf())))
     {
         printf("create vertex shader failed\n");
         return false;
@@ -95,16 +95,16 @@ bool D3D11_Shader::CreateVertex()
 }
 bool D3D11_Shader::CreatePixel()
 {
-    if (!vs_blob)
+    if (!ps_blob)
     {
-        printf("vertex blob is empty\n");
+        printf("pixel blob is empty\n");
         return false;
     }
 
     if (FAILED(d3d11->GetDevice()->CreatePixelShader(ps_blob->GetBufferPointer(),
-        ps_blob->GetBufferSize(),
-        NULL,
-        pixel_shader.GetAddressOf())))
+                                                     ps_blob->GetBufferSize(),
+                                                     NULL,
+                                                     pixel_shader.GetAddressOf())))
     {
         printf("create pixel shader failed\n");
         return false;
@@ -120,7 +120,7 @@ bool D3D11_Shader::CreateIndexBuffer(bool _CpuAccess)
 {
     if (indices.empty())
     {
-        printf("indices data is null\n");
+        printf("indices data is empty\n");
         return false;
     }
 
@@ -147,7 +147,7 @@ bool D3D11_Shader::UpdateIndexBuffer()
 {
     if (indices.empty())
     {
-        printf("indices data is null\n");
+        printf("indices data is empty\n");
         return false;
     }
 
@@ -202,10 +202,10 @@ bool D3D11_Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot
 bool D3D11_Shader::CreateLayout()
 {
     if (FAILED(d3d11->GetDevice()->CreateInputLayout(layout.data(),
-        (UINT)layout.size(),
-        vs_blob->GetBufferPointer(),
-        vs_blob->GetBufferSize(),
-        vertex_layout.GetAddressOf())))
+                                                     (UINT)layout.size(),
+                                                     vs_blob->GetBufferPointer(),
+                                                     vs_blob->GetBufferSize(),
+                                                     vertex_layout.GetAddressOf())))
     {
         printf("create input layout failed\n");
         return false;
@@ -217,10 +217,16 @@ bool D3D11_Shader::CreateLayout()
 bool D3D11_Shader::Draw(UINT _ConstantBufferSlot)
 {
     if (!vertex_shader)
+    {
+        printf("vertex shader is null\n");
         return false;
+    }
 
     if (!pixel_shader)
+    {
+        printf("pixel shader is null\n");
         return false;
+    }
 
     d3d11->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
     if (constant_buffer)
@@ -308,21 +314,16 @@ bool D3D11_Shader::Read(const char* _Filename, std::vector<unsigned char>& _Data
 	std::FILE* file = std::fopen(_Filename, "rb");
     if (file)
     {
-        // seek file to end
         std::fseek(file, 0, SEEK_END);
-        // get size and resize vector
         _Data.resize(std::ftell(file));
-        // rewind file to back
         std::rewind(file);
 
-        // read file
         std::fread(&_Data[0], 1, _Data.size(), file);
-        // close file
         std::fclose(file);
     }
     else
     {
-        printf("file read error\n");
+        printf("file read failed\n");
         return false;
     }
 
@@ -336,23 +337,21 @@ bool D3D11_Shader::Write(const char* _Filename, ID3DBlob* _Blob)
         return false;
     }
 
-    if (_Blob == nullptr)
+    if (!_Blob)
     {
-        printf("blob is empty\n");
+        printf("blob is null\n");
         return false;
     }
 
     std::FILE* file = std::fopen(_Filename, "wb");
     if (file)
     {
-        // write file
         std::fwrite(_Blob->GetBufferPointer(), 1, _Blob->GetBufferSize(), file);
-        // close file
         std::fclose(file);
     }
     else
     {
-        printf("file write error\n");
+        printf("file write failed\n");
         return false;
     }
 
@@ -378,7 +377,7 @@ bool D3D11_Shader::CompileShader(std::vector<unsigned char>& _Data, std::string 
         return false;
     }
 
-    *_Blob = nullptr;
+    *_Blob = NULL;
 
     UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined(_DEBUG)
@@ -391,8 +390,8 @@ bool D3D11_Shader::CompileShader(std::vector<unsigned char>& _Data, std::string 
         NULL, NULL
     };
 
-    ID3DBlob* shaderBlob = nullptr;
-    ID3DBlob* errorBlob = nullptr;
+    ID3DBlob* shaderBlob = NULL;
+    ID3DBlob* errorBlob = NULL;
     if (FAILED(D3DCompile(_Data.data(),
                           _Data.size(),
                           NULL,
@@ -407,7 +406,7 @@ bool D3D11_Shader::CompileShader(std::vector<unsigned char>& _Data, std::string 
     {
         if (errorBlob)
         {
-            printf("compile failed\n");
+            printf("compile shader failed\n");
             printf("%s\n", (char*)errorBlob->GetBufferPointer());
             return false;
         }

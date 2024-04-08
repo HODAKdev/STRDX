@@ -54,7 +54,7 @@ bool D3D11::Create(UINT _Width, UINT _Height)
 }
 bool D3D11::CreateRenderTargetView()
 {
-    ID3D11Texture2D* texture = nullptr;
+    ID3D11Texture2D* texture = NULL;
     if (FAILED(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&texture)))
         return false;
 
@@ -80,7 +80,7 @@ bool D3D11::CreateDepthStencilView(UINT _Width, UINT _Height)
     descDepth.CPUAccessFlags = 0;
     descDepth.MiscFlags = 0;
 
-    ID3D11Texture2D* texture = nullptr;
+    ID3D11Texture2D* texture = NULL;
     if (FAILED(device->CreateTexture2D(&descDepth, NULL, &texture)))
         return false;
 
@@ -140,10 +140,18 @@ void D3D11::Present(bool _Vsync)
 }
 void D3D11::SetPrimitiveTopology(PrimitiveTopology _PrimitiveTopology)
 {
-    if (_PrimitiveTopology == PT_TRIANGLELIST)
-        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    if (_PrimitiveTopology == PT_NONE)
+        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED);
+    else if (_PrimitiveTopology == PT_POINTLIST)
+        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
     else if (_PrimitiveTopology == PT_LINELIST)
         deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+    else if (_PrimitiveTopology == PT_LINESTRIP)
+        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+    else if (_PrimitiveTopology == PT_TRIANGLELIST)
+        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    else if (_PrimitiveTopology == PT_TRIANGLESTRIP)
+        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
     else printf("primitive topology is wrong\n");
 }
 void D3D11::Release()
