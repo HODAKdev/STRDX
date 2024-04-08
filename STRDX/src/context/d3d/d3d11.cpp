@@ -8,13 +8,13 @@ D3D11* D3D11::GetSingleton()
 	static D3D11 d3d11;
 	return &d3d11;
 }
-bool D3D11::Create(UINT width, UINT height)
+bool D3D11::Create(UINT _Width, UINT _Height)
 {
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
     sd.BufferCount = 2;
-    sd.BufferDesc.Width = width;
-    sd.BufferDesc.Height = height;
+    sd.BufferDesc.Width = _Width;
+    sd.BufferDesc.Height = _Height;
     sd.BufferDesc.Format = format;
     sd.BufferDesc.RefreshRate.Numerator = 60;
     sd.BufferDesc.RefreshRate.Denominator = 1;
@@ -47,18 +47,10 @@ bool D3D11::Create(UINT width, UINT height)
     if (!CreateRenderTargetView())
         return false;
 
-    if (!CreateDepthStencilView(width, height))
+    if (!CreateDepthStencilView(_Width, _Height))
         return false;
 
     return true;
-}
-void D3D11::Release()
-{
-    if (swapChain) swapChain->Release();
-    if (device) device->Release();
-    if (deviceContext) deviceContext->Release();
-    if (renderTargetView) renderTargetView->Release();
-    if (depthStencilView) depthStencilView->Release();
 }
 bool D3D11::CreateRenderTargetView()
 {
@@ -72,12 +64,12 @@ bool D3D11::CreateRenderTargetView()
     texture->Release();
     return true;
 }
-bool D3D11::CreateDepthStencilView(UINT width, UINT height)
+bool D3D11::CreateDepthStencilView(UINT _Width, UINT _Height)
 {
     D3D11_TEXTURE2D_DESC descDepth;
     ZeroMemory(&descDepth, sizeof(D3D11_TEXTURE2D_DESC));
-    descDepth.Width = width;
-    descDepth.Height = height;
+    descDepth.Width = _Width;
+    descDepth.Height = _Height;
     descDepth.MipLevels = 1;
     descDepth.ArraySize = 1;
     descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -104,9 +96,9 @@ bool D3D11::CreateDepthStencilView(UINT width, UINT height)
     texture->Release();
     return true;
 }
-void D3D11::ClearRenderTarget(float r, float g, float b, float a)
+void D3D11::ClearRenderTarget(float _R, float _G, float _B, float _A)
 {
-    float clear_color[4] = { r, g, b, a };
+    float clear_color[4] = { _R, _G, _B, _A };
     deviceContext->ClearRenderTargetView(renderTargetView.Get(), clear_color);
     deviceContext->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
@@ -114,43 +106,51 @@ void D3D11::SetRenderTarget()
 {
     deviceContext->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
 }
-bool D3D11::ResizeBuffer(UINT width, UINT height)
+bool D3D11::ResizeBuffer(UINT _Width, UINT _Height)
 {
     deviceContext->OMSetRenderTargets(0, NULL, NULL);
     if (renderTargetView) renderTargetView->Release();
     if (depthStencilView) depthStencilView->Release();
 
-    if (FAILED(swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0)))
+    if (FAILED(swapChain->ResizeBuffers(0, _Width, _Height, DXGI_FORMAT_UNKNOWN, 0)))
         return false;
 
     if (!CreateRenderTargetView())
         return false;
 
-    if (!CreateDepthStencilView(width, height))
+    if (!CreateDepthStencilView(_Width, _Height))
         return false;
 
     return true;
 }
-void D3D11::SetViewport(UINT width, UINT height)
+void D3D11::SetViewport(UINT _Width, UINT _Height)
 {
     D3D11_VIEWPORT vp;
-    vp.Width = (FLOAT)width;
-    vp.Height = (FLOAT)height;
+    vp.Width = (float)_Width;
+    vp.Height = (float)_Height;
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
     vp.TopLeftX = 0;
     vp.TopLeftY = 0;
     deviceContext->RSSetViewports(1, &vp);
 }
-void D3D11::Present(bool vsync)
+void D3D11::Present(bool _Vsync)
 {
-    swapChain->Present(vsync ? 1 : 0, 0);
+    swapChain->Present(_Vsync ? 1 : 0, 0);
 }
-void D3D11::SetPrimitiveTopology(PrimitiveTopology primitiveTopology)
+void D3D11::SetPrimitiveTopology(PrimitiveTopology _PrimitiveTopology)
 {
-    if (primitiveTopology == PT_TRIANGLELIST)
+    if (_PrimitiveTopology == PT_TRIANGLELIST)
         deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    else if (primitiveTopology == PT_LINELIST)
+    else if (_PrimitiveTopology == PT_LINELIST)
         deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
     else printf("primitive topology is wrong\n");
+}
+void D3D11::Release()
+{
+    if (swapChain) swapChain->Release();
+    if (device) device->Release();
+    if (deviceContext) deviceContext->Release();
+    if (renderTargetView) renderTargetView->Release();
+    if (depthStencilView) depthStencilView->Release();
 }

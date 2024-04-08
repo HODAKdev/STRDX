@@ -8,42 +8,38 @@ public:
 	Shader() : renderer(Renderer::R_NONE), d3d11_shader(nullptr) {}
 
 public:
-	static Shader* Create(Renderer renderer);
-	bool LoadVertex(const char* filename, bool compile);
+	static Shader* Create(Renderer _Renderer);
+	bool LoadVertex(const char* _Filename, bool _Compile);
+	bool LoadPixel(const char* _Filename, bool _Compile);
 	bool CompileVertex();
-	bool LoadPixel(const char* filename, bool compile);
 	bool CompilePixel();
-	bool SaveVertex(const char* filename);
-	bool SavePixel(const char* filename);
+	bool SaveVertex(const char* _Filename);
+	bool SavePixel(const char* _Filename);
 	bool CreateVertex();
 	bool CreatePixel();
-	void ReleaseCache();
-	void Release();
-	bool CreateLayout();
-	bool AddLayout(LPCSTR name, UINT index, UINT format, UINT slot = 0, UINT offset = 0);
-	void AddIndex(UINT index);
 	template <typename T>
-	bool CreateVertexBuffer(std::vector<T>& vertices, bool cpu_access = 0)
+	bool CreateVertexBuffer(std::vector<T>& _Vertices, bool _CpuAccess = false)
 	{
 		if (renderer == R_DX11)
 			if (d3d11_shader)
-				if (!d3d11_shader->CreateVertexBuffer<T>(vertices, cpu_access))
+				if (!d3d11_shader->CreateVertexBuffer<T>(_Vertices, _CpuAccess))
 					return false;
 
 		return true;
 	}
-	bool CreateIndexBuffer();
 	template <typename T>
-	bool Set()
+	bool UpdateVertexBuffer(std::vector<T>& _Vertices)
 	{
 		if (renderer == R_DX11)
 			if (d3d11_shader)
-				if (!d3d11_shader->Set<T>())
+				if (!d3d11_shader->UpdateVertexBuffer<T>(_Vertices))
 					return false;
 
 		return true;
 	}
-	bool Draw(UINT vertex_size, UINT index_size = 0, UINT slot_index = 0);
+	void AddIndex(UINT _Index);
+	bool CreateIndexBuffer(bool _CpuAccess = false);
+	bool UpdateIndexBuffer();
 	template <typename T>
 	bool CreateConstantBuffer()
 	{
@@ -55,26 +51,37 @@ public:
 		return true;
 	}
 	template <typename T>
-	bool UpdateConstantBuffer(T& cb)
+	bool UpdateConstantBuffer(T& _ConstantBuffer)
 	{
 		if (renderer == R_DX11)
 			if (d3d11_shader)
-				if (!d3d11_shader->UpdateConstantBuffer<T>(cb))
+				if (!d3d11_shader->UpdateConstantBuffer<T>(_ConstantBuffer))
 					return false;
 
 		return true;
 	}
-	void SetRenderer(Renderer renderer);
+	bool AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot = 0, UINT _Offset = 0);
+	bool CreateLayout();
 	template <typename T>
-	bool UpdateVertexBuffer(std::vector<T>& vertices)
+	bool Set()
 	{
 		if (renderer == R_DX11)
 			if (d3d11_shader)
-				if (!d3d11_shader->UpdateVertexBuffer<T>(vertices))
+				if (!d3d11_shader->Set<T>())
 					return false;
 
 		return true;
 	}
+	bool Draw(UINT _ConstantBufferSlot = 0);
+	void ReleaseVertex();
+	void ReleasePixel();
+	void ReleaseLayout();
+	void ReleaseVertexBlob();
+	void ReleasePixelBlob();
+	void Release();
+
+public:
+	void SetRenderer(Renderer _Renderer);
 
 private:
 	Renderer renderer;

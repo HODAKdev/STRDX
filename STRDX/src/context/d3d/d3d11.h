@@ -16,18 +16,18 @@ public:
 	static D3D11* GetSingleton();
 
 public:
-	bool Create(UINT width, UINT height);
-	void Release();
-	void ClearRenderTarget(float r, float g, float b, float a);
+	bool Create(UINT _Width, UINT _Height);
+	void ClearRenderTarget(float _R, float _G, float _B, float _A);
 	void SetRenderTarget();
-	bool ResizeBuffer(UINT width, UINT height);
-	void SetViewport(UINT width, UINT height);
-	void Present(bool vsync);
-	void SetPrimitiveTopology(PrimitiveTopology primitiveTopology);
+	bool ResizeBuffer(UINT _Width, UINT _Height);
+	void SetViewport(UINT _Width, UINT _Height);
+	void Present(bool _Vsync);
+	void SetPrimitiveTopology(PrimitiveTopology _PrimitiveTopology);
+	void Release();
 
 private:
 	bool CreateRenderTargetView();
-	bool CreateDepthStencilView(UINT width, UINT height);
+	bool CreateDepthStencilView(UINT _Width, UINT _Height);
 
 private:
 	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM;

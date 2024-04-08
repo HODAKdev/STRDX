@@ -24,6 +24,7 @@ void Engine::Start()
     shader = Shader::Create(R_DX11);
     shader->LoadVertex("data\\shaders\\vertex.bin", false);
     shader->LoadPixel("data\\shaders\\pixel.bin", false);
+
     //shader->CompileVertex();
     //shader->CompilePixel();
 
@@ -32,10 +33,11 @@ void Engine::Start()
 
     shader->CreateVertex();
     shader->CreatePixel();
+    shader->ReleasePixelBlob();
 
     shader->AddLayout("POSITION", 0, 3);
     shader->CreateLayout();
-    shader->ReleaseCache();
+    shader->ReleaseVertexBlob();
 
     std::vector<Vertex> vertices;
     vertices.push_back(Vertex(-1.0f, -1.0f, 0.0f));
@@ -69,16 +71,9 @@ void Engine::Update()
             DispatchMessage(&msg);
         }
 
-        // set render target (for new flip model)
         context->SetRenderTarget();
-
-        // clear buffer
         context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 1.0f);
-
-        // render scene to buffer
         Render();
-
-        // send buffer to screen
         context->Present(false);
     }
 }
@@ -93,11 +88,10 @@ void Engine::Render()
     if (shader)
     {
         shader->Set<Vertex>();
-        cb.SetTime(GetTime());
-        cb.SetResolution(DirectX::XMFLOAT2A((float)window->GetClientWidth(),
-                                            (float)window->GetClientHeight()));
-        shader->UpdateConstantBuffer<ConstantBuffer>(cb);
-        shader->Draw(4, 6);
+        constantBuffer.SetTime(GetTime());
+        constantBuffer.SetResolution(DirectX::XMFLOAT2A((float)window->GetClientWidth(), (float)window->GetClientHeight()));
+        shader->UpdateConstantBuffer<ConstantBuffer>(constantBuffer);
+        shader->Draw();
     }
 }
 float Engine::GetTime()

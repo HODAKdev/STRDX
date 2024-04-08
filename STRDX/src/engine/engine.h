@@ -22,5 +22,5 @@ private:
 
 private:
 	Shader* shader;
-	ConstantBuffer cb;
+	ConstantBuffer constantBuffer;
 };

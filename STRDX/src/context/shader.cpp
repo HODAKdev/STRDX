@@ -1,24 +1,29 @@
 #include "shader.h"
 
-Shader* Shader::Create(Renderer renderer)
+Shader* Shader::Create(Renderer _Renderer)
 {
 	Shader* shader = new Shader();
-	shader->SetRenderer(renderer);
+	shader->SetRenderer(_Renderer);
 
-	if (renderer == R_DX11)
+	if (_Renderer == R_DX11)
 		shader->d3d11_shader = D3D11_Shader::Create();
 
 	return shader;
 }
-void Shader::SetRenderer(Renderer renderer)
-{
-	this->renderer = renderer;
-}
-bool Shader::LoadVertex(const char* filename, bool compile)
+bool Shader::LoadVertex(const char* _Filename, bool _Compile)
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			if (!d3d11_shader->LoadVertex(filename, compile))
+			if (!d3d11_shader->LoadVertex(_Filename, _Compile))
+				return false;
+
+	return true;
+}
+bool Shader::LoadPixel(const char* _Filename, bool _Compile)
+{
+	if (renderer == R_DX11)
+		if (d3d11_shader)
+			if (!d3d11_shader->LoadPixel(_Filename, _Compile))
 				return false;
 
 	return true;
@@ -32,15 +37,6 @@ bool Shader::CompileVertex()
 
 	return true;
 }
-bool Shader::LoadPixel(const char* filename, bool compile)
-{
-	if (renderer == R_DX11)
-		if (d3d11_shader)
-			if (!d3d11_shader->LoadPixel(filename, compile))
-				return false;
-
-	return true;
-}
 bool Shader::CompilePixel()
 {
 	if (renderer == R_DX11)
@@ -50,20 +46,20 @@ bool Shader::CompilePixel()
 
 	return true;
 }
-bool Shader::SaveVertex(const char* filename)
+bool Shader::SaveVertex(const char* _Filename)
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			if (!d3d11_shader->SaveVertex(filename))
+			if (!d3d11_shader->SaveVertex(_Filename))
 				return false;
 
 	return true;
 }
-bool Shader::SavePixel(const char* filename)
+bool Shader::SavePixel(const char* _Filename)
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			if (!d3d11_shader->SavePixel(filename))
+			if (!d3d11_shader->SavePixel(_Filename))
 				return false;
 
 	return true;
@@ -86,17 +82,38 @@ bool Shader::CreatePixel()
 
 	return true;
 }
-void Shader::ReleaseCache()
+void Shader::AddIndex(UINT _Index)
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			d3d11_shader->ReleaseCache();
+			d3d11_shader->AddIndex(_Index);
 }
-void Shader::Release()
+bool Shader::CreateIndexBuffer(bool _CpuAccess)
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			d3d11_shader->Release();
+			if (!d3d11_shader->CreateIndexBuffer(_CpuAccess))
+				return false;
+
+	return true;
+}
+bool Shader::UpdateIndexBuffer()
+{
+	if (renderer == R_DX11)
+		if (d3d11_shader)
+			if (!d3d11_shader->UpdateIndexBuffer())
+				return false;
+
+	return true;
+}
+bool Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset)
+{
+	if (renderer == R_DX11)
+		if (d3d11_shader)
+			if (!d3d11_shader->AddLayout(_Name, _Index, _Format, _Slot, _Offset))
+				return false;
+
+	return true;
 }
 bool Shader::CreateLayout()
 {
@@ -107,36 +124,52 @@ bool Shader::CreateLayout()
 
 	return true;
 }
-bool Shader::AddLayout(LPCSTR name, UINT index, UINT format, UINT slot, UINT offset)
+bool Shader::Draw(UINT _ConstantBufferSlot)
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			if (!d3d11_shader->AddLayout(name, index, format, slot, offset))
+			if (!d3d11_shader->Draw(_ConstantBufferSlot))
 				return false;
 
 	return true;
 }
-void Shader::AddIndex(UINT index)
+void Shader::ReleaseVertex()
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			d3d11_shader->AddIndex(index);
+			d3d11_shader->ReleaseVertex();
 }
-bool Shader::CreateIndexBuffer()
+void Shader::ReleasePixel()
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			if (!d3d11_shader->CreateIndexBuffer())
-				return false;
-
-	return true;
+			d3d11_shader->ReleasePixel();
 }
-bool Shader::Draw(UINT vertex_size, UINT index_size, UINT slot_index)
+void Shader::ReleaseLayout()
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			if (!d3d11_shader->Draw(vertex_size, index_size, slot_index))
-				return false;
-
-	return true;
+			d3d11_shader->ReleaseLayout();
+}
+void Shader::ReleaseVertexBlob()
+{
+	if (renderer == R_DX11)
+		if (d3d11_shader)
+			d3d11_shader->ReleaseVertexBlob();
+}
+void Shader::ReleasePixelBlob()
+{
+	if (renderer == R_DX11)
+		if (d3d11_shader)
+			d3d11_shader->ReleasePixelBlob();
+}
+void Shader::Release()
+{
+	if (renderer == R_DX11)
+		if (d3d11_shader)
+			d3d11_shader->Release();
+}
+void Shader::SetRenderer(Renderer _Renderer)
+{
+	renderer = _Renderer;
 }
