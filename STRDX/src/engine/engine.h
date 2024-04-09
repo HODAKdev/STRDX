@@ -6,7 +6,7 @@
 class Engine
 {
 public:
-	Engine() : shader(nullptr) {}
+	Engine() : shader(NULL) {}
 
 public:
 	static Engine* GetSingleton();

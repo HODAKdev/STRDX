@@ -17,12 +17,13 @@ public:
 
 public:
 	bool Create(UINT _Width, UINT _Height);
-	void ClearRenderTarget(float _R, float _G, float _B, float _A);
-	void SetRenderTarget();
-	bool ResizeBuffer(UINT _Width, UINT _Height);
 	void SetViewport(UINT _Width, UINT _Height);
-	void Present(bool _Vsync);
 	void SetPrimitiveTopology(PrimitiveTopology _PrimitiveTopology);
+	void SetRenderTarget();
+	void ClearRenderTarget(float _R, float _G, float _B, float _A);
+	bool ResizeBuffer(UINT _Width, UINT _Height);
+	void Present(bool _Vsync);
+	bool CheckMultisampleQualityLevels(UINT _SampleCount, UINT* _QualityLevels);
 	void Release();
 
 private:

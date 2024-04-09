@@ -6,7 +6,7 @@ class Shader
 {
 public:
 	Shader() : renderer(Renderer::R_NONE),
-		       d3d11_shader(nullptr) {}
+		       d3d11_shader(NULL) {}
 
 public:
 	static Shader* Create(Renderer _Renderer);

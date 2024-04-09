@@ -41,14 +41,23 @@ void Context::ClearRenderTarget(float _R, float _G, float _B, float _A)
 bool Context::ResizeBuffer(UINT _Width, UINT _Height)
 {
 	if (renderer == R_DX11)
-		return d3d11->ResizeBuffer(_Width, _Height);
+		if (!d3d11->ResizeBuffer(_Width, _Height))
+			return false;
 
-	return false;
+	return true;
 }
 void Context::Present(bool _Vsync)
 {
 	if (renderer == R_DX11)
 		d3d11->Present(_Vsync);
+}
+bool Context::CheckMultisampleQualityLevels(UINT _SampleCount, UINT* _QualityLevels)
+{
+	if (renderer == R_DX11)
+		if (!d3d11->CheckMultisampleQualityLevels(_SampleCount, _QualityLevels))
+			return false;
+
+	return true;
 }
 void Context::Release()
 {
