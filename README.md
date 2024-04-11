@@ -96,6 +96,12 @@ void Render()
         //shader->CreateLayout();
         //shader->ReleaseVertexBlob();
 
+        //constantBuffer.SetMatrix(width, height,
+        //45.0f, // fov
+        //0.1f, 100.0f, // near, far
+        //DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), // eye, at
+        //DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f)); // P, R, S
+
         shader->Draw();
         //shader->Draw(1);
     }
