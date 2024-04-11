@@ -86,5 +86,5 @@ public:
 
 private:
 	Renderer renderer;
-	D3D11_Shader* d3d11_shader;
+	D3D11Shader* d3d11_shader;
 };

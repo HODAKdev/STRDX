@@ -6,7 +6,7 @@ Shader* Shader::Create(Renderer _Renderer)
 	shader->SetRenderer(_Renderer);
 
 	if (_Renderer == R_DX11)
-		shader->d3d11_shader = D3D11_Shader::Create();
+		shader->d3d11_shader = D3D11Shader::Create();
 
 	return shader;
 }

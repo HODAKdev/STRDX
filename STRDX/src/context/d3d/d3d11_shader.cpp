@@ -3,12 +3,12 @@
 
 static D3D11* d3d11 = D3D11::GetSingleton();
 
-D3D11_Shader* D3D11_Shader::Create()
+D3D11Shader* D3D11Shader::Create()
 {
-	D3D11_Shader* shader = new D3D11_Shader();
+    D3D11Shader* shader = new D3D11Shader();
 	return shader;
 }
-bool D3D11_Shader::LoadVertex(const char* _Filename, bool _Compile)
+bool D3D11Shader::LoadVertex(const char* _Filename, bool _Compile)
 {
     if (!_Compile)
         if (!Read(_Filename, &vs_blob))
@@ -20,7 +20,7 @@ bool D3D11_Shader::LoadVertex(const char* _Filename, bool _Compile)
     vs_blob_used = true;
 	return true;
 }
-bool D3D11_Shader::LoadPixel(const char* _Filename, bool _Compile)
+bool D3D11Shader::LoadPixel(const char* _Filename, bool _Compile)
 {
     if (!_Compile)
         if (!Read(_Filename, &ps_blob))
@@ -32,7 +32,7 @@ bool D3D11_Shader::LoadPixel(const char* _Filename, bool _Compile)
     ps_blob_used = true;
     return true;
 }
-bool D3D11_Shader::CompileVertex()
+bool D3D11Shader::CompileVertex()
 {
     if (vertex_data.empty())
     {
@@ -46,7 +46,7 @@ bool D3D11_Shader::CompileVertex()
     vertex_data.clear();
 	return true;
 }
-bool D3D11_Shader::CompilePixel()
+bool D3D11Shader::CompilePixel()
 {
     if (pixel_data.empty())
     {
@@ -60,21 +60,21 @@ bool D3D11_Shader::CompilePixel()
     pixel_data.clear();
     return true;
 }
-bool D3D11_Shader::SaveVertex(const char* _Filename)
+bool D3D11Shader::SaveVertex(const char* _Filename)
 {
     if (!Write(_Filename, vs_blob))
         return false;
 
     return true;
 }
-bool D3D11_Shader::SavePixel(const char* _Filename)
+bool D3D11Shader::SavePixel(const char* _Filename)
 {
     if (!Write(_Filename, ps_blob))
         return false;
 
     return true;
 }
-bool D3D11_Shader::CreateVertex()
+bool D3D11Shader::CreateVertex()
 {
     if (!vs_blob)
     {
@@ -93,7 +93,7 @@ bool D3D11_Shader::CreateVertex()
 
     return true;
 }
-bool D3D11_Shader::CreatePixel()
+bool D3D11Shader::CreatePixel()
 {
     if (!ps_blob)
     {
@@ -112,11 +112,11 @@ bool D3D11_Shader::CreatePixel()
 
     return true;
 }
-void D3D11_Shader::AddIndex(UINT _Index)
+void D3D11Shader::AddIndex(UINT _Index)
 {
     indices.push_back(_Index);
 }
-bool D3D11_Shader::CreateIndexBuffer(bool _CpuAccess)
+bool D3D11Shader::CreateIndexBuffer(bool _CpuAccess)
 {
     if (indices.empty())
     {
@@ -143,7 +143,7 @@ bool D3D11_Shader::CreateIndexBuffer(bool _CpuAccess)
     indices.clear();
     return true;
 }
-bool D3D11_Shader::UpdateIndexBuffer()
+bool D3D11Shader::UpdateIndexBuffer()
 {
     if (indices.empty())
     {
@@ -168,7 +168,7 @@ bool D3D11_Shader::UpdateIndexBuffer()
     indices.clear();
     return true;
 }
-bool D3D11_Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset)
+bool D3D11Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset)
 {
     if (strlen(_Name) == 0)
     {
@@ -199,7 +199,7 @@ bool D3D11_Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot
     layout.push_back(desc);
     return true;
 }
-bool D3D11_Shader::CreateLayout()
+bool D3D11Shader::CreateLayout()
 {
     if (FAILED(d3d11->GetDevice()->CreateInputLayout(layout.data(),
                                                      (UINT)layout.size(),
@@ -214,7 +214,7 @@ bool D3D11_Shader::CreateLayout()
     layout.clear();
     return true;
 }
-bool D3D11_Shader::Draw(UINT _ConstantBufferSlot)
+bool D3D11Shader::Draw(UINT _ConstantBufferSlot)
 {
     if (!vertex_shader)
     {
@@ -241,29 +241,29 @@ bool D3D11_Shader::Draw(UINT _ConstantBufferSlot)
 
     return true;
 }
-void D3D11_Shader::ReleaseVertex()
+void D3D11Shader::ReleaseVertex()
 {
     if (vertex_shader) vertex_shader->Release();
 }
-void D3D11_Shader::ReleasePixel()
+void D3D11Shader::ReleasePixel()
 {
     if (pixel_shader) pixel_shader->Release();
 }
-void D3D11_Shader::ReleaseLayout()
+void D3D11Shader::ReleaseLayout()
 {
     if (vertex_layout) vertex_layout->Release();
 }
-void D3D11_Shader::ReleaseVertexBlob()
+void D3D11Shader::ReleaseVertexBlob()
 {
     if (vs_blob_used) vs_blob->Release();
     vs_blob_used = false;
 }
-void D3D11_Shader::ReleasePixelBlob()
+void D3D11Shader::ReleasePixelBlob()
 {
     if (ps_blob_used) ps_blob->Release();
     ps_blob_used = false;
 }
-void D3D11_Shader::Release()
+void D3D11Shader::Release()
 {
     vertex_data.clear();
     pixel_data.clear();
@@ -280,7 +280,7 @@ void D3D11_Shader::Release()
     vertices_size = 0;
     indices_size = 0;
 }
-bool D3D11_Shader::Read(const char* _Filename, ID3DBlob** _Blob)
+bool D3D11Shader::Read(const char* _Filename, ID3DBlob** _Blob)
 {
     if (std::string(_Filename).empty())
     {
@@ -303,7 +303,7 @@ bool D3D11_Shader::Read(const char* _Filename, ID3DBlob** _Blob)
     data.clear();
     return true;
 }
-bool D3D11_Shader::Read(const char* _Filename, std::vector<unsigned char>& _Data)
+bool D3D11Shader::Read(const char* _Filename, std::vector<unsigned char>& _Data)
 {
     if (std::string(_Filename).empty())
     {
@@ -329,7 +329,7 @@ bool D3D11_Shader::Read(const char* _Filename, std::vector<unsigned char>& _Data
 
     return true;
 }
-bool D3D11_Shader::Write(const char* _Filename, ID3DBlob* _Blob)
+bool D3D11Shader::Write(const char* _Filename, ID3DBlob* _Blob)
 {
     if (std::string(_Filename).empty())
     {
@@ -357,7 +357,7 @@ bool D3D11_Shader::Write(const char* _Filename, ID3DBlob* _Blob)
 
     return true;
 }
-bool D3D11_Shader::CompileShader(std::vector<unsigned char>& _Data, std::string _EntryPoint, std::string _Profile, ID3DBlob** _Blob)
+bool D3D11Shader::CompileShader(std::vector<unsigned char>& _Data, std::string _EntryPoint, std::string _Profile, ID3DBlob** _Blob)
 {
     if (_Data.empty())
     {

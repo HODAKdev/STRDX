@@ -8,18 +8,18 @@
 template<typename T>
 using STRDXWRL = Microsoft::WRL::ComPtr<T>;
 
-class D3D11_Shader
+class D3D11Shader
 {
 public:
-	D3D11_Shader() : vs_blob(NULL),
-		             ps_blob(NULL),
-		             vertices_size(0),
-		             indices_size(0),
-		             vs_blob_used(false),
-		             ps_blob_used(false) {}
+	D3D11Shader() : vs_blob(NULL),
+		            ps_blob(NULL),
+		            vertices_size(0),
+		            indices_size(0),
+		            vs_blob_used(false),
+		            ps_blob_used(false) {}
 
 public:
-	static D3D11_Shader* Create();
+	static D3D11Shader* Create();
 	bool LoadVertex(const char* _Filename, bool _Compile);
 	bool LoadPixel(const char* _Filename, bool _Compile);
 	bool CompileVertex();
