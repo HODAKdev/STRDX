@@ -42,7 +42,7 @@ void Start()
     vertices.push_back(Vertex(-1.0f, 1.0f, 0.0f));
     vertices.push_back(Vertex(1.0f, 1.0f, 0.0f));
     vertices.push_back(Vertex(1.0f, -1.0f, 0.0f));
-    //vertices.push_back(Vertex(1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
+    //vertices.push_back(Vertex(1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f)); // rgba
 
     shader->AddIndex(0);
     shader->AddIndex(1);
@@ -101,9 +101,9 @@ void Render()
         //0.1f, 100.0f, // near, far
         //DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), // eye
         //DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), // at
-        //DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), // P.
-        //DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), // R.
-        //DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f)); // S.
+        //DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), // position
+        //DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), // rotation
+        //DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f)); // scale
 
         shader->Draw();
         //shader->Draw(1);
