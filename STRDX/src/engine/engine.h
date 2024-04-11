@@ -18,7 +18,11 @@ public:
 
 private:
 	void Render();
+
+public:
 	float GetTime();
+	UINT GetScreenWidth();
+	UINT GetScreenHeight();
 
 private:
 	Shader* shader;

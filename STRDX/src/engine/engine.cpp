@@ -102,3 +102,11 @@ float Engine::GetTime()
     QueryPerformanceCounter(&currentTime);
     return float(currentTime.QuadPart) / float(frequency.QuadPart);
 }
+UINT Engine::GetScreenWidth()
+{
+    return GetSystemMetrics(SM_CXSCREEN);
+}
+UINT Engine::GetScreenHeight()
+{
+    return GetSystemMetrics(SM_CYSCREEN);
+}
