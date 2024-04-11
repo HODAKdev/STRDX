@@ -33,6 +33,11 @@ void Context::SetRenderTarget()
 	if (renderer == R_DX11)
 		d3d11->SetRenderTarget();
 }
+void Context::UnsetRenderTarget()
+{
+	if (renderer == R_DX11)
+		d3d11->UnsetRenderTarget();
+}
 void Context::ClearRenderTarget(float _R, float _G, float _B, float _A)
 {
 	if (renderer == R_DX11)

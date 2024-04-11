@@ -36,6 +36,7 @@ public:
 	void SetViewport(UINT _Width, UINT _Height);
 	void SetPrimitiveTopology(PrimitiveTopology _PrimitiveTopology);
 	void SetRenderTarget();
+	void UnsetRenderTarget();
 	void ClearRenderTarget(float _R, float _G, float _B, float _A);
 	bool ResizeBuffer(UINT _Width, UINT _Height);
 	void Present(bool _Vsync);

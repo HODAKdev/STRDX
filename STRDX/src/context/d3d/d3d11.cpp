@@ -86,6 +86,10 @@ void D3D11::SetRenderTarget()
 {
     deviceContext->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
 }
+void D3D11::UnsetRenderTarget()
+{
+    deviceContext->OMSetRenderTargets(0, NULL, NULL);
+}
 void D3D11::ClearRenderTarget(float _R, float _G, float _B, float _A)
 {
     float clear_color[4] = { _R, _G, _B, _A };
