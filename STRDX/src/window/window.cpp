@@ -118,18 +118,6 @@ void Window::Move(UINT x, UINT y)
 		       GetHeight(),
 		       false);
 }
-void Window::ShowCursor()
-{
-	::ShowCursor(TRUE);
-}
-void Window::HideCursor()
-{
-	::ShowCursor(FALSE);
-}
-void Window::SetCursorPos(UINT x, UINT y)
-{
-	::SetCursorPos(x, y);
-}
 void Window::SetTitle(std::wstring title)
 {
 	SetWindowText(hwnd, title.c_str());

@@ -23,6 +23,9 @@ public:
 	float GetTime();
 	UINT GetScreenWidth();
 	UINT GetScreenHeight();
+	void ShowCursor();
+	void HideCursor();
+	void SetCursorPos(UINT x, UINT y);
 
 private:
 	Shader* shader;

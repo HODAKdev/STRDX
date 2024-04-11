@@ -27,9 +27,6 @@ public:
 	UINT GetWidth();
 	UINT GetHeight();
 	void Move(UINT x, UINT y);
-	void ShowCursor();
-	void HideCursor();
-	void SetCursorPos(UINT x, UINT y);
 	void SetTitle(std::wstring title);
 	void EnableDarkMode();
 	void Center();

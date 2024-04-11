@@ -110,3 +110,15 @@ UINT Engine::GetScreenHeight()
 {
     return GetSystemMetrics(SM_CYSCREEN);
 }
+void Engine::ShowCursor()
+{
+    ::ShowCursor(TRUE);
+}
+void Engine::HideCursor()
+{
+    ::ShowCursor(FALSE);
+}
+void Engine::SetCursorPos(UINT x, UINT y)
+{
+    ::SetCursorPos(x, y);
+}
