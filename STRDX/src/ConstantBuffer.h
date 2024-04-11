@@ -66,11 +66,11 @@ public:
                    float _FarZ,
                    const DirectX::XMFLOAT3& _Eye,
                    const DirectX::XMFLOAT3& _At,
-                   const DirectX::XMFLOAT3& _Pos,
-                   const DirectX::XMFLOAT3& _Rot,
+                   const DirectX::XMFLOAT3& _Position,
+                   const DirectX::XMFLOAT3& _Rotation,
                    const DirectX::XMFLOAT3& _Scale)
     {
-        iWorld = DirectX::XMMatrixTranslation(_Pos.x, _Pos.y, _Pos.z) * DirectX::XMMatrixRotationRollPitchYaw(_Rot.x, _Rot.y, _Rot.z) * DirectX::XMMatrixScaling(_Scale.x, _Scale.y, _Scale.z);
+        iWorld = DirectX::XMMatrixTranslation(_Position.x, _Position.y, _Position.z) * DirectX::XMMatrixRotationRollPitchYaw(_Rotation.x, _Rotation.y, _Rotation.z) * DirectX::XMMatrixScaling(_Scale.x, _Scale.y, _Scale.z);
 
         DirectX::XMVECTOR Eye = DirectX::XMVectorSet(_Eye.x, _Eye.y, _Eye.z, 0.0f);
         DirectX::XMVECTOR At = DirectX::XMVectorSet(_At.x, _At.y, _At.z, 0.0f);
