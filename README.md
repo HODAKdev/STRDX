@@ -6,10 +6,10 @@ Simple DirectX 11. Add new context implementation without modify main code base.
 void Start()
 {
     // create context
-    context->Create(R_DX11, window->GetClientWidth(), window->GetClientHeight());
+    context->Create(R_DX11, GetWidth(), GetHeight());
 
     // set viewport
-    context->SetViewport(window->GetClientWidth(), window->GetClientHeight());
+    context->SetViewport(GetWidth(), GetHeight());
 
     // set primitive topology
     context->SetPrimitiveTopology(PT_TRIANGLELIST);
