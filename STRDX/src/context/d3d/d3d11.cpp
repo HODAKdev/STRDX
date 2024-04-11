@@ -177,7 +177,7 @@ bool D3D11::CreateDepthStencilView(UINT _Width, UINT _Height)
     ID3D11Texture2D* texture = NULL;
     if (FAILED(device->CreateTexture2D(&descDepth, NULL, &texture)))
     {
-        printf("create texture 2D failed\n");
+        printf("create texture failed\n");
         return false;
     }
 
