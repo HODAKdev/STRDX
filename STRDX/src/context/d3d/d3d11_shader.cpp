@@ -214,7 +214,7 @@ bool D3D11Shader::CreateLayout()
     layout.clear();
     return true;
 }
-bool D3D11Shader::Draw(UINT _ConstantBufferSlot)
+bool D3D11Shader::Draw()
 {
     if (!vertex_shader)
     {
@@ -230,10 +230,10 @@ bool D3D11Shader::Draw(UINT _ConstantBufferSlot)
 
     d3d11->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
     if (constant_buffer)
-        d3d11->GetDeviceContext()->VSSetConstantBuffers(_ConstantBufferSlot, 1, constant_buffer.GetAddressOf());
+        d3d11->GetDeviceContext()->VSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
     d3d11->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
     if (constant_buffer)
-        d3d11->GetDeviceContext()->PSSetConstantBuffers(_ConstantBufferSlot, 1, constant_buffer.GetAddressOf());
+        d3d11->GetDeviceContext()->PSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
     if (index_buffer)
         d3d11->GetDeviceContext()->DrawIndexed(indices_size, 0, 0);
     else

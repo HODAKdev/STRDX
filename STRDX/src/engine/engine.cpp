@@ -55,7 +55,7 @@ void Engine::Start()
     shader->CreateVertexBuffer<Vertex>(vertices);
     vertices.clear();
     shader->CreateIndexBuffer();
-    shader->CreateConstantBuffer<ConstantBuffer>();
+    shader->CreateConstantBuffer<CB>();
 
     window->Show();
 }
@@ -88,9 +88,9 @@ void Engine::Render()
     if (shader)
     {
         shader->Set<Vertex>();
-        constantBuffer.SetTime(GetTime());
-        constantBuffer.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
-        shader->UpdateConstantBuffer<ConstantBuffer>(constantBuffer);
+        cb.SetTime(GetTime());
+        cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
+        shader->UpdateConstantBuffer<CB>(cb);
         shader->Draw();
     }
 }

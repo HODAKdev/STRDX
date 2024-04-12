@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../context/shader.h"
-#include "../ConstantBuffer.h"
+#include "../CB.h"
 
 class Engine
 {
@@ -29,5 +29,5 @@ public:
 
 private:
 	Shader* shader;
-	ConstantBuffer constantBuffer;
+	CB cb;
 };

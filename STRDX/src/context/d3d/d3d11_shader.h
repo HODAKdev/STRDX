@@ -150,7 +150,7 @@ public:
 
 		return true;
 	}
-	bool Draw(UINT _ConstantBufferSlot);
+	bool Draw();
 	void ReleaseVertex();
 	void ReleasePixel();
 	void ReleaseLayout();

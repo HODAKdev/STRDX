@@ -124,11 +124,11 @@ bool Shader::CreateLayout()
 
 	return true;
 }
-bool Shader::Draw(UINT _ConstantBufferSlot)
+bool Shader::Draw()
 {
 	if (renderer == R_DX11)
 		if (d3d11_shader)
-			if (!d3d11_shader->Draw(_ConstantBufferSlot))
+			if (!d3d11_shader->Draw())
 				return false;
 
 	return true;
