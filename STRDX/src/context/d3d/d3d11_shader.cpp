@@ -228,16 +228,14 @@ bool D3D11Shader::Draw()
         return false;
     }
 
-    d3d11->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
     if (constant_buffer)
+    {
         d3d11->GetDeviceContext()->VSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
-    d3d11->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
-    if (constant_buffer)
         d3d11->GetDeviceContext()->PSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
-    if (index_buffer)
-        d3d11->GetDeviceContext()->DrawIndexed(indices_size, 0, 0);
-    else
-        d3d11->GetDeviceContext()->Draw(vertices_size, 0);
+    }
+
+    if (index_buffer) d3d11->GetDeviceContext()->DrawIndexed(indices_size, 0, 0);
+    else d3d11->GetDeviceContext()->Draw(vertices_size, 0);
 
     return true;
 }
@@ -303,7 +301,7 @@ bool D3D11Shader::Read(const char* _Filename, ID3DBlob** _Blob)
     data.clear();
     return true;
 }
-bool D3D11Shader::Read(const char* _Filename, std::vector<unsigned char>& _Data)
+bool D3D11Shader::Read(const char* _Filename, std::vector<uint8_t>& _Data)
 {
     if (std::string(_Filename).empty())
     {
@@ -357,7 +355,7 @@ bool D3D11Shader::Write(const char* _Filename, ID3DBlob* _Blob)
 
     return true;
 }
-bool D3D11Shader::CompileShader(std::vector<unsigned char>& _Data, std::string _EntryPoint, std::string _Profile, ID3DBlob** _Blob)
+bool D3D11Shader::CompileShader(std::vector<uint8_t>& _Data, std::string _EntryPoint, std::string _Profile, ID3DBlob** _Blob)
 {
     if (_Data.empty())
     {

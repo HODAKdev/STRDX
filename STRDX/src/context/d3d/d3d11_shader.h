@@ -148,6 +148,9 @@ public:
 		if (index_buffer)
 			d3d11->GetDeviceContext()->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
+		d3d11->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
+		d3d11->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
+
 		return true;
 	}
 	bool Draw();
