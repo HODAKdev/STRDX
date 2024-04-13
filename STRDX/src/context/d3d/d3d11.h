@@ -48,4 +48,6 @@ public:
 	STRDXWRL<IDXGISwapChain> GetSwapChain() { return swapChain; }
 	STRDXWRL<ID3D11Device> GetDevice() { return device; }
 	STRDXWRL<ID3D11DeviceContext> GetDeviceContext() { return deviceContext; }
+	STRDXWRL<ID3D11RenderTargetView> GetRenderTargetView() { return renderTargetView; }
+	STRDXWRL<ID3D11DepthStencilView> GetDepthStencilView() { return depthStencilView; }
 };

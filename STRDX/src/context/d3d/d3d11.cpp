@@ -94,11 +94,11 @@ void D3D11::ClearRenderTarget(float _R, float _G, float _B, float _A)
 {
     float clear_color[4] = { _R, _G, _B, _A };
     deviceContext->ClearRenderTargetView(renderTargetView.Get(), clear_color);
-    deviceContext->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+    deviceContext->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 bool D3D11::ResizeBuffer(UINT _Width, UINT _Height)
 {
-    deviceContext->OMSetRenderTargets(0, NULL, NULL);
+    UnsetRenderTarget();
     if (renderTargetView) renderTargetView->Release();
     if (depthStencilView) depthStencilView->Release();
 

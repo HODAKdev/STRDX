@@ -5,6 +5,12 @@
 static Window* window = Window::GetSingleton();
 static Context* context = Context::GetSingleton();
 
+/* A simple example of how to create a rectangle covering the entire screen, which is drawn into a
+   texture, and then once again, but this time not into a texture, but into the back buffer. The first
+   shader will be for the ocean, and the second one for vignette, where we will combine it with the
+   first shader, the ocean. (Yes, I know it's possible to do this in one shader)
+*/
+
 Engine* Engine::GetSingleton()
 {
 	static Engine engine;
@@ -17,45 +23,88 @@ void Engine::Start()
     window->Center();
     window->Focus();
 
-    context->Create(R_DX11, window->GetClientWidth(), window->GetClientHeight());
+    context->Create(window->GetClientWidth(), window->GetClientHeight());
     context->SetViewport(window->GetClientWidth(), window->GetClientHeight());
     context->SetPrimitiveTopology(PT_TRIANGLELIST);
 
-    shader = Shader::Create(R_DX11);
-    shader->LoadVertex("data\\shaders\\vertex.hlsl", true);
-    shader->LoadPixel("data\\shaders\\pixel.hlsl", true);
+    constantBuffer = ConstantBuffer::Create<CB>();
+    renderTarget = RenderTarget::Create(window->GetClientWidth(), window->GetClientHeight());
+    samplerState = SamplerState::Create();
 
-    shader->CompileVertex();
-    shader->CompilePixel();
+    shader = Shader::Create();
+    {
+        shader->LoadVertex("data\\shaders\\1\\vertex.hlsl", true);
+        shader->LoadPixel("data\\shaders\\1\\pixel.hlsl", true);
 
-    //shader->SaveVertex("data\\shaders\\vertex.bin");
-    //shader->SavePixel("data\\shaders\\pixel.bin");
+        shader->CompileVertex();
+        shader->CompilePixel();
 
-    shader->CreateVertex();
-    shader->CreatePixel();
-    shader->ReleasePixelBlob();
+        //shader->SaveVertex("data\\shaders\\1\\vertex.bin");
+        //shader->SavePixel("data\\shaders\\1\\pixel.bin");
 
-    shader->AddLayout("POSITION", 0, 3);
-    shader->CreateLayout();
-    shader->ReleaseVertexBlob();
+        shader->CreateVertex();
+        shader->CreatePixel();
+        shader->ReleasePixelBlob();
 
-    std::vector<Vertex> vertices;
-    vertices.push_back(Vertex(-1.0f, -1.0f, 0.0f));
-    vertices.push_back(Vertex(-1.0f, 1.0f, 0.0f));
-    vertices.push_back(Vertex(1.0f, 1.0f, 0.0f));
-    vertices.push_back(Vertex(1.0f, -1.0f, 0.0f));
+        shader->AddLayout("POSITION", 0, 3);
+        shader->CreateLayout();
+        shader->ReleaseVertexBlob();
 
-    shader->AddIndex(0);
-    shader->AddIndex(1);
-    shader->AddIndex(2);
-    shader->AddIndex(0);
-    shader->AddIndex(2);
-    shader->AddIndex(3);
+        std::vector<XYZRGBA> vertices;
+        vertices.push_back(XYZRGBA(-1.0f, -1.0f, 0.0f));
+        vertices.push_back(XYZRGBA(-1.0f, 1.0f, 0.0f));
+        vertices.push_back(XYZRGBA(1.0f, 1.0f, 0.0f));
+        vertices.push_back(XYZRGBA(1.0f, -1.0f, 0.0f));
 
-    shader->CreateVertexBuffer<Vertex>(vertices);
-    vertices.clear();
-    shader->CreateIndexBuffer();
-    shader->CreateConstantBuffer<CB>();
+        shader->AddIndex(0);
+        shader->AddIndex(1);
+        shader->AddIndex(2);
+        shader->AddIndex(0);
+        shader->AddIndex(2);
+        shader->AddIndex(3);
+
+        shader->CreateVertexBuffer<XYZRGBA>(vertices);
+        vertices.clear();
+        shader->CreateIndexBuffer();
+    }
+
+    shader2 = Shader::Create();
+    {
+        shader2->LoadVertex("data\\shaders\\2\\vertex.hlsl", true);
+        shader2->LoadPixel("data\\shaders\\2\\pixel.hlsl", true);
+
+        shader2->CompileVertex();
+        shader2->CompilePixel();
+
+        //shader2->SaveVertex("data\\shaders\\2\\vertex.bin");
+        //shader2->SavePixel("data\\shaders\\2\\pixel.bin");
+
+        shader2->CreateVertex();
+        shader2->CreatePixel();
+        shader2->ReleasePixelBlob();
+
+        shader2->AddLayout("POSITION", 0, 3);
+        shader2->AddLayout("TEXCOORD", 0, 2, 0, 12);
+        shader2->CreateLayout();
+        shader2->ReleaseVertexBlob();
+
+        std::vector<XYZTEX> vertices;
+        vertices.push_back(XYZTEX(-1.0f, -1.0f, 0.0f, 0.0f, 1.0f));
+        vertices.push_back(XYZTEX(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+        vertices.push_back(XYZTEX(1.0f, 1.0f, 0.0f, 1.0f, 0.0f));
+        vertices.push_back(XYZTEX(1.0f, -1.0f, 0.0f, 1.0f, 1.0f));
+
+        shader2->AddIndex(0);
+        shader2->AddIndex(1);
+        shader2->AddIndex(2);
+        shader2->AddIndex(0);
+        shader2->AddIndex(2);
+        shader2->AddIndex(3);
+
+        shader2->CreateVertexBuffer<XYZTEX>(vertices);
+        vertices.clear();
+        shader2->CreateIndexBuffer();
+    }
 
     window->Show();
 }
@@ -71,8 +120,6 @@ void Engine::Update()
             DispatchMessage(&msg);
         }
 
-        context->SetRenderTarget();
-        context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 1.0f);
         Render();
         context->Present(false);
     }
@@ -81,17 +128,46 @@ void Engine::Release()
 {
     window->Hide();
     if (shader) shader->Release();
+    if (shader2) shader2->Release();
+    if (constantBuffer) constantBuffer->Release();
+    if (renderTarget) renderTarget->Release();
+    if (samplerState) samplerState->Release();
 	window->Release();
 }
 void Engine::Render()
 {
     if (shader)
     {
-        shader->Set<Vertex>();
-        cb.SetTime(GetTime());
-        cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
-        shader->UpdateConstantBuffer<CB>(cb);
-        shader->Draw();
+        renderTarget->Set();
+        renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
+        {
+            shader->Set<XYZRGBA>();
+            shader->SetPixelConstantBuffer(constantBuffer->Get(), 0);
+
+            cb.SetTime(GetTime());
+            cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
+            constantBuffer->Update<CB>(cb);
+
+            shader->Draw();
+        }
+        renderTarget->Unset();
+
+        context->SetRenderTarget();
+        context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
+        {
+            shader2->Set<XYZTEX>();
+            shader2->SetPixelConstantBuffer(constantBuffer->Get());
+            shader2->SetPixelShaderResource(renderTarget->Get());
+            shader2->SetPixelSampler(samplerState->Get());
+
+            cb.SetTime(GetTime());
+            cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
+            constantBuffer->Update<CB>(cb);
+
+            shader2->Draw();
+            shader2->ReleaseShaderResources();
+        }
+        context->UnsetRenderTarget();
     }
 }
 float Engine::GetTime()

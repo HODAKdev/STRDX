@@ -185,6 +185,8 @@ bool D3D11Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot,
         desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
     else if (_Format == 4)
         desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    else if (_Format == 2)
+        desc.Format = DXGI_FORMAT_R32G32_FLOAT;
     else
     {
         printf("format is wrong\n");
@@ -226,12 +228,6 @@ bool D3D11Shader::Draw()
     {
         printf("pixel shader is null\n");
         return false;
-    }
-
-    if (constant_buffer)
-    {
-        d3d11->GetDeviceContext()->VSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
-        d3d11->GetDeviceContext()->PSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
     }
 
     if (index_buffer) d3d11->GetDeviceContext()->DrawIndexed(indices_size, 0, 0);
@@ -277,6 +273,78 @@ void D3D11Shader::Release()
     if (constant_buffer) constant_buffer->Release();
     vertices_size = 0;
     indices_size = 0;
+}
+bool D3D11Shader::SetVertexConstantBuffer(ID3D11Buffer* _ConstantBuffer, UINT _Slot)
+{
+    if (!_ConstantBuffer)
+    {
+        printf("vertex constant buffer is null\n");
+        return false;
+    }
+
+    d3d11->GetDeviceContext()->VSSetConstantBuffers(_Slot, 1, &_ConstantBuffer);
+    return true;
+}
+bool D3D11Shader::SetPixelConstantBuffer(ID3D11Buffer* _ConstantBuffer, UINT _Slot)
+{
+    if (!_ConstantBuffer)
+    {
+        printf("pixel constant buffer is null\n");
+        return false;
+    }
+
+    d3d11->GetDeviceContext()->PSSetConstantBuffers(_Slot, 1, &_ConstantBuffer);
+    return true;
+}
+bool D3D11Shader::SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot)
+{
+    if (!_ShaderResource)
+    {
+        printf("vertex shader resource is null\n");
+        return false;
+    }
+
+    d3d11->GetDeviceContext()->VSSetShaderResources(_Slot, 1, &_ShaderResource);
+    return true;
+}
+bool D3D11Shader::SetPixelShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot)
+{
+    if (!_ShaderResource)
+    {
+        printf("pixel shader resource is null\n");
+        return false;
+    }
+
+    d3d11->GetDeviceContext()->PSSetShaderResources(_Slot, 1, &_ShaderResource);
+    return true;
+}
+bool D3D11Shader::SetVertexSampler(ID3D11SamplerState* _SamplerState, UINT _Slot)
+{
+    if (!_SamplerState)
+    {
+        printf("vertex sampler state is null\n");
+        return false;
+    }
+
+    d3d11->GetDeviceContext()->VSSetSamplers(_Slot, 1, &_SamplerState);
+    return true;
+}
+bool D3D11Shader::SetPixelSampler(ID3D11SamplerState* _SamplerState, UINT _Slot)
+{
+    if (!_SamplerState)
+    {
+        printf("vertex sampler state is null\n");
+        return false;
+    }
+
+    d3d11->GetDeviceContext()->PSSetSamplers(_Slot, 1, &_SamplerState);
+    return true;
+}
+void D3D11Shader::ReleaseShaderResources(UINT _Slot)
+{
+    ID3D11ShaderResourceView* shaderResourceView = NULL;
+    d3d11->GetDeviceContext()->VSSetShaderResources(_Slot, 1, &shaderResourceView);
+    d3d11->GetDeviceContext()->PSSetShaderResources(_Slot, 1, &shaderResourceView);
 }
 bool D3D11Shader::Read(const char* _Filename, ID3DBlob** _Blob)
 {

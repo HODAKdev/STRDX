@@ -8,64 +8,72 @@ Context* Context::GetSingleton()
 	static Context context;
 	return &context;
 }
-bool Context::Create(Renderer _Renderer, UINT _Width, UINT _Height)
+bool Context::Create(UINT _Width, UINT _Height)
 {
-	renderer = _Renderer;
-
-	if (renderer == R_DX11)
-		if (!d3d11->Create(_Width, _Height))
-			return false;
+#if defined(RENDERER_D3D11)
+	if (!d3d11->Create(_Width, _Height))
+		return false;
+#endif
 
 	return true;
 }
 void Context::SetViewport(UINT _Width, UINT _Height)
 {
-	if (renderer == R_DX11)
-		d3d11->SetViewport(_Width, _Height);
+#if defined(RENDERER_D3D11)
+	d3d11->SetViewport(_Width, _Height);
+#endif
 }
 void Context::SetPrimitiveTopology(PrimitiveTopology _PrimitiveTopology)
 {
-	if (renderer == R_DX11)
-		d3d11->SetPrimitiveTopology(_PrimitiveTopology);
+#if defined(RENDERER_D3D11)
+	d3d11->SetPrimitiveTopology(_PrimitiveTopology);
+#endif
 }
 void Context::SetRenderTarget()
 {
-	if (renderer == R_DX11)
-		d3d11->SetRenderTarget();
+#if defined(RENDERER_D3D11)
+	d3d11->SetRenderTarget();
+#endif
 }
 void Context::UnsetRenderTarget()
 {
-	if (renderer == R_DX11)
-		d3d11->UnsetRenderTarget();
+#if defined(RENDERER_D3D11)
+	d3d11->UnsetRenderTarget();
+#endif
 }
 void Context::ClearRenderTarget(float _R, float _G, float _B, float _A)
 {
-	if (renderer == R_DX11)
-		d3d11->ClearRenderTarget(_R, _G, _B, _A);
+#if defined(RENDERER_D3D11)
+	d3d11->ClearRenderTarget(_R, _G, _B, _A);
+#endif
 }
 bool Context::ResizeBuffer(UINT _Width, UINT _Height)
 {
-	if (renderer == R_DX11)
-		if (!d3d11->ResizeBuffer(_Width, _Height))
-			return false;
+#if defined(RENDERER_D3D11)
+	if (!d3d11->ResizeBuffer(_Width, _Height))
+		return false;
+#endif
 
 	return true;
 }
 void Context::Present(bool _Vsync)
 {
-	if (renderer == R_DX11)
-		d3d11->Present(_Vsync);
+#if defined(RENDERER_D3D11)
+	d3d11->Present(_Vsync);
+#endif
 }
 bool Context::CheckMultisampleQualityLevels(UINT _SampleCount, UINT* _QualityLevels)
 {
-	if (renderer == R_DX11)
-		if (!d3d11->CheckMultisampleQualityLevels(_SampleCount, _QualityLevels))
-			return false;
+#if defined(RENDERER_D3D11)
+	if (!d3d11->CheckMultisampleQualityLevels(_SampleCount, _QualityLevels))
+		return false;
+#endif
 
 	return true;
 }
 void Context::Release()
 {
-	if (renderer == R_DX11)
-		d3d11->Release();
+#if defined(RENDERER_D3D11)
+	d3d11->Release();
+#endif
 }

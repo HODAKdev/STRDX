@@ -1,15 +1,16 @@
 #pragma once
 
 #include "d3d/d3d11_shader.h"
+#include "constant_buffer.h"
+#include "../strdx.h"
 
 class Shader
 {
 public:
-	Shader() : renderer(Renderer::R_NONE),
-		       d3d11_shader(NULL) {}
+	Shader() : d3d11_shader(NULL) {}
 
 public:
-	static Shader* Create(Renderer _Renderer);
+	static Shader* Create();
 	bool LoadVertex(const char* _Filename, bool _Compile);
 	bool LoadPixel(const char* _Filename, bool _Compile);
 	bool CompileVertex();
@@ -21,55 +22,38 @@ public:
 	template <typename T>
 	bool CreateVertexBuffer(std::vector<T>& _Vertices, bool _CpuAccess = false)
 	{
-		if (renderer == R_DX11)
-			if (d3d11_shader)
-				if (!d3d11_shader->CreateVertexBuffer<T>(_Vertices, _CpuAccess))
-					return false;
+#if defined(RENDERER_D3D11)
+		if (d3d11_shader)
+			if (!d3d11_shader->CreateVertexBuffer<T>(_Vertices, _CpuAccess))
+				return false;
+#endif
 
 		return true;
 	}
 	template <typename T>
 	bool UpdateVertexBuffer(std::vector<T>& _Vertices)
 	{
-		if (renderer == R_DX11)
-			if (d3d11_shader)
-				if (!d3d11_shader->UpdateVertexBuffer<T>(_Vertices))
-					return false;
+#if defined(RENDERER_D3D11)
+		if (d3d11_shader)
+			if (!d3d11_shader->UpdateVertexBuffer<T>(_Vertices))
+				return false;
+#endif
 
 		return true;
 	}
 	void AddIndex(UINT _Index);
 	bool CreateIndexBuffer(bool _CpuAccess = false);
 	bool UpdateIndexBuffer();
-	template <typename T>
-	bool CreateConstantBuffer()
-	{
-		if (renderer == R_DX11)
-			if (d3d11_shader)
-				if (!d3d11_shader->CreateConstantBuffer<T>())
-					return false;
-
-		return true;
-	}
-	template <typename T>
-	bool UpdateConstantBuffer(T& _ConstantBuffer)
-	{
-		if (renderer == R_DX11)
-			if (d3d11_shader)
-				if (!d3d11_shader->UpdateConstantBuffer<T>(_ConstantBuffer))
-					return false;
-
-		return true;
-	}
 	bool AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot = 0, UINT _Offset = 0);
 	bool CreateLayout();
 	template <typename T>
 	bool Set()
 	{
-		if (renderer == R_DX11)
-			if (d3d11_shader)
-				if (!d3d11_shader->Set<T>())
-					return false;
+#if defined(RENDERER_D3D11)
+		if (d3d11_shader)
+			if (!d3d11_shader->Set<T>())
+				return false;
+#endif
 
 		return true;
 	}
@@ -80,11 +64,14 @@ public:
 	void ReleaseVertexBlob();
 	void ReleasePixelBlob();
 	void Release();
-
-public:
-	void SetRenderer(Renderer _Renderer);
+	bool SetVertexConstantBuffer(ConstantBufferID* _ConstantBuffer, UINT _Slot = 0);
+	bool SetPixelConstantBuffer(ConstantBufferID* _ConstantBuffer, UINT _Slot = 0);
+	bool SetVertexShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot = 0);
+	bool SetPixelShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot = 0);
+	bool SetVertexSampler(SamplerStateID* _SamplerState, UINT _Slot = 0);
+	bool SetPixelSampler(SamplerStateID* _SamplerState, UINT _Slot = 0);
+	void ReleaseShaderResources(UINT _Slot = 0);
 
 private:
-	Renderer renderer;
 	D3D11Shader* d3d11_shader;
 };

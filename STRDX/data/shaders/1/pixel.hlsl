@@ -7,11 +7,9 @@ cbuffer ConstantBuffer : register( b0 )
 {
     float iTime;
     float2 iResolution;
-
-    // matrix
-    matrix World;
-    matrix View;
-    matrix Projection;
+    matrix iWorld;
+    matrix iView;
+    matrix iProjection;
 }
 
 static float2 scrollDir;
