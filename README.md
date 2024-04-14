@@ -85,6 +85,7 @@ void Release()
 - Platform: x64
 ## Credits
 https://shadered.org/ \
+https://www.shadertoy.com/view/lsKSWR \
 https://www.shadertoy.com/view/NlKGWK
 ## License
 STRDX is licensed under the Apache 2.0 License, see [LICENSE](/LICENSE) for more information.
