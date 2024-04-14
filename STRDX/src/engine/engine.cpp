@@ -142,7 +142,7 @@ void Engine::Render()
         renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
             shader->Set<XYZRGBA>();
-            shader->SetPixelConstantBuffer(constantBuffer->Get(), 0);
+            shader->SetPixelConstantBuffer(constantBuffer->Get());
 
             cb.SetTime(GetTime());
             cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
