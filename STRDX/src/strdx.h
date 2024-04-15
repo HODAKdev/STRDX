@@ -8,3 +8,4 @@
 typedef void* ConstantBufferID;
 typedef void* ShaderResourceID;
 typedef void* SamplerStateID;
+typedef void* RasterizerStateID;

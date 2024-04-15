@@ -30,6 +30,7 @@ void Engine::Start()
     constantBuffer = ConstantBuffer::Create<CB>();
     renderTarget = RenderTarget::Create(window->GetClientWidth(), window->GetClientHeight());
     samplerState = SamplerState::Create();
+    rasterizerState = RasterizerState::Create();
 
     shader = Shader::Create();
     {

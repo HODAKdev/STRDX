@@ -129,6 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\context\d3d\d3d11_rasterizer_state.cpp" />
+    <ClCompile Include="src\context\rasterizer_state.cpp" />
     <ClCompile Include="src\context\sampler_state.cpp" />
     <ClCompile Include="src\context\d3d\d3d11_sampler_state.cpp" />
     <ClCompile Include="src\context\render_target.cpp" />
@@ -144,6 +146,8 @@
     <ClCompile Include="src\window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\context\d3d\d3d11_rasterizer_state.h" />
+    <ClInclude Include="src\context\rasterizer_state.h" />
     <ClInclude Include="src\context\sampler_state.h" />
     <ClInclude Include="src\context\d3d\d3d11_sampler_state.h" />
     <ClInclude Include="src\context\render_target.h" />
