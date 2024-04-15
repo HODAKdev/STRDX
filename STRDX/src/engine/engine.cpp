@@ -31,6 +31,7 @@ void Engine::Start()
     renderTarget = RenderTarget::Create(window->GetClientWidth(), window->GetClientHeight());
     samplerState = SamplerState::Create();
     rasterizerState = RasterizerState::Create();
+    rasterizerState->Set();
 
     shader = Shader::Create();
     {
