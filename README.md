@@ -6,6 +6,7 @@ Simple DirectX 11. Add new context implementation without modify main code base.
 - Constant Buffers
 - Render Targets
 - Sampler States
+- Rasterizer States
 ## C++ API
 ```cpp
 void Start()
