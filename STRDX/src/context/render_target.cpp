@@ -1,11 +1,11 @@
 #include "render_target.h"
 
-RenderTarget* RenderTarget::Create(UINT _Width, UINT _Height)
+RenderTarget* RenderTarget::Create(UINT _Width, UINT _Height, UINT _Count)
 {
 	RenderTarget* renderTarget = new RenderTarget();
 
 #if defined(RENDERER_D3D11)
-	renderTarget->d3d11_render_target = D3D11RenderTarget::Create(_Width, _Height);
+	renderTarget->d3d11_render_target = D3D11RenderTarget::Create(_Width, _Height, _Count);
 #endif
 
 	return renderTarget;
@@ -22,13 +22,6 @@ void RenderTarget::ClearRenderTarget(float _R, float _G, float _B, float _A)
 #if defined(RENDERER_D3D11)
 	if (d3d11_render_target)
 		d3d11_render_target->ClearRenderTarget(_R, _G, _B, _A);
-#endif
-}
-void RenderTarget::Unset()
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_render_target)
-		d3d11_render_target->Unset();
 #endif
 }
 ShaderResourceID* RenderTarget::Get()

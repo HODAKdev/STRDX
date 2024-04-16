@@ -28,7 +28,7 @@ void Engine::Start()
     context->SetPrimitiveTopology(PT_TRIANGLELIST);
 
     constantBuffer = ConstantBuffer::Create<CB>();
-    renderTarget = RenderTarget::Create(window->GetClientWidth(), window->GetClientHeight());
+    renderTarget = RenderTarget::Create(window->GetClientWidth(), window->GetClientHeight(), 1);
     samplerState = SamplerState::Create();
     rasterizerState = RasterizerState::Create();
     rasterizerState->Set();
@@ -134,6 +134,7 @@ void Engine::Release()
     if (constantBuffer) constantBuffer->Release();
     if (renderTarget) renderTarget->Release();
     if (samplerState) samplerState->Release();
+    if (rasterizerState) rasterizerState->Release();
 	window->Release();
 }
 void Engine::Render()
@@ -152,7 +153,7 @@ void Engine::Render()
 
             shader->Draw();
         }
-        renderTarget->Unset();
+        context->UnsetRenderTarget();
 
         context->SetRenderTarget();
         context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
