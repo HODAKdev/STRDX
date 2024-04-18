@@ -17,6 +17,8 @@ bool D3D11Shader::LoadVertex(const char* _Filename, bool _Compile)
     if (!Read(_Filename, vertex_data))
         return false;
 
+    vertexFilename = _Filename;
+
     vs_blob_used = true;
 	return true;
 }
@@ -29,6 +31,8 @@ bool D3D11Shader::LoadPixel(const char* _Filename, bool _Compile)
     if (!Read(_Filename, pixel_data))
         return false;
 
+    pixelFilename = _Filename;
+
     ps_blob_used = true;
     return true;
 }
@@ -40,8 +44,11 @@ bool D3D11Shader::CompileVertex()
         return false;
     }
 
-    if (!CompileShader(vertex_data, "main", "vs_4_0", &vs_blob))
+    if (!CompileShader(vertex_data, SHADER_ENTRY_POINT, SHADER_VERTEX_VERSION, &vs_blob))
+    {
+        printf("filename of vertex shader %s\n", vertexFilename.c_str());
         return false;
+    }
 
     vertex_data.clear();
 	return true;
@@ -54,8 +61,11 @@ bool D3D11Shader::CompilePixel()
         return false;
     }
 
-    if (!CompileShader(pixel_data, "main", "ps_4_0", &ps_blob))
+    if (!CompileShader(pixel_data, SHADER_ENTRY_POINT, SHADER_PIXEL_VERSION, &ps_blob))
+    {
+        printf("filename of pixel shader %s\n", pixelFilename.c_str());
         return false;
+    }
 
     pixel_data.clear();
     return true;

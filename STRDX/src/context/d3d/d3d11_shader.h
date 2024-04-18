@@ -6,6 +6,10 @@
 #include "d3d11.h"
 #include "d3d11_constant_buffer.h"
 
+#define SHADER_ENTRY_POINT "main"
+#define SHADER_VERTEX_VERSION "vs_5_0"
+#define SHADER_PIXEL_VERSION "ps_5_0"
+
 template<typename T>
 using STRDXWRL = Microsoft::WRL::ComPtr<T>;
 
@@ -161,6 +165,9 @@ private:
 
 	UINT vertices_size;
 	UINT indices_size;
+
+	std::string vertexFilename;
+	std::string pixelFilename;
 
 private:
 	bool Read(const char* _Filename, ID3DBlob** _Blob);
