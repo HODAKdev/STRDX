@@ -3,6 +3,14 @@
 #include <string>
 #include <Windows.h>
 
+// settings
+#define WINDOW_NAME L"STRDX"
+#define WIDTH 1280
+#define HEIGHT 720
+#define WINDOW_COLOR RGB(0, 0, 0)
+#define ENABLE_RESIZE FALSE
+#define ENABLE_DARKMODE_TITLE_BAR TRUE
+
 class Window
 {
 public:
@@ -12,7 +20,7 @@ public:
 	static Window* GetSingleton();
 
 public:
-	bool Create(std::wstring _Name, UINT _Width, UINT _Height, UINT _R, UINT _G, UINT _B, bool _Resize);
+	bool Create();
 	HWND GetHandle();
 	void Show();
 	void Hide();
@@ -28,7 +36,6 @@ public:
 	UINT GetHeight();
 	void Move(UINT _X, UINT _Y);
 	void SetTitle(std::wstring _Title);
-	void EnableDarkMode();
 	void Center();
 	std::wstring GetTitle();
 

@@ -7,7 +7,7 @@ Window* Window::GetSingleton()
 	return &window;
 }
 
-bool Window::Create(std::wstring _Name, UINT _Width, UINT _Height, UINT _R, UINT _G, UINT _B, bool _Resize)
+bool Window::Create()
 {
 	WNDCLASSEX wcex;
 	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
@@ -19,23 +19,23 @@ bool Window::Create(std::wstring _Name, UINT _Width, UINT _Height, UINT _R, UINT
 	wcex.hInstance = GetModuleHandle(NULL);
 	wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = CreateSolidBrush(RGB(_R, _G, _B));
+	wcex.hbrBackground = CreateSolidBrush(WINDOW_COLOR);
 	wcex.lpszMenuName = NULL;
-	wcex.lpszClassName = _Name.c_str();
+	wcex.lpszClassName = WINDOW_NAME;
 	wcex.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
 	if (!RegisterClassEx(&wcex))
 		return false;
 
 	hwnd = CreateWindowEx(NULL,
-		                  _Name.c_str(),
-		                  _Name.c_str(),
-		                  _Resize ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED |
+		                  WINDOW_NAME,
+		                  WINDOW_NAME,
+		ENABLE_RESIZE ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED |
 			                                               WS_CAPTION |
 			                                               WS_SYSMENU |
 			                                               WS_MINIMIZEBOX),
 		                  NULL, NULL,
-		                  _Width, _Height,
+		                  WIDTH, HEIGHT,
 		                  NULL,
 		                  NULL,
 		                  GetModuleHandle(NULL),
@@ -44,6 +44,15 @@ bool Window::Create(std::wstring _Name, UINT _Width, UINT _Height, UINT _R, UINT
 
 	if (!hwnd)
 		return false;
+
+	if (ENABLE_DARKMODE_TITLE_BAR)
+	{
+		BOOL value = TRUE;
+		DwmSetWindowAttribute(hwnd,
+			DWMWA_USE_IMMERSIVE_DARK_MODE,
+			&value,
+			sizeof(value));
+	}
 
 	return true;
 }
@@ -111,14 +120,6 @@ void Window::Move(UINT _X, UINT _Y)
 void Window::SetTitle(std::wstring _Title)
 {
 	SetWindowText(hwnd, _Title.c_str());
-}
-void Window::EnableDarkMode()
-{
-	BOOL value = TRUE;
-	DwmSetWindowAttribute(hwnd,
-		                  DWMWA_USE_IMMERSIVE_DARK_MODE,
-		                  &value,
-		                  sizeof(value));
 }
 void Window::Center()
 {

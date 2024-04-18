@@ -19,17 +19,18 @@ Engine* Engine::GetSingleton()
 
 void Engine::Start()
 {
-    window->Create(L"STRDX", 1280, 720, 0, 0, 0, false);
-    window->EnableDarkMode();
+    window->Create();
     window->Center();
     window->Focus();
 
-    context->Create(window->GetClientWidth(), window->GetClientHeight());
-    context->SetViewport(window->GetClientWidth(), window->GetClientHeight());
+    UINT width = window->GetClientWidth();
+    UINT height = window->GetClientHeight();
+    context->Create(width, height);
+    context->SetViewport(width, height);
     context->SetPrimitiveTopology(PT_TRIANGLELIST);
 
     constantBuffer = ConstantBuffer::Create<CB>();
-    renderTarget = RenderTarget::Create(window->GetClientWidth(), window->GetClientHeight(), 1);
+    renderTarget = RenderTarget::Create(width, height, 1);
     samplerState = SamplerState::Create();
     rasterizerState = RasterizerState::Create();
     rasterizerState->Set();

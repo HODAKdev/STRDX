@@ -6,6 +6,7 @@
 #include "d3d11.h"
 #include "d3d11_constant_buffer.h"
 
+// settings
 #define SHADER_ENTRY_POINT "main"
 #define SHADER_VERTEX_VERSION "vs_5_0"
 #define SHADER_PIXEL_VERSION "ps_5_0"
