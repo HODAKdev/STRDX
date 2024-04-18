@@ -7,6 +7,7 @@ Simple DirectX 11. Add new context implementation without modify main code base.
 - Render Targets
 - Sampler States
 - Rasterizer States
+- Anti-aliasing, Multisampling
 ## C++ API
 ```cpp
 void Start()
