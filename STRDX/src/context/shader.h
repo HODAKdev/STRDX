@@ -44,7 +44,7 @@ public:
 	void AddIndex(UINT _Index);
 	bool CreateIndexBuffer(bool _CpuAccess = false);
 	bool UpdateIndexBuffer();
-	bool AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot = 0, UINT _Offset = 0);
+	bool AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset);
 	bool CreateLayout();
 	template <typename T>
 	bool Set()

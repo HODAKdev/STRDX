@@ -34,7 +34,7 @@ public:
 	UINT GetScreenHeight();
 	void ShowCursor();
 	void HideCursor();
-	void SetCursorPos(UINT x, UINT y);
+	void SetCursorPos(UINT _X, UINT _Y);
 
 private:
 	Shader* shader;

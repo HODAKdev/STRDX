@@ -6,7 +6,8 @@ Window* Window::GetSingleton()
 	static Window window;
 	return &window;
 }
-bool Window::Create(std::wstring name, UINT width, UINT height, UINT r, UINT g, UINT b, bool resize)
+
+bool Window::Create(std::wstring _Name, UINT _Width, UINT _Height, UINT _R, UINT _G, UINT _B, bool _Resize)
 {
 	WNDCLASSEX wcex;
 	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
@@ -18,23 +19,23 @@ bool Window::Create(std::wstring name, UINT width, UINT height, UINT r, UINT g, 
 	wcex.hInstance = GetModuleHandle(NULL);
 	wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = CreateSolidBrush(RGB(r, g, b));
+	wcex.hbrBackground = CreateSolidBrush(RGB(_R, _G, _B));
 	wcex.lpszMenuName = NULL;
-	wcex.lpszClassName = name.c_str();
+	wcex.lpszClassName = _Name.c_str();
 	wcex.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
 	if (!RegisterClassEx(&wcex))
 		return false;
 
 	hwnd = CreateWindowEx(NULL,
-		                  name.c_str(),
-		                  name.c_str(),
-		                  resize ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED |
-			                                              WS_CAPTION |
-			                                              WS_SYSMENU |
-			                                              WS_MINIMIZEBOX),
+		                  _Name.c_str(),
+		                  _Name.c_str(),
+		                  _Resize ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED |
+			                                               WS_CAPTION |
+			                                               WS_SYSMENU |
+			                                               WS_MINIMIZEBOX),
 		                  NULL, NULL,
-		                  width, height,
+		                  _Width, _Height,
 		                  NULL,
 		                  NULL,
 		                  GetModuleHandle(NULL),
@@ -45,17 +46,6 @@ bool Window::Create(std::wstring name, UINT width, UINT height, UINT r, UINT g, 
 		return false;
 
 	return true;
-}
-LRESULT CALLBACK Window::Proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	switch (uMsg)
-	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hwnd, uMsg, wParam, lParam);
-	}
 }
 HWND Window::GetHandle()
 {
@@ -109,18 +99,18 @@ UINT Window::GetClientHeight()
 	UINT height = rc.bottom - rc.top;
 	return height;
 }
-void Window::Move(UINT x, UINT y)
+void Window::Move(UINT _X, UINT _Y)
 {
 	MoveWindow(hwnd,
-		       x,
-		       y,
+		       _X,
+		       _Y,
 		       GetWidth(),
 		       GetHeight(),
 		       false);
 }
-void Window::SetTitle(std::wstring title)
+void Window::SetTitle(std::wstring _Title)
 {
-	SetWindowText(hwnd, title.c_str());
+	SetWindowText(hwnd, _Title.c_str());
 }
 void Window::EnableDarkMode()
 {
@@ -157,4 +147,16 @@ UINT Window::GetHeight()
 	GetWindowRect(hwnd, &rect);
 	height = rect.bottom - rect.top;
 	return height;
+}
+
+LRESULT CALLBACK Window::Proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
 }

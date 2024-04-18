@@ -16,6 +16,7 @@ Engine* Engine::GetSingleton()
 	static Engine engine;
 	return &engine;
 }
+
 void Engine::Start()
 {
     window->Create(L"STRDX", 1280, 720, 0, 0, 0, false);
@@ -48,7 +49,7 @@ void Engine::Start()
         shader->CreatePixel();
         shader->ReleasePixelBlob();
 
-        shader->AddLayout("POSITION", 0, 3);
+        shader->AddLayout("POSITION", 0, 3, 0, 0);
         shader->CreateLayout();
         shader->ReleaseVertexBlob();
 
@@ -85,7 +86,7 @@ void Engine::Start()
         shader2->CreatePixel();
         shader2->ReleasePixelBlob();
 
-        shader2->AddLayout("POSITION", 0, 3);
+        shader2->AddLayout("POSITION", 0, 3, 0, 0);
         shader2->AddLayout("TEXTURE", 0, 2, 0, 12);
         shader2->CreateLayout();
         shader2->ReleaseVertexBlob();
@@ -137,6 +138,7 @@ void Engine::Release()
     if (rasterizerState) rasterizerState->Release();
 	window->Release();
 }
+
 void Engine::Render()
 {
     if (shader)
@@ -173,6 +175,7 @@ void Engine::Render()
         context->UnsetRenderTarget();
     }
 }
+
 float Engine::GetTime()
 {
     LARGE_INTEGER frequency;
@@ -197,7 +200,7 @@ void Engine::HideCursor()
 {
     ::ShowCursor(FALSE);
 }
-void Engine::SetCursorPos(UINT x, UINT y)
+void Engine::SetCursorPos(UINT _X, UINT _Y)
 {
-    ::SetCursorPos(x, y);
+    ::SetCursorPos(_X, _Y);
 }

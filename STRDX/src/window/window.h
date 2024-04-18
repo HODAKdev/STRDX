@@ -12,7 +12,7 @@ public:
 	static Window* GetSingleton();
 
 public:
-	bool Create(std::wstring name, UINT width, UINT height, UINT r, UINT g, UINT b, bool resize);
+	bool Create(std::wstring _Name, UINT _Width, UINT _Height, UINT _R, UINT _G, UINT _B, bool _Resize);
 	HWND GetHandle();
 	void Show();
 	void Hide();
@@ -26,8 +26,8 @@ public:
 	UINT GetClientHeight();
 	UINT GetWidth();
 	UINT GetHeight();
-	void Move(UINT x, UINT y);
-	void SetTitle(std::wstring title);
+	void Move(UINT _X, UINT _Y);
+	void SetTitle(std::wstring _Title);
 	void EnableDarkMode();
 	void Center();
 	std::wstring GetTitle();
