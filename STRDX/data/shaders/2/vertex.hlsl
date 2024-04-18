@@ -1,13 +1,13 @@
 struct OUTPUT
 {
-    float4 Pos : SV_POSITION;
-    float2 Tex : TEXCOORD;
+    float4 pos : SV_POSITION;
+    float2 tex : TEXTURE;
 };
 
-OUTPUT main(float4 Pos : POSITION, float2 Tex : TEXCOORD)
+OUTPUT main(float4 pos : POSITION, float2 tex : TEXTURE)
 {
     OUTPUT output;
-    output.Pos = Pos;
-    output.Tex = Tex;
+    output.pos = pos;
+    output.tex = tex;
     return output;
 }

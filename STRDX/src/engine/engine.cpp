@@ -52,11 +52,11 @@ void Engine::Start()
         shader->CreateLayout();
         shader->ReleaseVertexBlob();
 
-        std::vector<XYZRGBA> vertices;
-        vertices.push_back(XYZRGBA(-1.0f, -1.0f, 0.0f));
-        vertices.push_back(XYZRGBA(-1.0f, 1.0f, 0.0f));
-        vertices.push_back(XYZRGBA(1.0f, 1.0f, 0.0f));
-        vertices.push_back(XYZRGBA(1.0f, -1.0f, 0.0f));
+        std::vector<XYZ> vertices;
+        vertices.push_back(XYZ(-1.0f, -1.0f, 0.0f));
+        vertices.push_back(XYZ(-1.0f, 1.0f, 0.0f));
+        vertices.push_back(XYZ(1.0f, 1.0f, 0.0f));
+        vertices.push_back(XYZ(1.0f, -1.0f, 0.0f));
 
         shader->AddIndex(0);
         shader->AddIndex(1);
@@ -65,7 +65,7 @@ void Engine::Start()
         shader->AddIndex(2);
         shader->AddIndex(3);
 
-        shader->CreateVertexBuffer<XYZRGBA>(vertices);
+        shader->CreateVertexBuffer<XYZ>(vertices);
         vertices.clear();
         shader->CreateIndexBuffer();
     }
@@ -86,7 +86,7 @@ void Engine::Start()
         shader2->ReleasePixelBlob();
 
         shader2->AddLayout("POSITION", 0, 3);
-        shader2->AddLayout("TEXCOORD", 0, 2, 0, 12);
+        shader2->AddLayout("TEXTURE", 0, 2, 0, 12);
         shader2->CreateLayout();
         shader2->ReleaseVertexBlob();
 
@@ -144,7 +144,7 @@ void Engine::Render()
         renderTarget->Set();
         renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
-            shader->Set<XYZRGBA>();
+            shader->Set<XYZ>();
             shader->SetPixelConstantBuffer(constantBuffer->Get());
 
             cb.SetTime(GetTime());

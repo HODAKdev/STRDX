@@ -1,11 +1,11 @@
 struct OUTPUT
 {
-    float4 Pos : SV_POSITION;
+    float4 pos : SV_POSITION;
 };
 
-OUTPUT main(float4 Pos : POSITION)
+OUTPUT main(float4 pos : POSITION)
 {
     OUTPUT output;
-    output.Pos = Pos;
+    output.pos = pos;
     return output;
 }

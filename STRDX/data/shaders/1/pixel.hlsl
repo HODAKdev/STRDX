@@ -1,6 +1,6 @@
 struct INPUT
 {
-    float4 Pos : SV_POSITION;
+    float4 pos : SV_POSITION;
 };
 
 cbuffer ConstantBuffer : register( b0 )
@@ -219,7 +219,7 @@ void render(inout float4 fragColor, float2 fragCoord)
 }
 float4 main(INPUT input) : SV_Target
 {
-    float2 fragCoord = input.Pos.xy;
+    float2 fragCoord = input.pos.xy;
     fragCoord.y = iResolution.y - fragCoord.y;
 
     scrollDir = 1.0f.xx;

@@ -1,7 +1,7 @@
 struct INPUT
 {
-    float4 Pos : SV_POSITION;
-    float2 Tex : TEXCOORD;
+    float4 pos : SV_POSITION;
+    float2 tex : TEXTURE;
 };
 
 cbuffer ConstantBuffer : register(b0)
@@ -18,9 +18,9 @@ SamplerState iSamplerState;
 
 float4 main(INPUT input) : SV_Target
 {
-    float4 color = iTexture2D.Sample(iSamplerState, input.Tex);
+    float4 color = iTexture2D.Sample(iSamplerState, input.tex);
 
-    float2 fragCoord = input.Pos.xy;
+    float2 fragCoord = input.pos.xy;
     float2 uv = fragCoord.xy / iResolution.xy;
     uv *= 1.0 - uv.yx;
     float vig = uv.x * uv.y * 15.0;
