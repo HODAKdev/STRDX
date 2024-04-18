@@ -6,7 +6,7 @@ struct CB
 {
 public:
     CB() : iTime(0.0f),
-           iResolution(DirectX::XMFLOAT2(0, 0)),
+           iResolution(DirectX::XMFLOAT2(0.0f, 0.0f)),
            iWorld(DirectX::XMMatrixIdentity()),
            iView(DirectX::XMMatrixIdentity()),
            iProjection(DirectX::XMMatrixIdentity()) {}
@@ -23,41 +23,21 @@ public:
     {
         iTime = _Time;
     }
-    float GetTime()
-    {
-        return iTime;
-    }
     void SetResolution(float _Width, float _Height)
     {
         iResolution = DirectX::XMFLOAT2(_Width, _Height);
-    }
-    DirectX::XMFLOAT2 GetResolution()
-    {
-        return iResolution;
     }
     void SetWorld(const DirectX::XMMATRIX& _World)
     {
         iWorld = _World;
     }
-    DirectX::XMMATRIX GetWorld()
-    {
-        return iWorld;
-    }
     void SetView(const DirectX::XMMATRIX& _View)
     {
         iView = _View;
     }
-    DirectX::XMMATRIX GetView()
-    {
-        return iView;
-    }
     void SetProjection(const DirectX::XMMATRIX& _Projection)
     {
         iProjection = _Projection;
-    }
-    DirectX::XMMATRIX GetProjection()
-    {
-        return iProjection;
     }
     void SetMatrix(float _Width,
                    float _Height,

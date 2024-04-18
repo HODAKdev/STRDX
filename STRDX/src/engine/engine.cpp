@@ -52,11 +52,11 @@ void Engine::Start()
         shader->CreateLayout();
         shader->ReleaseVertexBlob();
 
-        std::vector<XYZ> vertices;
-        vertices.push_back(XYZ(-1.0f, -1.0f, 0.0f));
-        vertices.push_back(XYZ(-1.0f, 1.0f, 0.0f));
-        vertices.push_back(XYZ(1.0f, 1.0f, 0.0f));
-        vertices.push_back(XYZ(1.0f, -1.0f, 0.0f));
+        std::vector<POS> vertices;
+        vertices.push_back(POS(-1.0f, -1.0f, 0.0f));
+        vertices.push_back(POS(-1.0f, 1.0f, 0.0f));
+        vertices.push_back(POS(1.0f, 1.0f, 0.0f));
+        vertices.push_back(POS(1.0f, -1.0f, 0.0f));
 
         shader->AddIndex(0);
         shader->AddIndex(1);
@@ -65,7 +65,7 @@ void Engine::Start()
         shader->AddIndex(2);
         shader->AddIndex(3);
 
-        shader->CreateVertexBuffer<XYZ>(vertices);
+        shader->CreateVertexBuffer<POS>(vertices);
         vertices.clear();
         shader->CreateIndexBuffer();
     }
@@ -90,11 +90,11 @@ void Engine::Start()
         shader2->CreateLayout();
         shader2->ReleaseVertexBlob();
 
-        std::vector<XYZTEX> vertices;
-        vertices.push_back(XYZTEX(-1.0f, -1.0f, 0.0f, 0.0f, 1.0f));
-        vertices.push_back(XYZTEX(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f));
-        vertices.push_back(XYZTEX(1.0f, 1.0f, 0.0f, 1.0f, 0.0f));
-        vertices.push_back(XYZTEX(1.0f, -1.0f, 0.0f, 1.0f, 1.0f));
+        std::vector<POSTEX> vertices;
+        vertices.push_back(POSTEX(-1.0f, -1.0f, 0.0f, 0.0f, 1.0f));
+        vertices.push_back(POSTEX(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+        vertices.push_back(POSTEX(1.0f, 1.0f, 0.0f, 1.0f, 0.0f));
+        vertices.push_back(POSTEX(1.0f, -1.0f, 0.0f, 1.0f, 1.0f));
 
         shader2->AddIndex(0);
         shader2->AddIndex(1);
@@ -103,7 +103,7 @@ void Engine::Start()
         shader2->AddIndex(2);
         shader2->AddIndex(3);
 
-        shader2->CreateVertexBuffer<XYZTEX>(vertices);
+        shader2->CreateVertexBuffer<POSTEX>(vertices);
         vertices.clear();
         shader2->CreateIndexBuffer();
     }
@@ -144,7 +144,7 @@ void Engine::Render()
         renderTarget->Set();
         renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
-            shader->Set<XYZ>();
+            shader->Set<POS>();
             shader->SetPixelConstantBuffer(constantBuffer->Get());
 
             cb.SetTime(GetTime());
@@ -158,7 +158,7 @@ void Engine::Render()
         context->SetRenderTarget();
         context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
-            shader2->Set<XYZTEX>();
+            shader2->Set<POSTEX>();
             shader2->SetPixelConstantBuffer(constantBuffer->Get());
             shader2->SetPixelShaderResource(renderTarget->Get());
             shader2->SetPixelSampler(samplerState->Get());
