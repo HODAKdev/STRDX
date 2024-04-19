@@ -3,6 +3,7 @@
 #include "d3d/d3d11_shader.h"
 #include "constant_buffer.h"
 #include "../strdx.h"
+#include "sampler_state.h"
 
 class Shader
 {
@@ -64,12 +65,12 @@ public:
 	void ReleaseVertexBlob();
 	void ReleasePixelBlob();
 	void Release();
-	bool SetVertexConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot = 0);
-	bool SetPixelConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot = 0);
-	bool SetVertexShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot = 0);
-	bool SetPixelShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot = 0);
-	bool SetVertexSampler(SamplerStateID* _SamplerState, UINT _Slot = 0);
-	bool SetPixelSampler(SamplerStateID* _SamplerState, UINT _Slot = 0);
+	bool SetVertexConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot);
+	bool SetPixelConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot);
+	bool SetVertexShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot);
+	bool SetPixelShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot);
+	bool SetVertexSampler(SamplerState* _SamplerState, UINT _Slot);
+	bool SetPixelSampler(SamplerState* _SamplerState, UINT _Slot);
 	void ReleaseShaderResources(UINT _Slot = 0);
 
 private:

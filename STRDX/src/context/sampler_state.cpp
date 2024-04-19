@@ -14,7 +14,7 @@ SamplerStateID* SamplerState::Get()
 {
 #if defined(RENDERER_D3D11)
 	if (d3d11_sampler_state)
-		return (SamplerStateID*)d3d11_sampler_state->Get().Get();
+		return (SamplerStateID*)d3d11_sampler_state;
 #endif
 
 	return 0;

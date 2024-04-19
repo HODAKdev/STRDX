@@ -5,6 +5,7 @@
 #include <d3d11.h>
 #include "d3d11.h"
 #include "d3d11_constant_buffer.h"
+#include "d3d11_sampler_state.h"
 
 // settings
 #define SHADER_ENTRY_POINT "main"
@@ -142,8 +143,8 @@ public:
 	bool SetPixelConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot);
 	bool SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot);
 	bool SetPixelShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot);
-	bool SetVertexSampler(ID3D11SamplerState* _SamplerState, UINT _Slot);
-	bool SetPixelSampler(ID3D11SamplerState* _SamplerState, UINT _Slot);
+	bool SetVertexSampler(D3D11SamplerState* _SamplerState, UINT _Slot);
+	bool SetPixelSampler(D3D11SamplerState* _SamplerState, UINT _Slot);
 	void ReleaseShaderResources(UINT _Slot);
 
 private:

@@ -328,7 +328,7 @@ bool D3D11Shader::SetPixelShaderResource(ID3D11ShaderResourceView* _ShaderResour
     d3d11->GetDeviceContext()->PSSetShaderResources(_Slot, 1, &_ShaderResource);
     return true;
 }
-bool D3D11Shader::SetVertexSampler(ID3D11SamplerState* _SamplerState, UINT _Slot)
+bool D3D11Shader::SetVertexSampler(D3D11SamplerState* _SamplerState, UINT _Slot)
 {
     if (!_SamplerState)
     {
@@ -336,10 +336,10 @@ bool D3D11Shader::SetVertexSampler(ID3D11SamplerState* _SamplerState, UINT _Slot
         return false;
     }
 
-    d3d11->GetDeviceContext()->VSSetSamplers(_Slot, 1, &_SamplerState);
+    d3d11->GetDeviceContext()->VSSetSamplers(_Slot, 1, _SamplerState->Get().GetAddressOf());
     return true;
 }
-bool D3D11Shader::SetPixelSampler(ID3D11SamplerState* _SamplerState, UINT _Slot)
+bool D3D11Shader::SetPixelSampler(D3D11SamplerState* _SamplerState, UINT _Slot)
 {
     if (!_SamplerState)
     {
@@ -347,7 +347,7 @@ bool D3D11Shader::SetPixelSampler(ID3D11SamplerState* _SamplerState, UINT _Slot)
         return false;
     }
 
-    d3d11->GetDeviceContext()->PSSetSamplers(_Slot, 1, &_SamplerState);
+    d3d11->GetDeviceContext()->PSSetSamplers(_Slot, 1, _SamplerState->Get().GetAddressOf());
     return true;
 }
 void D3D11Shader::ReleaseShaderResources(UINT _Slot)

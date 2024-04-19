@@ -229,21 +229,21 @@ bool Shader::SetPixelShaderResource(ShaderResourceID* _ShaderResource, UINT _Slo
 
 	return true;
 }
-bool Shader::SetVertexSampler(SamplerStateID* _SamplerState, UINT _Slot)
+bool Shader::SetVertexSampler(SamplerState* _SamplerState, UINT _Slot)
 {
 #if defined(RENDERER_D3D11)
 	if (d3d11_shader)
-		if (!d3d11_shader->SetVertexSampler((ID3D11SamplerState*)_SamplerState, _Slot))
+		if (!d3d11_shader->SetVertexSampler((D3D11SamplerState*)_SamplerState->Get(), _Slot))
 			return false;
 #endif
 
 	return true;
 }
-bool Shader::SetPixelSampler(SamplerStateID* _SamplerState, UINT _Slot)
+bool Shader::SetPixelSampler(SamplerState* _SamplerState, UINT _Slot)
 {
 #if defined(RENDERER_D3D11)
 	if (d3d11_shader)
-		if (!d3d11_shader->SetPixelSampler((ID3D11SamplerState*)_SamplerState, _Slot))
+		if (!d3d11_shader->SetPixelSampler((D3D11SamplerState*)_SamplerState->Get(), _Slot))
 			return false;
 #endif
 
