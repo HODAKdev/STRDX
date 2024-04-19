@@ -280,7 +280,6 @@ void D3D11Shader::Release()
     if (vertex_layout) vertex_layout->Release();
     if (vertex_buffer) vertex_buffer->Release();
     if (index_buffer) index_buffer->Release();
-    if (constant_buffer) constant_buffer->Release();
     vertices_size = 0;
     indices_size = 0;
     vertexFilename = "";
