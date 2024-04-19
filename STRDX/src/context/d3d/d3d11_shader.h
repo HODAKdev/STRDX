@@ -158,7 +158,6 @@ private:
 	STRDXWRL<ID3D11InputLayout> vertex_layout;
 	STRDXWRL<ID3D11Buffer> vertex_buffer;
 	STRDXWRL<ID3D11Buffer> index_buffer;
-	STRDXWRL<ID3D11Buffer> constant_buffer;
 
 	std::vector<uint8_t> vertex_data;
 	std::vector<uint8_t> pixel_data;
