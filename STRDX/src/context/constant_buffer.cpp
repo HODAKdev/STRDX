@@ -11,7 +11,7 @@ ConstantBufferID* ConstantBuffer::Get()
 {
 #if defined(RENDERER_D3D11)
 	if (d3d11_constant_buffer)
-		return (ConstantBufferID*)d3d11_constant_buffer->Get().Get();
+		return (ConstantBufferID*)d3d11_constant_buffer;
 #endif
 
 	return 0;

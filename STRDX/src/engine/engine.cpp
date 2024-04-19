@@ -148,7 +148,7 @@ void Engine::Render()
         renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
             shader->Set<POS>();
-            shader->SetPixelConstantBuffer(constantBuffer->Get());
+            shader->SetPixelConstantBuffer(constantBuffer);
 
             cb.SetTime(GetTime());
             cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
@@ -162,7 +162,7 @@ void Engine::Render()
         context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
             shader2->Set<POSTEX>();
-            shader2->SetPixelConstantBuffer(constantBuffer->Get());
+            shader2->SetPixelConstantBuffer(constantBuffer);
             shader2->SetPixelShaderResource(renderTarget->Get());
             shader2->SetPixelSampler(samplerState->Get());
 

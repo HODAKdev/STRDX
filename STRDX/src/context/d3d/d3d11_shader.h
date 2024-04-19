@@ -138,8 +138,8 @@ public:
 	void ReleaseVertexBlob();
 	void ReleasePixelBlob();
 	void Release();
-	bool SetVertexConstantBuffer(ID3D11Buffer* _ConstantBuffer, UINT _Slot);
-	bool SetPixelConstantBuffer(ID3D11Buffer* _ConstantBuffer, UINT _Slot);
+	bool SetVertexConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot);
+	bool SetPixelConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot);
 	bool SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot);
 	bool SetPixelShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot);
 	bool SetVertexSampler(ID3D11SamplerState* _SamplerState, UINT _Slot);

@@ -284,7 +284,7 @@ void D3D11Shader::Release()
     vertices_size = 0;
     indices_size = 0;
 }
-bool D3D11Shader::SetVertexConstantBuffer(ID3D11Buffer* _ConstantBuffer, UINT _Slot)
+bool D3D11Shader::SetVertexConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot)
 {
     if (!_ConstantBuffer)
     {
@@ -292,10 +292,10 @@ bool D3D11Shader::SetVertexConstantBuffer(ID3D11Buffer* _ConstantBuffer, UINT _S
         return false;
     }
 
-    d3d11->GetDeviceContext()->VSSetConstantBuffers(_Slot, 1, &_ConstantBuffer);
+    d3d11->GetDeviceContext()->VSSetConstantBuffers(_Slot, 1, _ConstantBuffer->Get().GetAddressOf());
     return true;
 }
-bool D3D11Shader::SetPixelConstantBuffer(ID3D11Buffer* _ConstantBuffer, UINT _Slot)
+bool D3D11Shader::SetPixelConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot)
 {
     if (!_ConstantBuffer)
     {
@@ -303,7 +303,7 @@ bool D3D11Shader::SetPixelConstantBuffer(ID3D11Buffer* _ConstantBuffer, UINT _Sl
         return false;
     }
 
-    d3d11->GetDeviceContext()->PSSetConstantBuffers(_Slot, 1, &_ConstantBuffer);
+    d3d11->GetDeviceContext()->PSSetConstantBuffers(_Slot, 1, _ConstantBuffer->Get().GetAddressOf());
     return true;
 }
 bool D3D11Shader::SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot)
