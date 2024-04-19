@@ -4,6 +4,12 @@
 #include <wrl/client.h>
 #include "../context.h"
 
+// settings
+#define D3D11_FORMAT DXGI_FORMAT_R8G8B8A8_UNORM
+#define D3D11_DRIVER_TYPE D3D_DRIVER_TYPE_HARDWARE
+#define D3D11_FEATURE_LEVEL D3D_FEATURE_LEVEL_11_1
+#define D3D11_SWAP_EFFECT DXGI_SWAP_EFFECT_FLIP_DISCARD
+
 template<typename T>
 using STRDXWRL = Microsoft::WRL::ComPtr<T>;
 
@@ -30,12 +36,6 @@ public:
 private:
 	bool CreateRenderTargetView();
 	bool CreateDepthStencilView(UINT _Width, UINT _Height);
-
-private:
-	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_HARDWARE;
-	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_1;
-	DXGI_SWAP_EFFECT swapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 
 private:
 	STRDXWRL<IDXGISwapChain> swapChain;

@@ -283,6 +283,8 @@ void D3D11Shader::Release()
     if (constant_buffer) constant_buffer->Release();
     vertices_size = 0;
     indices_size = 0;
+    vertexFilename = "";
+    pixelFilename = "";
 }
 bool D3D11Shader::SetVertexConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot)
 {

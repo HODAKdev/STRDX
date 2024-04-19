@@ -15,7 +15,7 @@ bool D3D11::Create(UINT _Width, UINT _Height)
     desc.BufferCount = 2;
     desc.BufferDesc.Width = _Width;
     desc.BufferDesc.Height = _Height;
-    desc.BufferDesc.Format = format;
+    desc.BufferDesc.Format = D3D11_FORMAT;
     desc.BufferDesc.RefreshRate.Numerator = 60;
     desc.BufferDesc.RefreshRate.Denominator = 1;
     desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -23,15 +23,16 @@ bool D3D11::Create(UINT _Width, UINT _Height)
     desc.SampleDesc.Count = 1;
     desc.SampleDesc.Quality = 0;
     desc.Windowed = TRUE;
-    desc.SwapEffect = swapEffect;
+    desc.SwapEffect = D3D11_SWAP_EFFECT;
 
     UINT flags = 0;
 #if defined(_DEBUG)
     flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
+    D3D_FEATURE_LEVEL featureLevel = D3D11_FEATURE_LEVEL;
     if (FAILED(D3D11CreateDeviceAndSwapChain(NULL,
-                                             driverType,
+                                             D3D11_DRIVER_TYPE,
                                              NULL,
                                              flags,
                                              NULL,
@@ -102,7 +103,7 @@ bool D3D11::ResizeBuffer(UINT _Width, UINT _Height)
     if (renderTargetView) renderTargetView->Release();
     if (depthStencilView) depthStencilView->Release();
 
-    if (FAILED(swapChain->ResizeBuffers(0, _Width, _Height, format, 0)))
+    if (FAILED(swapChain->ResizeBuffers(0, _Width, _Height, D3D11_FORMAT, 0)))
     {
         printf("resize buffers failed\n");
         return false;
@@ -128,7 +129,7 @@ bool D3D11::CheckMultisampleQualityLevels(UINT _SampleCount, UINT* _QualityLevel
         return false;
     }
 
-    if (FAILED(device->CheckMultisampleQualityLevels(format, _SampleCount, _QualityLevels)))
+    if (FAILED(device->CheckMultisampleQualityLevels(D3D11_FORMAT, _SampleCount, _QualityLevels)))
     {
         printf("check multisample quality levels failed\n");
         return false;

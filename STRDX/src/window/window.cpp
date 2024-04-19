@@ -30,12 +30,9 @@ bool Window::Create()
 	hwnd = CreateWindowEx(NULL,
 		                  WINDOW_NAME,
 		                  WINDOW_NAME,
-		ENABLE_RESIZE ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED |
-			                                               WS_CAPTION |
-			                                               WS_SYSMENU |
-			                                               WS_MINIMIZEBOX),
+		                  WINDOW_ENABLE_RESIZE ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX),
 		                  NULL, NULL,
-		                  WIDTH, HEIGHT,
+		                  WINDOW_WIDTH, WINDOW_HEIGHT,
 		                  NULL,
 		                  NULL,
 		                  GetModuleHandle(NULL),
@@ -45,7 +42,7 @@ bool Window::Create()
 	if (!hwnd)
 		return false;
 
-	if (ENABLE_DARKMODE_TITLE_BAR)
+	if (WINDOW_ENABLE_DARKMODE_TITLE_BAR)
 	{
 		BOOL value = TRUE;
 		DwmSetWindowAttribute(hwnd,

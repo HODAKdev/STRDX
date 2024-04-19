@@ -24,7 +24,7 @@ void RenderTarget::ClearRenderTarget(float _R, float _G, float _B, float _A)
 		d3d11_render_target->ClearRenderTarget(_R, _G, _B, _A);
 #endif
 }
-ShaderResourceID* RenderTarget::Get()
+ShaderResourceID* RenderTarget::GetShaderResource()
 {
 #if defined(RENDERER_D3D11)
 	if (d3d11_render_target)

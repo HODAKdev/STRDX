@@ -163,7 +163,7 @@ void Engine::Render()
         {
             shader2->Set<POSTEX>();
             shader2->SetPixelConstantBuffer(constantBuffer, 0);
-            shader2->SetPixelShaderResource(renderTarget->Get(), 0);
+            shader2->SetPixelShaderResource(renderTarget->GetShaderResource(), 0);
             shader2->SetPixelSampler(samplerState, 0);
 
             cb.SetTime(GetTime());
