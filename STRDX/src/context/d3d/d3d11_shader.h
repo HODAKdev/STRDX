@@ -15,9 +15,7 @@
 class D3D11Shader
 {
 public:
-	D3D11Shader() : vs_blob(NULL),
-		            ps_blob(NULL),
-		            vertices_size(0),
+	D3D11Shader() : vertices_size(0),
 		            indices_size(0),
 		            vs_blob_used(false),
 		            ps_blob_used(false) {}
@@ -147,29 +145,25 @@ public:
 private:
 	bool vs_blob_used;
 	bool ps_blob_used;
-	ID3DBlob* vs_blob;
-	ID3DBlob* ps_blob;
-
+	STRDXWRL<ID3DBlob> vs_blob;
+	STRDXWRL<ID3DBlob> ps_blob;
 	STRDXWRL<ID3D11VertexShader> vertex_shader;
 	STRDXWRL<ID3D11PixelShader> pixel_shader;
 	STRDXWRL<ID3D11InputLayout> vertex_layout;
 	STRDXWRL<ID3D11Buffer> vertex_buffer;
 	STRDXWRL<ID3D11Buffer> index_buffer;
-
 	std::vector<uint8_t> vertex_data;
 	std::vector<uint8_t> pixel_data;
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layout;
 	std::vector<UINT> indices;
-
 	UINT vertices_size;
 	UINT indices_size;
-
 	std::string vertexFilename;
 	std::string pixelFilename;
 
 private:
-	bool Read(const char* _Filename, ID3DBlob** _Blob);
-	bool Read(const char* _Filename, std::vector<uint8_t>& _Data);
+	bool ReadFromFileToBlob(const char* _Filename, ID3DBlob** _Blob);
+	bool ReadFromFileToVector(const char* _Filename, std::vector<uint8_t>& _Data);
 	bool Write(const char* _Filename, ID3DBlob* _Blob);
 	bool CompileShader(std::vector<uint8_t>& _Data, std::string _EntryPoint, std::string _Profile, ID3DBlob** _Blob);
 };

@@ -11,10 +11,10 @@ D3D11Shader* D3D11Shader::Create()
 bool D3D11Shader::LoadVertex(const char* _Filename, bool _Compile)
 {
     if (!_Compile)
-        if (!Read(_Filename, &vs_blob))
+        if (!ReadFromFileToBlob(_Filename, &vs_blob))
             return false;
 
-    if (!Read(_Filename, vertex_data))
+    if (!ReadFromFileToVector(_Filename, vertex_data))
         return false;
 
     vertexFilename = _Filename;
@@ -25,10 +25,10 @@ bool D3D11Shader::LoadVertex(const char* _Filename, bool _Compile)
 bool D3D11Shader::LoadPixel(const char* _Filename, bool _Compile)
 {
     if (!_Compile)
-        if (!Read(_Filename, &ps_blob))
+        if (!ReadFromFileToBlob(_Filename, &ps_blob))
             return false;
 
-    if (!Read(_Filename, pixel_data))
+    if (!ReadFromFileToVector(_Filename, pixel_data))
         return false;
 
     pixelFilename = _Filename;
@@ -72,14 +72,14 @@ bool D3D11Shader::CompilePixel()
 }
 bool D3D11Shader::SaveVertex(const char* _Filename)
 {
-    if (!Write(_Filename, vs_blob))
+    if (!Write(_Filename, vs_blob.Get()))
         return false;
 
     return true;
 }
 bool D3D11Shader::SavePixel(const char* _Filename)
 {
-    if (!Write(_Filename, ps_blob))
+    if (!Write(_Filename, ps_blob.Get()))
         return false;
 
     return true;
@@ -93,9 +93,9 @@ bool D3D11Shader::CreateVertex()
     }
 
     if (FAILED(context->GetDevice()->CreateVertexShader(vs_blob->GetBufferPointer(),
-                                                      vs_blob->GetBufferSize(),
-                                                      NULL,
-                                                      vertex_shader.GetAddressOf())))
+                                                        vs_blob->GetBufferSize(),
+                                                        NULL,
+                                                        vertex_shader.GetAddressOf())))
     {
         printf("create vertex shader failed\n");
         return false;
@@ -112,9 +112,9 @@ bool D3D11Shader::CreatePixel()
     }
 
     if (FAILED(context->GetDevice()->CreatePixelShader(ps_blob->GetBufferPointer(),
-                                                     ps_blob->GetBufferSize(),
-                                                     NULL,
-                                                     pixel_shader.GetAddressOf())))
+                                                       ps_blob->GetBufferSize(),
+                                                       NULL,
+                                                       pixel_shader.GetAddressOf())))
     {
         printf("create pixel shader failed\n");
         return false;
@@ -214,10 +214,10 @@ bool D3D11Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot,
 bool D3D11Shader::CreateLayout()
 {
     if (FAILED(context->GetDevice()->CreateInputLayout(layout.data(),
-                                                     (UINT)layout.size(),
-                                                     vs_blob->GetBufferPointer(),
-                                                     vs_blob->GetBufferSize(),
-                                                     vertex_layout.GetAddressOf())))
+                                                       (UINT)layout.size(),
+                                                       vs_blob->GetBufferPointer(),
+                                                       vs_blob->GetBufferSize(),
+                                                       vertex_layout.GetAddressOf())))
     {
         printf("create input layout failed\n");
         return false;
@@ -269,19 +269,30 @@ void D3D11Shader::ReleasePixelBlob()
 }
 void D3D11Shader::Release()
 {
-    vertex_data.clear();
-    pixel_data.clear();
+    // pointers
     if (vs_blob_used) vs_blob->Release();
-    vs_blob_used = false;
     if (ps_blob_used) ps_blob->Release();
-    ps_blob_used = false;
     if (vertex_shader) vertex_shader->Release();
     if (pixel_shader) pixel_shader->Release();
     if (vertex_layout) vertex_layout->Release();
     if (vertex_buffer) vertex_buffer->Release();
     if (index_buffer) index_buffer->Release();
+
+    // vectors
+    vertex_data.clear();
+    pixel_data.clear();
+    layout.clear();
+    indices.clear();
+
+    // bools
+    vs_blob_used = false;
+    ps_blob_used = false;
+
+    // uints
     vertices_size = 0;
     indices_size = 0;
+
+    // strings
     vertexFilename = "";
     pixelFilename = "";
 }
@@ -357,7 +368,7 @@ void D3D11Shader::ReleaseShaderResources(UINT _Slot)
     context->GetDeviceContext()->VSSetShaderResources(_Slot, 1, &shaderResourceView);
     context->GetDeviceContext()->PSSetShaderResources(_Slot, 1, &shaderResourceView);
 }
-bool D3D11Shader::Read(const char* _Filename, ID3DBlob** _Blob)
+bool D3D11Shader::ReadFromFileToBlob(const char* _Filename, ID3DBlob** _Blob)
 {
     if (std::string(_Filename).empty())
     {
@@ -366,7 +377,7 @@ bool D3D11Shader::Read(const char* _Filename, ID3DBlob** _Blob)
     }
 
     std::vector<unsigned char> data;
-    if (!Read(_Filename, data))
+    if (!ReadFromFileToVector(_Filename, data))
         return false;
 
     if (FAILED(D3DCreateBlob(data.size(), _Blob)))
@@ -380,7 +391,7 @@ bool D3D11Shader::Read(const char* _Filename, ID3DBlob** _Blob)
     data.clear();
     return true;
 }
-bool D3D11Shader::Read(const char* _Filename, std::vector<uint8_t>& _Data)
+bool D3D11Shader::ReadFromFileToVector(const char* _Filename, std::vector<uint8_t>& _Data)
 {
     if (std::string(_Filename).empty())
     {
