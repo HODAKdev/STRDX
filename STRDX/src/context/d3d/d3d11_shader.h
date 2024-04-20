@@ -12,9 +12,6 @@
 #define SHADER_VERTEX_VERSION "vs_5_0"
 #define SHADER_PIXEL_VERSION "ps_5_0"
 
-template<typename T>
-using STRDXWRL = Microsoft::WRL::ComPtr<T>;
-
 class D3D11Shader
 {
 public:

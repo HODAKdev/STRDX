@@ -1,8 +1,8 @@
 #pragma once
 
 #include <d3d11.h>
-#include <wrl/client.h>
 #include "../context.h"
+#include "strdxwrl.h"
 
 // settings
 #define D3D11_FORMAT DXGI_FORMAT_R8G8B8A8_UNORM
@@ -10,8 +10,6 @@
 #define D3D11_FEATURE_LEVEL D3D_FEATURE_LEVEL_11_1
 #define D3D11_SWAP_EFFECT DXGI_SWAP_EFFECT_FLIP_DISCARD
 
-template<typename T>
-using STRDXWRL = Microsoft::WRL::ComPtr<T>;
 
 class D3D11Context
 {

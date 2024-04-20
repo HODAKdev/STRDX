@@ -113,5 +113,8 @@
     <ClInclude Include="src\context\d3d\d3d11_rasterizer_state.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\context\d3d\strdxwrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

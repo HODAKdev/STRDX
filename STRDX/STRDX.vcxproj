@@ -163,6 +163,7 @@
     <ClInclude Include="src\window\window.h" />
     <ClInclude Include="src\vertex.h" />
     <ClInclude Include="src\strdx.h" />
+    <ClInclude Include="src\context\d3d\strdxwrl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

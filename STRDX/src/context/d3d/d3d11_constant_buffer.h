@@ -4,9 +4,6 @@
 #include "d3d11_context.h"
 #include <stdio.h>
 
-template<typename T>
-using STRDXWRL = Microsoft::WRL::ComPtr<T>;
-
 class D3D11ConstantBuffer
 {
 public:
