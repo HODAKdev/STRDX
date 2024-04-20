@@ -18,8 +18,6 @@ bool D3D11Shader::LoadVertex(const char* _Filename, bool _Compile)
         return false;
 
     vertexFilename = _Filename;
-
-    vs_blob_used = true;
 	return true;
 }
 bool D3D11Shader::LoadPixel(const char* _Filename, bool _Compile)
@@ -32,8 +30,6 @@ bool D3D11Shader::LoadPixel(const char* _Filename, bool _Compile)
         return false;
 
     pixelFilename = _Filename;
-
-    ps_blob_used = true;
     return true;
 }
 bool D3D11Shader::CompileVertex()
@@ -259,40 +255,31 @@ void D3D11Shader::ReleaseLayout()
 }
 void D3D11Shader::ReleaseVertexBlob()
 {
-    if (vs_blob_used) vs_blob->Release();
-    vs_blob_used = false;
+    if (vs_blob) vs_blob->Release();
+    vs_blob.Reset();
 }
 void D3D11Shader::ReleasePixelBlob()
 {
-    if (ps_blob_used) ps_blob->Release();
-    ps_blob_used = false;
+    if (ps_blob) ps_blob->Release();
+    ps_blob.Reset();
 }
 void D3D11Shader::Release()
 {
-    // pointers
-    if (vs_blob_used) vs_blob->Release();
-    if (ps_blob_used) ps_blob->Release();
+    if (vs_blob) vs_blob->Release();
+    if (ps_blob) ps_blob->Release();
     if (vertex_shader) vertex_shader->Release();
     if (pixel_shader) pixel_shader->Release();
     if (vertex_layout) vertex_layout->Release();
     if (vertex_buffer) vertex_buffer->Release();
     if (index_buffer) index_buffer->Release();
-
-    // vectors
+    vs_blob.Reset();
+    ps_blob.Reset();
     vertex_data.clear();
     pixel_data.clear();
     layout.clear();
     indices.clear();
-
-    // bools
-    vs_blob_used = false;
-    ps_blob_used = false;
-
-    // uints
     vertices_size = 0;
     indices_size = 0;
-
-    // strings
     vertexFilename = "";
     pixelFilename = "";
 }

@@ -16,9 +16,7 @@ class D3D11Shader
 {
 public:
 	D3D11Shader() : vertices_size(0),
-		            indices_size(0),
-		            vs_blob_used(false),
-		            ps_blob_used(false) {}
+		            indices_size(0) {}
 
 public:
 	static D3D11Shader* Create();
@@ -143,8 +141,6 @@ public:
 	void ReleaseShaderResources(UINT _Slot);
 
 private:
-	bool vs_blob_used;
-	bool ps_blob_used;
 	STRDXWRL<ID3DBlob> vs_blob;
 	STRDXWRL<ID3DBlob> ps_blob;
 	STRDXWRL<ID3D11VertexShader> vertex_shader;
