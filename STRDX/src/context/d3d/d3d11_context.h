@@ -13,13 +13,13 @@
 template<typename T>
 using STRDXWRL = Microsoft::WRL::ComPtr<T>;
 
-class D3D11
+class D3D11Context
 {
 public:
-	D3D11() {}
+	D3D11Context() {}
 
 public:
-	static D3D11* GetSingleton();
+	static D3D11Context* GetSingleton();
 
 public:
 	bool Create(UINT _Width, UINT _Height);

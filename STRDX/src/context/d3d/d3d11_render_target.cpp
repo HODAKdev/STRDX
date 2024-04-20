@@ -1,6 +1,6 @@
 #include "d3d11_render_target.h"
 
-static D3D11* d3d11 = D3D11::GetSingleton();
+static D3D11Context* context = D3D11Context::GetSingleton();
 
 D3D11RenderTarget* D3D11RenderTarget::Create(UINT _Width, UINT _Height, UINT _Count)
 {
@@ -16,13 +16,13 @@ D3D11RenderTarget* D3D11RenderTarget::Create(UINT _Width, UINT _Height, UINT _Co
 }
 void D3D11RenderTarget::Set()
 {
-	d3d11->GetDeviceContext()->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
+	context->GetDeviceContext()->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
 }
 void D3D11RenderTarget::ClearRenderTarget(float _R, float _G, float _B, float _A)
 {
 	float clear_color[4] = { _R, _G, _B, _A };
-	d3d11->GetDeviceContext()->ClearRenderTargetView(renderTargetView.Get(), clear_color);
-	d3d11->GetDeviceContext()->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	context->GetDeviceContext()->ClearRenderTargetView(renderTargetView.Get(), clear_color);
+	context->GetDeviceContext()->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 STRDXWRL<ID3D11ShaderResourceView> D3D11RenderTarget::Get()
 {
@@ -55,14 +55,14 @@ bool D3D11RenderTarget::CreateRenderTargetView(UINT _Width, UINT _Height, UINT _
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = 0;
 
-	if (FAILED(d3d11->GetDevice()->CreateTexture2D(&textureDesc, NULL, texture.GetAddressOf())))
+	if (FAILED(context->GetDevice()->CreateTexture2D(&textureDesc, NULL, texture.GetAddressOf())))
 		printf("create texture failed\n");
 
 	renderTargetViewDesc.Format = textureDesc.Format;
 	renderTargetViewDesc.ViewDimension = (_Count == 1) ? D3D11_RTV_DIMENSION_TEXTURE2D : D3D11_RTV_DIMENSION_TEXTURE2DMS;
 	renderTargetViewDesc.Texture2D.MipSlice = 0;
 
-	if (FAILED(d3d11->GetDevice()->CreateRenderTargetView(texture.Get(), &renderTargetViewDesc, renderTargetView.GetAddressOf())))
+	if (FAILED(context->GetDevice()->CreateRenderTargetView(texture.Get(), &renderTargetViewDesc, renderTargetView.GetAddressOf())))
 		printf("create render target view failed\n");
 
 	shaderResourceViewDesc.Format = textureDesc.Format;
@@ -70,7 +70,7 @@ bool D3D11RenderTarget::CreateRenderTargetView(UINT _Width, UINT _Height, UINT _
 	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
 	shaderResourceViewDesc.Texture2D.MipLevels = 1;
 
-	if (FAILED(d3d11->GetDevice()->CreateShaderResourceView(texture.Get(), &shaderResourceViewDesc, shaderResourceView.GetAddressOf())))
+	if (FAILED(context->GetDevice()->CreateShaderResourceView(texture.Get(), &shaderResourceViewDesc, shaderResourceView.GetAddressOf())))
 		printf("create shader resource view failed\n");
 
 	return true;
@@ -95,14 +95,14 @@ bool D3D11RenderTarget::CreateDepthStencilView(UINT _Width, UINT _Height, UINT _
 	textureDesc.MiscFlags = 0;
 
 	ID3D11Texture2D* texture = NULL;
-	if (FAILED(d3d11->GetDevice()->CreateTexture2D(&textureDesc, NULL, &texture)))
+	if (FAILED(context->GetDevice()->CreateTexture2D(&textureDesc, NULL, &texture)))
 		printf("create texture failed\n");
 
 	depthStencilViewDesc.Format = textureDesc.Format;
 	depthStencilViewDesc.ViewDimension = (_Count == 1) ? D3D11_DSV_DIMENSION_TEXTURE2D : D3D11_DSV_DIMENSION_TEXTURE2DMS;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-	if (FAILED(d3d11->GetDevice()->CreateDepthStencilView(texture, &depthStencilViewDesc, depthStencilView.GetAddressOf())))
+	if (FAILED(context->GetDevice()->CreateDepthStencilView(texture, &depthStencilViewDesc, depthStencilView.GetAddressOf())))
 		printf("create depth stencil view failed\n");
 
 	texture->Release();

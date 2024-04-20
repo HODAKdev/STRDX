@@ -1,6 +1,6 @@
 #include "d3d11_rasterizer_state.h"
 
-static D3D11* d3d11 = D3D11::GetSingleton();
+static D3D11Context* context = D3D11Context::GetSingleton();
 
 D3D11RasterizerState* D3D11RasterizerState::Create()
 {
@@ -19,18 +19,18 @@ D3D11RasterizerState* D3D11RasterizerState::Create()
     desc.MultisampleEnable = false;
     desc.AntialiasedLineEnable = true;
 
-    if (FAILED(d3d11->GetDevice()->CreateRasterizerState(&desc, rasterizerState->rasterizerState.GetAddressOf())))
+    if (FAILED(context->GetDevice()->CreateRasterizerState(&desc, rasterizerState->rasterizerState.GetAddressOf())))
         printf("create rasterizer state failed\n");
 
 	return rasterizerState;
 }
 void D3D11RasterizerState::Set()
 {
-    d3d11->GetDeviceContext()->RSSetState(rasterizerState.Get());
+    context->GetDeviceContext()->RSSetState(rasterizerState.Get());
 }
 void D3D11RasterizerState::Unset()
 {
-    d3d11->GetDeviceContext()->RSSetState(NULL);
+    context->GetDeviceContext()->RSSetState(NULL);
 }
 STRDXWRL<ID3D11RasterizerState> D3D11RasterizerState::Get()
 {

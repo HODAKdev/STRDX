@@ -1,7 +1,7 @@
 #pragma once
 
 #include <d3d11.h>
-#include "d3d11.h"
+#include "d3d11_context.h"
 #include <stdio.h>
 
 template<typename T>
@@ -24,7 +24,7 @@ public:
 		desc.ByteWidth = sizeof(T);
 		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		desc.CPUAccessFlags = 0;
-		if (FAILED(D3D11::GetSingleton()->GetDevice()->CreateBuffer(&desc, NULL, constantBuffer->constant_buffer.GetAddressOf())))
+		if (FAILED(D3D11Context::GetSingleton()->GetDevice()->CreateBuffer(&desc, NULL, constantBuffer->constant_buffer.GetAddressOf())))
 			printf("create constant buffer failed\n");
 
 		return constantBuffer;
@@ -38,7 +38,7 @@ public:
 			return false;
 		}
 
-		D3D11::GetSingleton()->GetDeviceContext()->UpdateSubresource(constant_buffer.Get(), 0, NULL, &_ConstantBuffer, 0, 0);
+		D3D11Context::GetSingleton()->GetDeviceContext()->UpdateSubresource(constant_buffer.Get(), 0, NULL, &_ConstantBuffer, 0, 0);
 
 		return true;
 	}

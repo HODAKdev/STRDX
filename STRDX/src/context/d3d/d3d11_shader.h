@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <d3d11.h>
-#include "d3d11.h"
+#include "d3d11_context.h"
 #include "d3d11_constant_buffer.h"
 #include "d3d11_sampler_state.h"
 
@@ -53,7 +53,7 @@ public:
 		D3D11_SUBRESOURCE_DATA data;
 		ZeroMemory(&data, sizeof(data));
 		data.pSysMem = _Vertices.data();
-		if (FAILED(D3D11::GetSingleton()->GetDevice()->CreateBuffer(&desc, &data, vertex_buffer.GetAddressOf())))
+		if (FAILED(D3D11Context::GetSingleton()->GetDevice()->CreateBuffer(&desc, &data, vertex_buffer.GetAddressOf())))
 		{
 			printf("create vertex buffer failed\n");
 			return false;
@@ -78,11 +78,11 @@ public:
 		}
 
 		D3D11_MAPPED_SUBRESOURCE resource;
-		if (FAILED(D3D11::GetSingleton()->GetDeviceContext()->Map(vertex_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource)))
+		if (FAILED(D3D11Context::GetSingleton()->GetDeviceContext()->Map(vertex_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource)))
 			return false;
 
 		memcpy(resource.pData, _Vertices.data(), (sizeof(T) * _Vertices.size()));
-		D3D11::GetSingleton()->GetDeviceContext()->Unmap(vertex_buffer.Get(), 0);
+		D3D11Context::GetSingleton()->GetDeviceContext()->Unmap(vertex_buffer.Get(), 0);
 
 		return true;
 	}
@@ -118,17 +118,17 @@ public:
 			return false;
 		}
 
-		D3D11::GetSingleton()->GetDeviceContext()->IASetInputLayout(vertex_layout.Get());
+		D3D11Context::GetSingleton()->GetDeviceContext()->IASetInputLayout(vertex_layout.Get());
 
 		UINT stride = sizeof(T);
 		UINT offset = 0;
-		D3D11::GetSingleton()->GetDeviceContext()->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
+		D3D11Context::GetSingleton()->GetDeviceContext()->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
 
 		if (index_buffer)
-			D3D11::GetSingleton()->GetDeviceContext()->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			D3D11Context::GetSingleton()->GetDeviceContext()->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-		D3D11::GetSingleton()->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
-		D3D11::GetSingleton()->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
+		D3D11Context::GetSingleton()->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
+		D3D11Context::GetSingleton()->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
 
 		return true;
 	}

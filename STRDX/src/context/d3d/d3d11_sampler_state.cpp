@@ -1,6 +1,6 @@
 #include "d3d11_sampler_state.h"
 
-static D3D11* d3d11 = D3D11::GetSingleton();
+static D3D11Context* context = D3D11Context::GetSingleton();
 
 D3D11SamplerState* D3D11SamplerState::Create()
 {
@@ -16,7 +16,7 @@ D3D11SamplerState* D3D11SamplerState::Create()
     desc.MinLOD = 0;
     desc.MaxLOD = D3D11_FLOAT32_MAX;
 
-    if (FAILED(d3d11->GetDevice()->CreateSamplerState(&desc, samplerState->samplerState.GetAddressOf())))
+    if (FAILED(context->GetDevice()->CreateSamplerState(&desc, samplerState->samplerState.GetAddressOf())))
         printf("create sampler state failed\n");
 
 	return samplerState;

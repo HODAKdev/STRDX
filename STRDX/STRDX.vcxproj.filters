@@ -27,7 +27,7 @@
     <ClCompile Include="src\context\context.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\context\d3d\d3d11.cpp">
+    <ClCompile Include="src\context\d3d\d3d11_context.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\context\shader.cpp">
@@ -71,7 +71,7 @@
     <ClInclude Include="src\context\context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\context\d3d\d3d11.h">
+    <ClInclude Include="src\context\d3d\d3d11_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\context\shader.h">

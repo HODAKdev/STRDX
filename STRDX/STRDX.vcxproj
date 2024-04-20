@@ -139,7 +139,7 @@
     <ClCompile Include="src\context\constant_buffer.cpp" />
     <ClCompile Include="src\context\d3d\d3d11_shader.cpp" />
     <ClCompile Include="src\context\shader.cpp" />
-    <ClCompile Include="src\context\d3d\d3d11.cpp" />
+    <ClCompile Include="src\context\d3d\d3d11_context.cpp" />
     <ClCompile Include="src\context\context.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -157,7 +157,7 @@
     <ClInclude Include="src\CB.h" />
     <ClInclude Include="src\context\d3d\d3d11_shader.h" />
     <ClInclude Include="src\context\shader.h" />
-    <ClInclude Include="src\context\d3d\d3d11.h" />
+    <ClInclude Include="src\context\d3d\d3d11_context.h" />
     <ClInclude Include="src\context\context.h" />
     <ClInclude Include="src\engine\engine.h" />
     <ClInclude Include="src\window\window.h" />
