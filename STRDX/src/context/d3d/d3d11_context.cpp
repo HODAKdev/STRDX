@@ -145,6 +145,8 @@ void D3D11Context::Release()
     STRDXWRL_RESET(deviceContext);
     STRDXWRL_RESET(renderTargetView);
     STRDXWRL_RESET(depthStencilView);
+
+    delete this;
 }
 bool D3D11Context::CreateRenderTargetView()
 {

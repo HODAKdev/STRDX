@@ -34,6 +34,8 @@ void D3D11RenderTarget::Release()
 	STRDXWRL_RESET(renderTargetView);
 	STRDXWRL_RESET(shaderResourceView);
 	STRDXWRL_RESET(depthStencilView);
+
+	delete this;
 }
 bool D3D11RenderTarget::CreateRenderTargetView(UINT _Width, UINT _Height, UINT _Count)
 {

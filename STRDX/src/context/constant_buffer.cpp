@@ -6,6 +6,8 @@ void ConstantBuffer::Release()
 	if (d3d11_constant_buffer)
 		d3d11_constant_buffer->Release();
 #endif
+
+	delete this;
 }
 ConstantBufferID* ConstantBuffer::Get()
 {

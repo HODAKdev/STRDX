@@ -39,4 +39,6 @@ void RasterizerState::Release()
 	if (d3d11_rasterizer_state)
 		d3d11_rasterizer_state->Release();
 #endif
+
+	delete this;
 }

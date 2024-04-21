@@ -39,4 +39,6 @@ void RenderTarget::Release()
 	if (d3d11_render_target)
 		d3d11_render_target->Release();
 #endif
+
+	delete this;
 }

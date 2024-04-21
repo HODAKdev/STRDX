@@ -39,4 +39,5 @@ STRDXWRL<ID3D11RasterizerState> D3D11RasterizerState::Get()
 void D3D11RasterizerState::Release()
 {
     STRDXWRL_RESET(rasterizerState);
+    delete this;
 }

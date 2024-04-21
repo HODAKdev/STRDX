@@ -188,6 +188,8 @@ void Shader::Release()
 	if (d3d11_shader)
 		d3d11_shader->Release();
 #endif
+
+	delete this;
 }
 bool Shader::SetVertexConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot)
 {

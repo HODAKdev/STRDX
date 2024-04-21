@@ -76,4 +76,6 @@ void Context::Release()
 #if defined(RENDERER_D3D11)
 	context->Release();
 #endif
+
+	delete this;
 }

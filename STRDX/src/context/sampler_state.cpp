@@ -25,4 +25,6 @@ void SamplerState::Release()
 	if (d3d11_sampler_state)
 		d3d11_sampler_state->Release();
 #endif
+
+	delete this;
 }
