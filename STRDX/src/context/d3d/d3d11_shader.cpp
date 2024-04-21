@@ -469,3 +469,43 @@ bool D3D11Shader::CompileShader(std::vector<uint8_t>& _Data, std::string _EntryP
     *_Blob = shaderBlob;
     return true;
 }
+bool D3D11Shader::Set()
+{
+    if (!vertex_layout)
+    {
+        printf("vertex layout is null\n");
+        return false;
+    }
+
+    if (!vertex_buffer)
+    {
+        printf("vertex buffer is null\n");
+        return false;
+    }
+
+    if (!vertex_shader)
+    {
+        printf("vertex shader is null\n");
+        return false;
+    }
+
+    if (!pixel_shader)
+    {
+        printf("pixel shader is null\n");
+        return false;
+    }
+
+    D3D11Context::GetSingleton()->GetDeviceContext()->IASetInputLayout(vertex_layout.Get());
+
+    UINT stride = sizeOf;
+    UINT offset = 0;
+    D3D11Context::GetSingleton()->GetDeviceContext()->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
+
+    if (index_buffer)
+        D3D11Context::GetSingleton()->GetDeviceContext()->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+    D3D11Context::GetSingleton()->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
+    D3D11Context::GetSingleton()->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
+
+    return true;
+}

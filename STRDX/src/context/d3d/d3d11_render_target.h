@@ -1,8 +1,8 @@
 #pragma once
 
 #include <d3d11.h>
-#include "d3d11_context.h"
 #include <stdio.h>
+#include "strdxwrl.h"
 
 class D3D11RenderTarget
 {

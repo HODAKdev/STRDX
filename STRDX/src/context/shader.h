@@ -47,12 +47,11 @@ public:
 	bool UpdateIndexBuffer();
 	bool AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset);
 	bool CreateLayout();
-	template <typename T>
 	bool Set()
 	{
 #if defined(RENDERER_D3D11)
 		if (d3d11_shader)
-			if (!d3d11_shader->Set<T>())
+			if (!d3d11_shader->Set())
 				return false;
 #endif
 

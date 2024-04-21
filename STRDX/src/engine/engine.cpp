@@ -29,7 +29,7 @@ void Engine::Start()
     context->SetViewport(width, height);
     context->SetPrimitiveTopology(PT_TRIANGLELIST);
 
-    constantBuffer = ConstantBuffer::Create<CB>();
+    constantBuffer = ConstantBuffer::Create(sizeof(CB));
     renderTarget = RenderTarget::Create(width, height, 1);
     samplerState = SamplerState::Create();
     rasterizerState = RasterizerState::Create();
@@ -142,17 +142,17 @@ void Engine::Release()
 
 void Engine::Render()
 {
-    if (shader)
+    if (shader && shader2)
     {
         renderTarget->Set();
         renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
-            shader->Set<POS>();
+            shader->Set();
             context->SetPixelConstantBuffer(constantBuffer, 0);
 
             cb.SetTime(GetTime());
             cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
-            constantBuffer->Update<CB>(cb);
+            constantBuffer->Update(&cb);
 
             shader->Draw();
         }
@@ -161,14 +161,14 @@ void Engine::Render()
         context->SetRenderTarget();
         context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
-            shader2->Set<POSTEX>();
+            shader2->Set();
             context->SetPixelConstantBuffer(constantBuffer, 0);
             shader2->SetPixelShaderResource(renderTarget->GetShaderResource(), 0);
             shader2->SetPixelSampler(samplerState, 0);
 
             cb.SetTime(GetTime());
             cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
-            constantBuffer->Update<CB>(cb);
+            constantBuffer->Update(&cb);
 
             shader2->Draw();
             shader2->ReleaseShaderResources();

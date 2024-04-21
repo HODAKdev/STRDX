@@ -16,7 +16,8 @@ class D3D11Shader
 {
 public:
 	D3D11Shader() : vertices_size(0),
-		            indices_size(0) {}
+		            indices_size(0),
+		            sizeOf(0) {}
 
 public:
 	static D3D11Shader* Create();
@@ -53,6 +54,7 @@ public:
 		}
 
 		vertices_size = (UINT)_Vertices.size();
+		sizeOf = sizeof(T);
 		return true;
 	}
 	template <typename T>
@@ -84,47 +86,7 @@ public:
 	bool UpdateIndexBuffer();
 	bool AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset);
 	bool CreateLayout();
-	template <typename T>
-	bool Set()
-	{
-		if (!vertex_layout)
-		{
-			printf("vertex layout is null\n");
-			return false;
-		}
-
-		if (!vertex_buffer)
-		{
-			printf("vertex buffer is null\n");
-			return false;
-		}
-
-		if (!vertex_shader)
-		{
-			printf("vertex shader is null\n");
-			return false;
-		}
-
-		if (!pixel_shader)
-		{
-			printf("pixel shader is null\n");
-			return false;
-		}
-
-		D3D11Context::GetSingleton()->GetDeviceContext()->IASetInputLayout(vertex_layout.Get());
-
-		UINT stride = sizeof(T);
-		UINT offset = 0;
-		D3D11Context::GetSingleton()->GetDeviceContext()->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
-
-		if (index_buffer)
-			D3D11Context::GetSingleton()->GetDeviceContext()->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-
-		D3D11Context::GetSingleton()->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
-		D3D11Context::GetSingleton()->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
-
-		return true;
-	}
+	bool Set();
 	bool Draw();
 	void ReleaseVertex();
 	void ReleasePixel();
@@ -154,6 +116,7 @@ private:
 	UINT indices_size;
 	std::string vertexFilename;
 	std::string pixelFilename;
+	UINT sizeOf;
 
 private:
 	bool ReadFromFileToBlob(const char* _Filename, ID3DBlob** _Blob);

@@ -1,4 +1,5 @@
 #include "d3d11_sampler_state.h"
+#include "d3d11_context.h"
 
 static D3D11Context* context = D3D11Context::GetSingleton();
 
