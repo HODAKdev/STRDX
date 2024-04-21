@@ -268,7 +268,7 @@ void D3D11Shader::Release()
     STRDXWRL_RESET(vertex_layout);
     STRDXWRL_RESET(vertex_buffer);
     STRDXWRL_RESET(index_buffer);
-    STRDXWRL_RESET(ps_blob);
+    STRDXWRL_RESET(vs_blob);
     STRDXWRL_RESET(ps_blob);
 
     vertex_data.clear();
