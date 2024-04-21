@@ -284,28 +284,6 @@ void D3D11Shader::Release()
 
     delete this;
 }
-bool D3D11Shader::SetVertexConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot)
-{
-    if (!_ConstantBuffer)
-    {
-        printf("vertex constant buffer is null\n");
-        return false;
-    }
-
-    context->GetDeviceContext()->VSSetConstantBuffers(_Slot, 1, _ConstantBuffer->Get().GetAddressOf());
-    return true;
-}
-bool D3D11Shader::SetPixelConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot)
-{
-    if (!_ConstantBuffer)
-    {
-        printf("pixel constant buffer is null\n");
-        return false;
-    }
-
-    context->GetDeviceContext()->PSSetConstantBuffers(_Slot, 1, _ConstantBuffer->Get().GetAddressOf());
-    return true;
-}
 bool D3D11Shader::SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot)
 {
     if (!_ShaderResource)

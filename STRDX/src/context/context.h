@@ -3,6 +3,13 @@
 #include <Windows.h>
 #include "../strdx.h"
 
+// classes
+class ConstantBuffer;
+class RasterizerState;
+class RenderTarget;
+class SamplerState;
+class Shader;
+
 enum PrimitiveTopology
 {
 	PT_NONE,
@@ -32,4 +39,6 @@ public:
 	void Present(bool _Vsync);
 	bool CheckMultisampleQualityLevels(UINT _SampleCount, UINT* _QualityLevels);
 	void Release();
+	bool SetVertexConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot);
+	bool SetPixelConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot);
 };

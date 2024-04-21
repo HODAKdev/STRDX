@@ -1,6 +1,12 @@
 #include "context.h"
 #include "d3d/d3d11_context.h"
 
+#include "constant_buffer.h"
+#include "rasterizer_state.h"
+#include "render_target.h"
+#include "sampler_state.h"
+#include "shader.h"
+
 static D3D11Context* context = D3D11Context::GetSingleton();
 
 Context* Context::GetSingleton()
@@ -78,4 +84,24 @@ void Context::Release()
 #endif
 
 	delete this;
+}
+bool Context::SetVertexConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot)
+{
+#if defined(RENDERER_D3D11)
+	if (_ConstantBuffer)
+		if (!context->SetVertexConstantBuffer((D3D11ConstantBuffer*)_ConstantBuffer->Get(), _Slot))
+			return false;
+#endif
+
+	return true;
+}
+bool Context::SetPixelConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot)
+{
+#if defined(RENDERER_D3D11)
+	if (_ConstantBuffer)
+		if (!context->SetPixelConstantBuffer((D3D11ConstantBuffer*)_ConstantBuffer->Get(), _Slot))
+			return false;
+#endif
+
+	return true;
 }

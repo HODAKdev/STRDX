@@ -65,8 +65,6 @@ public:
 	void ReleaseVertexBlob();
 	void ReleasePixelBlob();
 	void Release();
-	bool SetVertexConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot);
-	bool SetPixelConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot);
 	bool SetVertexShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot);
 	bool SetPixelShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot);
 	bool SetVertexSampler(SamplerState* _SamplerState, UINT _Slot);

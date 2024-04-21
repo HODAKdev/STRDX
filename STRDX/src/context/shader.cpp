@@ -191,26 +191,6 @@ void Shader::Release()
 
 	delete this;
 }
-bool Shader::SetVertexConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot)
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_shader)
-		if (!d3d11_shader->SetVertexConstantBuffer((D3D11ConstantBuffer*)_ConstantBuffer->Get(), _Slot))
-			return false;
-#endif
-
-	return true;
-}
-bool Shader::SetPixelConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot)
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_shader)
-		if (!d3d11_shader->SetPixelConstantBuffer((D3D11ConstantBuffer*)_ConstantBuffer->Get(), _Slot))
-			return false;
-#endif
-
-	return true;
-}
 bool Shader::SetVertexShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot)
 {
 #if defined(RENDERER_D3D11)

@@ -10,6 +10,13 @@
 #define D3D11_FEATURE_LEVEL D3D_FEATURE_LEVEL_11_1
 #define D3D11_SWAP_EFFECT DXGI_SWAP_EFFECT_FLIP_DISCARD
 
+// classes
+class D3D11ConstantBuffer;
+class D3D11RasterizerState;
+class D3D11RenderTarget;
+class D3D11SamplerState;
+class D3D11Shader;
+
 class D3D11Context
 {
 public:
@@ -29,6 +36,8 @@ public:
 	void Present(bool _Vsync);
 	bool CheckMultisampleQualityLevels(UINT _SampleCount, UINT* _QualityLevels);
 	void Release();
+	bool SetVertexConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot);
+	bool SetPixelConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot);
 
 private:
 	bool CreateRenderTargetView();

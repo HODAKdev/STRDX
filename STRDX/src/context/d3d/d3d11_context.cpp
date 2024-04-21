@@ -1,6 +1,12 @@
 #include "d3d11_context.h"
 #include "../../window/window.h"
 
+#include "d3d11_constant_buffer.h"
+#include "d3d11_rasterizer_state.h"
+#include "d3d11_render_target.h"
+#include "d3d11_sampler_state.h"
+#include "d3d11_shader.h"
+
 static Window* window = Window::GetSingleton();
 
 D3D11Context* D3D11Context::GetSingleton()
@@ -202,5 +208,27 @@ bool D3D11Context::CreateDepthStencilView(UINT _Width, UINT _Height)
     }
 
     texture->Release();
+    return true;
+}
+bool D3D11Context::SetVertexConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot)
+{
+    if (!_ConstantBuffer)
+    {
+        printf("vertex constant buffer is null\n");
+        return false;
+    }
+
+    deviceContext->VSSetConstantBuffers(_Slot, 1, _ConstantBuffer->Get().GetAddressOf());
+    return true;
+}
+bool D3D11Context::SetPixelConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot)
+{
+    if (!_ConstantBuffer)
+    {
+        printf("pixel constant buffer is null\n");
+        return false;
+    }
+
+    deviceContext->PSSetConstantBuffers(_Slot, 1, _ConstantBuffer->Get().GetAddressOf());
     return true;
 }
