@@ -243,43 +243,42 @@ bool D3D11Shader::Draw()
 }
 void D3D11Shader::ReleaseVertex()
 {
-    if (vertex_shader) vertex_shader->Release();
+    STRDXWRL_RESET(vertex_shader);
 }
 void D3D11Shader::ReleasePixel()
 {
-    if (pixel_shader) pixel_shader->Release();
+    STRDXWRL_RESET(pixel_shader);
 }
 void D3D11Shader::ReleaseLayout()
 {
-    if (vertex_layout) vertex_layout->Release();
+    STRDXWRL_RESET(vertex_layout);
 }
 void D3D11Shader::ReleaseVertexBlob()
 {
-    if (vs_blob) vs_blob->Release();
-    vs_blob.Reset();
+    STRDXWRL_RESET(vs_blob);
 }
 void D3D11Shader::ReleasePixelBlob()
 {
-    if (ps_blob) ps_blob->Release();
-    ps_blob.Reset();
+    STRDXWRL_RESET(ps_blob);
 }
 void D3D11Shader::Release()
 {
-    if (vs_blob) vs_blob->Release();
-    if (ps_blob) ps_blob->Release();
-    if (vertex_shader) vertex_shader->Release();
-    if (pixel_shader) pixel_shader->Release();
-    if (vertex_layout) vertex_layout->Release();
-    if (vertex_buffer) vertex_buffer->Release();
-    if (index_buffer) index_buffer->Release();
-    vs_blob.Reset();
-    ps_blob.Reset();
+    STRDXWRL_RESET(vertex_shader);
+    STRDXWRL_RESET(pixel_shader);
+    STRDXWRL_RESET(vertex_layout);
+    STRDXWRL_RESET(vertex_buffer);
+    STRDXWRL_RESET(index_buffer)
+    STRDXWRL_RESET(ps_blob);
+    STRDXWRL_RESET(ps_blob);
+
     vertex_data.clear();
     pixel_data.clear();
     layout.clear();
     indices.clear();
+
     vertices_size = 0;
     indices_size = 0;
+
     vertexFilename = "";
     pixelFilename = "";
 }

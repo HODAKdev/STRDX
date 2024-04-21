@@ -6,5 +6,5 @@ STRDXWRL<ID3D11Buffer> D3D11ConstantBuffer::Get()
 }
 void D3D11ConstantBuffer::Release()
 {
-	if (constant_buffer) constant_buffer->Release();
+	STRDXWRL_RESET(constant_buffer);
 }

@@ -38,5 +38,5 @@ STRDXWRL<ID3D11RasterizerState> D3D11RasterizerState::Get()
 }
 void D3D11RasterizerState::Release()
 {
-	if (rasterizerState) rasterizerState->Release();
+    STRDXWRL_RESET(rasterizerState);
 }

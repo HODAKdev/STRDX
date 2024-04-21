@@ -30,10 +30,10 @@ STRDXWRL<ID3D11ShaderResourceView> D3D11RenderTarget::Get()
 }
 void D3D11RenderTarget::Release()
 {
-	if (texture) texture->Release();
-	if (renderTargetView) renderTargetView->Release();
-	if (shaderResourceView) shaderResourceView->Release();
-	if (depthStencilView) depthStencilView->Release();
+	STRDXWRL_RESET(texture);
+	STRDXWRL_RESET(renderTargetView);
+	STRDXWRL_RESET(shaderResourceView);
+	STRDXWRL_RESET(depthStencilView);
 }
 bool D3D11RenderTarget::CreateRenderTargetView(UINT _Width, UINT _Height, UINT _Count)
 {

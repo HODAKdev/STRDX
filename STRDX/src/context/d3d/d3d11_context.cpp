@@ -59,6 +59,7 @@ bool D3D11Context::Create(UINT _Width, UINT _Height)
 void D3D11Context::SetViewport(UINT _Width, UINT _Height)
 {
     D3D11_VIEWPORT vp;
+    ZeroMemory(&vp, sizeof(vp));
     vp.Width = (float)_Width;
     vp.Height = (float)_Height;
     vp.MinDepth = 0.0f;
@@ -100,8 +101,8 @@ void D3D11Context::ClearRenderTarget(float _R, float _G, float _B, float _A)
 bool D3D11Context::ResizeBuffer(UINT _Width, UINT _Height)
 {
     UnsetRenderTarget();
-    if (renderTargetView) renderTargetView->Release();
-    if (depthStencilView) depthStencilView->Release();
+    STRDXWRL_RESET(renderTargetView);
+    STRDXWRL_RESET(depthStencilView);
 
     if (FAILED(swapChain->ResizeBuffers(0, _Width, _Height, D3D11_FORMAT, 0)))
     {
@@ -139,11 +140,11 @@ bool D3D11Context::CheckMultisampleQualityLevels(UINT _SampleCount, UINT* _Quali
 }
 void D3D11Context::Release()
 {
-    if (swapChain) swapChain->Release();
-    if (device) device->Release();
-    if (deviceContext) deviceContext->Release();
-    if (renderTargetView) renderTargetView->Release();
-    if (depthStencilView) depthStencilView->Release();
+    STRDXWRL_RESET(swapChain);
+    STRDXWRL_RESET(device);
+    STRDXWRL_RESET(deviceContext);
+    STRDXWRL_RESET(renderTargetView);
+    STRDXWRL_RESET(depthStencilView);
 }
 bool D3D11Context::CreateRenderTargetView()
 {

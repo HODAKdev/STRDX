@@ -27,5 +27,5 @@ STRDXWRL<ID3D11SamplerState> D3D11SamplerState::Get()
 }
 void D3D11SamplerState::Release()
 {
-	if (samplerState) samplerState->Release();
+    STRDXWRL_RESET(samplerState);
 }
