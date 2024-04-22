@@ -58,23 +58,26 @@ public:
 	}
 	void AddIndex(UINT _Index);
 	bool CreateIndexBuffer(bool _CpuAccess);
-	bool UpdateIndexBuffer();
 	bool AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset);
 	bool CreateLayout();
 	bool Set();
-	bool Draw();
 	void ReleaseVertex();
 	void ReleasePixel();
 	void ReleaseLayout();
 	void ReleaseVertexBlob();
 	void ReleasePixelBlob();
 	void Release();
-	bool SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot);
-	bool SetPixelShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot);
-	bool SetVertexSampler(D3D11SamplerState* _SamplerState, UINT _Slot);
-	bool SetPixelSampler(D3D11SamplerState* _SamplerState, UINT _Slot);
-	void ReleaseShaderResources(UINT _Slot);
 	STRDXWRL<ID3D11Buffer> GetVertexBuffer();
+	std::vector<UINT>& GetIndices();
+	STRDXWRL<ID3D11Buffer> GetIndexBuffer();
+	void SetIndicesSize(UINT _Size);
+	void ClearIndices();
+	STRDXWRL<ID3D11VertexShader> GetVertexShader();
+	STRDXWRL<ID3D11PixelShader> GetPixelShader();
+	UINT GetVerticesSize();
+	UINT GetIndicesSize();
+	STRDXWRL<ID3D11InputLayout> GetVertexLayout();
+	UINT GetSizeOf();
 
 private:
 	STRDXWRL<ID3D11Device> GetDevice();

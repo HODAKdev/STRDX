@@ -63,6 +63,15 @@ public:
 
 		return true;
 	}
+	bool SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot);
+	bool SetPixelShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot);
+	bool SetVertexSampler(D3D11SamplerState* _SamplerState, UINT _Slot);
+	bool SetPixelSampler(D3D11SamplerState* _SamplerState, UINT _Slot);
+	void ReleaseVertexShaderResources(UINT _Slot);
+	void ReleasePixelShaderResources(UINT _Slot);
+	bool UpdateIndexBuffer(D3D11Shader* _Shader);
+	bool Draw(D3D11Shader* _Shader);
+	bool Set(D3D11Shader* _Shader);
 
 private:
 	bool CreateRenderTargetView();

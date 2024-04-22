@@ -226,3 +226,159 @@ bool D3D11Context::SetPixelConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, 
     deviceContext->PSSetConstantBuffers(_Slot, 1, _ConstantBuffer->Get().GetAddressOf());
     return true;
 }
+bool D3D11Context::SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot)
+{
+    if (!_ShaderResource)
+    {
+        printf("vertex shader resource is null\n");
+        return false;
+    }
+
+    deviceContext->VSSetShaderResources(_Slot, 1, &_ShaderResource);
+    return true;
+}
+bool D3D11Context::SetPixelShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot)
+{
+    if (!_ShaderResource)
+    {
+        printf("pixel shader resource is null\n");
+        return false;
+    }
+
+    deviceContext->PSSetShaderResources(_Slot, 1, &_ShaderResource);
+    return true;
+}
+bool D3D11Context::SetVertexSampler(D3D11SamplerState* _SamplerState, UINT _Slot)
+{
+    if (!_SamplerState)
+    {
+        printf("vertex sampler state is null\n");
+        return false;
+    }
+
+    deviceContext->VSSetSamplers(_Slot, 1, _SamplerState->Get().GetAddressOf());
+    return true;
+}
+bool D3D11Context::SetPixelSampler(D3D11SamplerState* _SamplerState, UINT _Slot)
+{
+    if (!_SamplerState)
+    {
+        printf("vertex sampler state is null\n");
+        return false;
+    }
+
+    deviceContext->PSSetSamplers(_Slot, 1, _SamplerState->Get().GetAddressOf());
+    return true;
+}
+void D3D11Context::ReleaseVertexShaderResources(UINT _Slot)
+{
+    ID3D11ShaderResourceView* shaderResourceView = NULL;
+    deviceContext->VSSetShaderResources(_Slot, 1, &shaderResourceView);
+}
+void D3D11Context::ReleasePixelShaderResources(UINT _Slot)
+{
+    ID3D11ShaderResourceView* shaderResourceView = NULL;
+    deviceContext->PSSetShaderResources(_Slot, 1, &shaderResourceView);
+}
+bool D3D11Context::UpdateIndexBuffer(D3D11Shader* _Shader)
+{
+    if (!_Shader)
+    {
+        printf("shader is null\n");
+        return false;
+    }
+
+    if (_Shader->GetIndices().empty())
+    {
+        printf("indices data is empty\n");
+        return false;
+    }
+
+    if (!_Shader->GetIndexBuffer())
+    {
+        printf("index buffer is null\n");
+        return false;
+    }
+
+    D3D11_MAPPED_SUBRESOURCE resource;
+    if (FAILED(deviceContext->Map(_Shader->GetIndexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource)))
+        return false;
+
+    memcpy(resource.pData, _Shader->GetIndices().data(), (sizeof(UINT) * (UINT)_Shader->GetIndices().size()));
+    deviceContext->Unmap(_Shader->GetIndexBuffer().Get(), 0);
+
+    _Shader->SetIndicesSize((UINT)_Shader->GetIndices().size());
+    _Shader->ClearIndices();
+    return true;
+}
+bool D3D11Context::Draw(D3D11Shader* _Shader)
+{
+    if (!_Shader)
+    {
+        printf("shader is null\n");
+        return false;
+    }
+
+    if (!_Shader->GetVertexShader())
+    {
+        printf("vertex shader is null\n");
+        return false;
+    }
+
+    if (!_Shader->GetPixelShader())
+    {
+        printf("pixel shader is null\n");
+        return false;
+    }
+
+    if (_Shader->GetIndexBuffer()) deviceContext->DrawIndexed(_Shader->GetIndicesSize(), 0, 0);
+    else deviceContext->Draw(_Shader->GetVerticesSize(), 0);
+
+    return true;
+}
+bool D3D11Context::Set(D3D11Shader* _Shader)
+{
+    if (!_Shader)
+    {
+        printf("shader is null\n");
+        return false;
+    }
+
+    if (!_Shader->GetVertexLayout())
+    {
+        printf("vertex layout is null\n");
+        return false;
+    }
+
+    if (!_Shader->GetVertexBuffer())
+    {
+        printf("vertex buffer is null\n");
+        return false;
+    }
+
+    if (!_Shader->GetVertexShader())
+    {
+        printf("vertex shader is null\n");
+        return false;
+    }
+
+    if (!_Shader->GetPixelShader())
+    {
+        printf("pixel shader is null\n");
+        return false;
+    }
+
+    deviceContext->IASetInputLayout(_Shader->GetVertexLayout().Get());
+
+    UINT stride = _Shader->GetSizeOf();
+    UINT offset = 0;
+    deviceContext->IASetVertexBuffers(0, 1, _Shader->GetVertexBuffer().GetAddressOf(), &stride, &offset);
+
+    if (_Shader->GetIndexBuffer())
+        D3D11Context::GetSingleton()->GetDeviceContext()->IASetIndexBuffer(_Shader->GetIndexBuffer().Get(), DXGI_FORMAT_R32_UINT, 0);
+
+    deviceContext->VSSetShader(_Shader->GetVertexShader().Get(), NULL, 0);
+    deviceContext->PSSetShader(_Shader->GetPixelShader().Get(), NULL, 0);
+
+    return true;
+}

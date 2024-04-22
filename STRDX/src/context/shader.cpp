@@ -107,16 +107,6 @@ bool Shader::CreateIndexBuffer(bool _CpuAccess)
 
 	return true;
 }
-bool Shader::UpdateIndexBuffer()
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_shader)
-		if (!d3d11_shader->UpdateIndexBuffer())
-			return false;
-#endif
-
-	return true;
-}
 bool Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset)
 {
 #if defined(RENDERER_D3D11)
@@ -132,16 +122,6 @@ bool Shader::CreateLayout()
 #if defined(RENDERER_D3D11)
 	if (d3d11_shader)
 		if (!d3d11_shader->CreateLayout())
-			return false;
-#endif
-
-	return true;
-}
-bool Shader::Draw()
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_shader)
-		if (!d3d11_shader->Draw())
 			return false;
 #endif
 
@@ -191,50 +171,12 @@ void Shader::Release()
 
 	delete this;
 }
-bool Shader::SetVertexShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot)
+ShaderID* Shader::Get()
 {
 #if defined(RENDERER_D3D11)
 	if (d3d11_shader)
-		if (!d3d11_shader->SetVertexShaderResource((ID3D11ShaderResourceView*)_ShaderResource, _Slot))
-			return false;
+		return (ShaderID*)d3d11_shader;
 #endif
 
-	return true;
-}
-bool Shader::SetPixelShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot)
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_shader)
-		if (!d3d11_shader->SetPixelShaderResource((ID3D11ShaderResourceView*)_ShaderResource, _Slot))
-			return false;
-#endif
-
-	return true;
-}
-bool Shader::SetVertexSampler(SamplerState* _SamplerState, UINT _Slot)
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_shader)
-		if (!d3d11_shader->SetVertexSampler((D3D11SamplerState*)_SamplerState->Get(), _Slot))
-			return false;
-#endif
-
-	return true;
-}
-bool Shader::SetPixelSampler(SamplerState* _SamplerState, UINT _Slot)
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_shader)
-		if (!d3d11_shader->SetPixelSampler((D3D11SamplerState*)_SamplerState->Get(), _Slot))
-			return false;
-#endif
-
-	return true;
-}
-void Shader::ReleaseShaderResources(UINT _Slot)
-{
-#if defined(RENDERER_D3D11)
-	if (d3d11_shader)
-		d3d11_shader->ReleaseShaderResources(_Slot);
-#endif
+	return 0;
 }

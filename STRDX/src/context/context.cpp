@@ -105,3 +105,84 @@ bool Context::SetPixelConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot
 
 	return true;
 }
+bool Context::SetVertexShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot)
+{
+#if defined(RENDERER_D3D11)
+	if (_ShaderResource)
+		if (!context->SetVertexShaderResource((ID3D11ShaderResourceView*)_ShaderResource, _Slot))
+			return false;
+#endif
+
+	return true;
+}
+bool Context::SetPixelShaderResource(ShaderResourceID* _ShaderResource, UINT _Slot)
+{
+#if defined(RENDERER_D3D11)
+	if (_ShaderResource)
+		if (!context->SetPixelShaderResource((ID3D11ShaderResourceView*)_ShaderResource, _Slot))
+			return false;
+#endif
+
+	return true;
+}
+bool Context::SetVertexSampler(SamplerState* _SamplerState, UINT _Slot)
+{
+#if defined(RENDERER_D3D11)
+	if (_SamplerState)
+		if (!context->SetVertexSampler((D3D11SamplerState*)_SamplerState->Get(), _Slot))
+			return false;
+#endif
+
+	return true;
+}
+bool Context::SetPixelSampler(SamplerState* _SamplerState, UINT _Slot)
+{
+#if defined(RENDERER_D3D11)
+	if (_SamplerState)
+		if (!context->SetPixelSampler((D3D11SamplerState*)_SamplerState->Get(), _Slot))
+			return false;
+#endif
+
+	return true;
+}
+void Context::ReleaseVertexShaderResources(UINT _Slot)
+{
+#if defined(RENDERER_D3D11)
+	context->ReleaseVertexShaderResources(_Slot);
+#endif
+}
+void Context::ReleasePixelShaderResources(UINT _Slot)
+{
+#if defined(RENDERER_D3D11)
+	context->ReleasePixelShaderResources(_Slot);
+#endif
+}
+bool Context::UpdateIndexBuffer(Shader* _Shader)
+{
+#if defined(RENDERER_D3D11)
+		if (!context->UpdateIndexBuffer((D3D11Shader*)_Shader->Get()))
+			return false;
+#endif
+
+	return true;
+}
+bool Context::Draw(Shader* _Shader)
+{
+#if defined(RENDERER_D3D11)
+	if (_Shader)
+		if (!context->Draw((D3D11Shader*)_Shader->Get()))
+			return false;
+#endif
+
+	return true;
+}
+bool Context::Set(Shader* _Shader)
+{
+#if defined(RENDERER_D3D11)
+	if (_Shader)
+		if (!context->Set((D3D11Shader*)_Shader->Get()))
+			return false;
+#endif
+
+	return true;
+}

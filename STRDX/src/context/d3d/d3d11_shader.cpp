@@ -150,31 +150,6 @@ bool D3D11Shader::CreateIndexBuffer(bool _CpuAccess)
     indices.clear();
     return true;
 }
-bool D3D11Shader::UpdateIndexBuffer()
-{
-    if (indices.empty())
-    {
-        printf("indices data is empty\n");
-        return false;
-    }
-
-    if (!index_buffer)
-    {
-        printf("index buffer is null\n");
-        return false;
-    }
-
-    D3D11_MAPPED_SUBRESOURCE resource;
-    if (FAILED(context->GetDeviceContext()->Map(index_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource)))
-        return false;
-
-    memcpy(resource.pData, indices.data(), (sizeof(UINT) * (UINT)indices.size()));
-    context->GetDeviceContext()->Unmap(index_buffer.Get(), 0);
-
-    indices_size = (UINT)indices.size();
-    indices.clear();
-    return true;
-}
 bool D3D11Shader::AddLayout(LPCSTR _Name, UINT _Index, UINT _Format, UINT _Slot, UINT _Offset)
 {
     if (strlen(_Name) == 0)
@@ -223,25 +198,6 @@ bool D3D11Shader::CreateLayout()
     layout.clear();
     return true;
 }
-bool D3D11Shader::Draw()
-{
-    if (!vertex_shader)
-    {
-        printf("vertex shader is null\n");
-        return false;
-    }
-
-    if (!pixel_shader)
-    {
-        printf("pixel shader is null\n");
-        return false;
-    }
-
-    if (index_buffer) context->GetDeviceContext()->DrawIndexed(indices_size, 0, 0);
-    else context->GetDeviceContext()->Draw(vertices_size, 0);
-
-    return true;
-}
 void D3D11Shader::ReleaseVertex()
 {
     STRDXWRL_RESET(vertex_shader);
@@ -284,56 +240,6 @@ void D3D11Shader::Release()
     pixelFilename = "";
 
     delete this;
-}
-bool D3D11Shader::SetVertexShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot)
-{
-    if (!_ShaderResource)
-    {
-        printf("vertex shader resource is null\n");
-        return false;
-    }
-
-    context->GetDeviceContext()->VSSetShaderResources(_Slot, 1, &_ShaderResource);
-    return true;
-}
-bool D3D11Shader::SetPixelShaderResource(ID3D11ShaderResourceView* _ShaderResource, UINT _Slot)
-{
-    if (!_ShaderResource)
-    {
-        printf("pixel shader resource is null\n");
-        return false;
-    }
-
-    context->GetDeviceContext()->PSSetShaderResources(_Slot, 1, &_ShaderResource);
-    return true;
-}
-bool D3D11Shader::SetVertexSampler(D3D11SamplerState* _SamplerState, UINT _Slot)
-{
-    if (!_SamplerState)
-    {
-        printf("vertex sampler state is null\n");
-        return false;
-    }
-
-    context->GetDeviceContext()->VSSetSamplers(_Slot, 1, _SamplerState->Get().GetAddressOf());
-    return true;
-}
-bool D3D11Shader::SetPixelSampler(D3D11SamplerState* _SamplerState, UINT _Slot)
-{
-    if (!_SamplerState)
-    {
-        printf("vertex sampler state is null\n");
-        return false;
-    }
-
-    context->GetDeviceContext()->PSSetSamplers(_Slot, 1, _SamplerState->Get().GetAddressOf());
-    return true;
-}
-void D3D11Shader::ReleaseShaderResources(UINT _Slot)
-{
-    ID3D11ShaderResourceView* shaderResourceView = NULL;
-    context->GetDeviceContext()->VSSetShaderResources(_Slot, 1, &shaderResourceView);
-    context->GetDeviceContext()->PSSetShaderResources(_Slot, 1, &shaderResourceView);
 }
 bool D3D11Shader::ReadFromFileToBlob(const char* _Filename, ID3DBlob** _Blob)
 {
@@ -470,46 +376,6 @@ bool D3D11Shader::CompileShader(std::vector<uint8_t>& _Data, std::string _EntryP
     *_Blob = shaderBlob;
     return true;
 }
-bool D3D11Shader::Set()
-{
-    if (!vertex_layout)
-    {
-        printf("vertex layout is null\n");
-        return false;
-    }
-
-    if (!vertex_buffer)
-    {
-        printf("vertex buffer is null\n");
-        return false;
-    }
-
-    if (!vertex_shader)
-    {
-        printf("vertex shader is null\n");
-        return false;
-    }
-
-    if (!pixel_shader)
-    {
-        printf("pixel shader is null\n");
-        return false;
-    }
-
-    D3D11Context::GetSingleton()->GetDeviceContext()->IASetInputLayout(vertex_layout.Get());
-
-    UINT stride = sizeOf;
-    UINT offset = 0;
-    D3D11Context::GetSingleton()->GetDeviceContext()->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
-
-    if (index_buffer)
-        D3D11Context::GetSingleton()->GetDeviceContext()->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-
-    D3D11Context::GetSingleton()->GetDeviceContext()->VSSetShader(vertex_shader.Get(), NULL, 0);
-    D3D11Context::GetSingleton()->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
-
-    return true;
-}
 STRDXWRL<ID3D11Device> D3D11Shader::GetDevice()
 {
     return context->GetDevice();
@@ -517,4 +383,44 @@ STRDXWRL<ID3D11Device> D3D11Shader::GetDevice()
 STRDXWRL<ID3D11Buffer> D3D11Shader::GetVertexBuffer()
 {
     return vertex_buffer;
+}
+std::vector<UINT>& D3D11Shader::GetIndices()
+{
+    return indices;
+}
+STRDXWRL<ID3D11Buffer> D3D11Shader::GetIndexBuffer()
+{
+    return index_buffer;
+}
+void D3D11Shader::SetIndicesSize(UINT _Size)
+{
+    indices_size = _Size;
+}
+void D3D11Shader::ClearIndices()
+{
+    indices.clear();
+}
+STRDXWRL<ID3D11VertexShader> D3D11Shader::GetVertexShader()
+{
+    return vertex_shader;
+}
+STRDXWRL<ID3D11PixelShader> D3D11Shader::GetPixelShader()
+{
+    return pixel_shader;
+}
+UINT D3D11Shader::GetVerticesSize()
+{
+    return vertices_size;
+}
+UINT D3D11Shader::GetIndicesSize()
+{
+    return indices_size;
+}
+STRDXWRL<ID3D11InputLayout> D3D11Shader::GetVertexLayout()
+{
+    return vertex_layout;
+}
+UINT D3D11Shader::GetSizeOf()
+{
+    return sizeOf;
 }

@@ -148,31 +148,31 @@ void Engine::Render()
         renderTarget->Set();
         renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
-            shader->Set();
+            context->Set(shader);
             context->SetPixelConstantBuffer(constantBuffer, 0);
 
             cb.SetTime(GetTime());
             cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
             constantBuffer->Update(&cb);
 
-            shader->Draw();
+            context->Draw(shader);
         }
         context->UnsetRenderTarget();
 
         context->SetRenderTarget();
         context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
         {
-            shader2->Set();
+            context->Set(shader2);
             context->SetPixelConstantBuffer(constantBuffer, 0);
-            shader2->SetPixelShaderResource(renderTarget->GetShaderResource(), 0);
-            shader2->SetPixelSampler(samplerState, 0);
+            context->SetPixelShaderResource(renderTarget->GetShaderResource(), 0);
+            context->SetPixelSampler(samplerState, 0);
 
             cb.SetTime(GetTime());
             cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
             constantBuffer->Update(&cb);
 
-            shader2->Draw();
-            shader2->ReleaseShaderResources();
+            context->Draw(shader2);
+            context->ReleasePixelShaderResources(0);
         }
         context->UnsetRenderTarget();
     }
