@@ -1,6 +1,7 @@
 #include "engine.h"
 #include "../Vertex.h"
 #include "../window/window.h"
+#include "../context/context.h"
 
 static Window* window = Window::GetSingleton();
 static Context* context = Context::GetSingleton();

@@ -1,12 +1,6 @@
 #include "d3d11_context.h"
 #include "../../window/window.h"
 
-#include "d3d11_constant_buffer.h"
-#include "d3d11_rasterizer_state.h"
-#include "d3d11_render_target.h"
-#include "d3d11_sampler_state.h"
-#include "d3d11_shader.h"
-
 static Window* window = Window::GetSingleton();
 
 D3D11Context* D3D11Context::GetSingleton()

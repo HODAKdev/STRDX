@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include "../strdx.h"
+#include <vector>
 
 // classes
 class ConstantBuffer;
@@ -41,4 +42,15 @@ public:
 	void Release();
 	bool SetVertexConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot);
 	bool SetPixelConstantBuffer(ConstantBuffer* _ConstantBuffer, UINT _Slot);
+	template <typename T>
+	bool UpdateVertexBuffer(Shader* _Shader, std::vector<T>& _Vertices)
+	{
+#if defined(RENDERER_D3D11)
+		if (_Shader)
+			if (!UpdateVertexBuffer<T>(_Shader, _Vertices))
+				return false;
+#endif
+
+		return true;
+	}
 };

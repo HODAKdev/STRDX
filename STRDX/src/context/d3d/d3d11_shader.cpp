@@ -1,5 +1,6 @@
 #include "d3d11_shader.h"
 #include <d3dcompiler.h>
+#include "d3d11_context.h"
 
 static D3D11Context* context = D3D11Context::GetSingleton();
 
@@ -508,4 +509,12 @@ bool D3D11Shader::Set()
     D3D11Context::GetSingleton()->GetDeviceContext()->PSSetShader(pixel_shader.Get(), NULL, 0);
 
     return true;
+}
+STRDXWRL<ID3D11Device> D3D11Shader::GetDevice()
+{
+    return context->GetDevice();
+}
+STRDXWRL<ID3D11Buffer> D3D11Shader::GetVertexBuffer()
+{
+    return vertex_buffer;
 }

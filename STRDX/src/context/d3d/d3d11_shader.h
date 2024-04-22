@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 #include <d3d11.h>
-#include "d3d11_context.h"
 #include "d3d11_constant_buffer.h"
 #include "d3d11_sampler_state.h"
 
@@ -47,7 +46,7 @@ public:
 		D3D11_SUBRESOURCE_DATA data;
 		ZeroMemory(&data, sizeof(data));
 		data.pSysMem = _Vertices.data();
-		if (FAILED(D3D11Context::GetSingleton()->GetDevice()->CreateBuffer(&desc, &data, vertex_buffer.GetAddressOf())))
+		if (FAILED(GetDevice()->CreateBuffer(&desc, &data, vertex_buffer.GetAddressOf())))
 		{
 			printf("create vertex buffer failed\n");
 			return false;
@@ -55,30 +54,6 @@ public:
 
 		vertices_size = (UINT)_Vertices.size();
 		sizeOf = sizeof(T);
-		return true;
-	}
-	template <typename T>
-	bool UpdateVertexBuffer(std::vector<T>& _Vertices)
-	{
-		if (_Vertices.empty())
-		{
-			printf("vertices data is empty\n");
-			return false;
-		}
-
-		if (!vertex_buffer)
-		{
-			printf("vertex buffer is null\n");
-			return false;
-		}
-
-		D3D11_MAPPED_SUBRESOURCE resource;
-		if (FAILED(D3D11Context::GetSingleton()->GetDeviceContext()->Map(vertex_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource)))
-			return false;
-
-		memcpy(resource.pData, _Vertices.data(), (sizeof(T) * _Vertices.size()));
-		D3D11Context::GetSingleton()->GetDeviceContext()->Unmap(vertex_buffer.Get(), 0);
-
 		return true;
 	}
 	void AddIndex(UINT _Index);
@@ -99,6 +74,10 @@ public:
 	bool SetVertexSampler(D3D11SamplerState* _SamplerState, UINT _Slot);
 	bool SetPixelSampler(D3D11SamplerState* _SamplerState, UINT _Slot);
 	void ReleaseShaderResources(UINT _Slot);
+	STRDXWRL<ID3D11Buffer> GetVertexBuffer();
+
+private:
+	STRDXWRL<ID3D11Device> GetDevice();
 
 private:
 	STRDXWRL<ID3DBlob> vs_blob;

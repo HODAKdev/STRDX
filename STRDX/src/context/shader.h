@@ -31,17 +31,6 @@ public:
 
 		return true;
 	}
-	template <typename T>
-	bool UpdateVertexBuffer(std::vector<T>& _Vertices)
-	{
-#if defined(RENDERER_D3D11)
-		if (d3d11_shader)
-			if (!d3d11_shader->UpdateVertexBuffer<T>(_Vertices))
-				return false;
-#endif
-
-		return true;
-	}
 	void AddIndex(UINT _Index);
 	bool CreateIndexBuffer(bool _CpuAccess = false);
 	bool UpdateIndexBuffer();

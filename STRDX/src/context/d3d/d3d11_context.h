@@ -4,18 +4,13 @@
 #include "../context.h"
 #include "strdxwrl.h"
 
+#include "d3d11_shader.h"
+
 // settings
 #define D3D11_FORMAT DXGI_FORMAT_R8G8B8A8_UNORM
 #define D3D11_DRIVER_TYPE D3D_DRIVER_TYPE_HARDWARE
 #define D3D11_FEATURE_LEVEL D3D_FEATURE_LEVEL_11_1
 #define D3D11_SWAP_EFFECT DXGI_SWAP_EFFECT_FLIP_DISCARD
-
-// classes
-class D3D11ConstantBuffer;
-class D3D11RasterizerState;
-class D3D11RenderTarget;
-class D3D11SamplerState;
-class D3D11Shader;
 
 class D3D11Context
 {
@@ -38,6 +33,36 @@ public:
 	void Release();
 	bool SetVertexConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot);
 	bool SetPixelConstantBuffer(D3D11ConstantBuffer* _ConstantBuffer, UINT _Slot);
+	template <typename T>
+	bool UpdateVertexBuffer(D3D11Shader* _Shader, std::vector<T>& _Vertices)
+	{
+		if (!_Shader)
+		{
+			printf("shader is null\n");
+			return false;
+		}
+
+		if (_Vertices.empty())
+		{
+			printf("vertices data is empty\n");
+			return false;
+		}
+
+		if (!_Shader->GetVertexBuffer())
+		{
+			printf("vertex buffer is null\n");
+			return false;
+		}
+
+		D3D11_MAPPED_SUBRESOURCE resource;
+		if (FAILED(deviceContext->Map(_Shader->GetVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource)))
+			return false;
+
+		memcpy(resource.pData, _Vertices.data(), (sizeof(T) * _Vertices.size()));
+		deviceContext->Unmap(_Shader->GetVertexBuffer().Get(), 0);
+
+		return true;
+	}
 
 private:
 	bool CreateRenderTargetView();
