@@ -282,19 +282,18 @@ void D3D11Context::ReleasePixelShaderResources(UINT _Slot)
 }
 bool D3D11Context::UpdateIndexBuffer(D3D11Shader* _Shader)
 {
+    // error check
     if (!_Shader)
     {
         printf("shader is null\n");
         return false;
     }
-
-    if (_Shader->GetIndices().empty())
+    else if (_Shader->GetIndices().empty())
     {
         printf("indices data is empty\n");
         return false;
     }
-
-    if (!_Shader->GetIndexBuffer())
+    else if (!_Shader->GetIndexBuffer())
     {
         printf("index buffer is null\n");
         return false;
@@ -313,19 +312,18 @@ bool D3D11Context::UpdateIndexBuffer(D3D11Shader* _Shader)
 }
 bool D3D11Context::Draw(D3D11Shader* _Shader)
 {
+    // error check
     if (!_Shader)
     {
         printf("shader is null\n");
         return false;
     }
-
-    if (!_Shader->GetVertexShader())
+    else if (!_Shader->GetVertexShader())
     {
         printf("vertex shader is null\n");
         return false;
     }
-
-    if (!_Shader->GetPixelShader())
+    else if (!_Shader->GetPixelShader())
     {
         printf("pixel shader is null\n");
         return false;
@@ -338,31 +336,28 @@ bool D3D11Context::Draw(D3D11Shader* _Shader)
 }
 bool D3D11Context::Set(D3D11Shader* _Shader)
 {
+    // error check
     if (!_Shader)
     {
         printf("shader is null\n");
         return false;
     }
-
-    if (!_Shader->GetVertexLayout())
+    else if (!_Shader->GetVertexLayout())
     {
         printf("vertex layout is null\n");
         return false;
     }
-
-    if (!_Shader->GetVertexBuffer())
+    else if (!_Shader->GetVertexBuffer())
     {
         printf("vertex buffer is null\n");
         return false;
     }
-
-    if (!_Shader->GetVertexShader())
+    else if (!_Shader->GetVertexShader())
     {
         printf("vertex shader is null\n");
         return false;
     }
-
-    if (!_Shader->GetPixelShader())
+    else if (!_Shader->GetPixelShader())
     {
         printf("pixel shader is null\n");
         return false;

@@ -27,13 +27,13 @@ D3D11ConstantBuffer* D3D11ConstantBuffer::Create(UINT _SizeOf)
 }
 bool D3D11ConstantBuffer::Update(const void* _ConstantBuffer)
 {
+	// error check
 	if (!_ConstantBuffer)
 	{
-		printf("constant buffer is null\n");
+		printf("constant buffer data is null\n");
 		return false;
 	}
-
-	if (!constant_buffer)
+	else if (!constant_buffer)
 	{
 		printf("constant buffer is null\n");
 		return false;

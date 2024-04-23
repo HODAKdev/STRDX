@@ -9,7 +9,13 @@ static Context* context = Context::GetSingleton();
 /* A simple example of how to create a rectangle covering the entire screen, which is drawn into a
    texture, and then once again, but this time not into a texture, but into the back buffer. The first
    shader will be for the ocean, and the second one for vignette, where we will combine it with the
-   first shader, the ocean. (Yes, I know it's possible to do this in one shader)
+   first shader, the ocean. Yes, I know it's possible to do this in one shader.
+
+
+   In the code, there are shortcomings, I would fix them, but I don't have the time, and it's already
+   a mess. So maybe in a new version sometime.
+
+   I recommend using only for experiments.
 */
 
 Engine* Engine::GetSingleton()
@@ -143,39 +149,38 @@ void Engine::Release()
 
 void Engine::Render()
 {
-    if (shader && shader2)
+    renderTarget->Set();
+    renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
+    if (shader)
     {
-        renderTarget->Set();
-        renderTarget->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
-        {
-            context->Set(shader);
-            context->SetPixelConstantBuffer(constantBuffer, 0);
+        context->Set(shader);
+        context->SetPixelConstantBuffer(constantBuffer, 0);
 
-            cb.SetTime(GetTime());
-            cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
-            constantBuffer->Update(&cb);
+        cb.SetTime(GetTime());
+        cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
+        constantBuffer->Update(&cb);
 
-            context->Draw(shader);
-        }
-        context->UnsetRenderTarget();
-
-        context->SetRenderTarget();
-        context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
-        {
-            context->Set(shader2);
-            context->SetPixelConstantBuffer(constantBuffer, 0);
-            context->SetPixelShaderResource(renderTarget->GetShaderResource(), 0);
-            context->SetPixelSampler(samplerState, 0);
-
-            cb.SetTime(GetTime());
-            cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
-            constantBuffer->Update(&cb);
-
-            context->Draw(shader2);
-            context->ReleasePixelShaderResources(0);
-        }
-        context->UnsetRenderTarget();
+        context->Draw(shader);
     }
+    context->UnsetRenderTarget();
+
+    context->SetRenderTarget();
+    context->ClearRenderTarget(0.0f, 0.0f, 0.0f, 0.0f);
+    if (shader2)
+    {
+        context->Set(shader2);
+        context->SetPixelConstantBuffer(constantBuffer, 0);
+        context->SetPixelShaderResource(renderTarget->GetShaderResource(), 0);
+        context->SetPixelSampler(samplerState, 0);
+
+        cb.SetTime(GetTime());
+        cb.SetResolution((float)window->GetClientWidth(), (float)window->GetClientHeight());
+        constantBuffer->Update(&cb);
+
+        context->Draw(shader2);
+        context->ReleasePixelShaderResources(0);
+    }
+    context->UnsetRenderTarget();
 }
 
 float Engine::GetTime()

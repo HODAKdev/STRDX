@@ -292,13 +292,13 @@ bool D3D11Shader::ReadFromFileToVector(const char* _Filename, std::vector<uint8_
 }
 bool D3D11Shader::Write(const char* _Filename, ID3DBlob* _Blob)
 {
+    // error check
     if (std::string(_Filename).empty())
     {
         printf("filename is empty\n");
         return false;
     }
-
-    if (!_Blob)
+    else if (!_Blob)
     {
         printf("blob is null\n");
         return false;
@@ -320,19 +320,18 @@ bool D3D11Shader::Write(const char* _Filename, ID3DBlob* _Blob)
 }
 bool D3D11Shader::CompileShader(std::vector<uint8_t>& _Data, std::string _EntryPoint, std::string _Profile, ID3DBlob** _Blob)
 {
+    // error check
     if (_Data.empty())
     {
         printf("data is empty\n");
         return false;
     }
-
-    if (_EntryPoint.empty())
+    else if (_EntryPoint.empty())
     {
         printf("entry point is empty\n");
         return false;
     }
-
-    if (_Profile.empty())
+    else if (_Profile.empty())
     {
         printf("profile is empty\n");
         return false;
